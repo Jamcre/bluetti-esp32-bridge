@@ -1,5 +1,7 @@
 # Enhancing ESP Board Reception without an External Antenna Connector
 
+*Originally available at: https://github.com/Fr4nkFletcher/ESP32-Marauder-Cheap-Yellow-Display/blob/master/AntennaMod.md* (MIT Liscence)
+
 If you've purchased an ESP board that lacks a connector for an external antenna and you're experiencing the limits of reception, there's a solution that doesn't involve the complex task of moving a tiny 0603 sized resistor to utilize the external antenna socket on some boards.
 
 This workaround is relatively simple and the required parts are inexpensive, often found on platforms like eBay or AliExpress for just a few dollars.
