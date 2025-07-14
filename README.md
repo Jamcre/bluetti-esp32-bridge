@@ -1,11 +1,9 @@
 ﻿# ecolibrium2025-sensors
 
-## Current problems
-
-- integrate GUI
-- error checking for when values are 'Max" or ~16380 for a few hours -> reset 
-- upon startup IAQ values are zero or not reliable (wait or reject incorrect values)
-- complete casing
-- antennae needs to be soldered (process requires removing insulation)
-
+## Current problems 07/10/25
+- integrate GUI with SD card logic
+- integrate RTC with that
+- add antennae
+- print a case
+ 
 When this is done we can make our first deployment (maybe just one sensor module)
