@@ -1,4 +1,4 @@
-
+#include <esp_now.h> //for NTP time
 #include <Arduino.h>
 #include <SensirionI2cSen66.h>
 #include <Wire.h>
@@ -110,7 +110,24 @@
   int countfn = 0;
   bool canWriteAgain = true;
   unsigned long lastTimeWrittenToSD = 0;
+  bool first_time = 0;
 
+// --------------------------------
+
+// ---- Time Synch related values ----
+  // Define the structure to receive
+  typedef struct message_struct {
+    int year;
+    int month;
+    int day;
+    int hour;
+    int minute;
+    int second;
+  } message_struct;
+
+  message_struct myData;
+  message_struct myData_copy;
+  int stored_min = 0;
 // --------------------------------
 
 String readSensorValue(SensorValueType type) {
@@ -526,99 +543,54 @@ void tryConnectingToWiFi(){
     return pmax_fn;
   }
 
-  // int findMin() {
-  //   File root = SD.open("/");
-
-  //   if (!root) {
-  //     Serial.println("Failed to open directory");
-  //     return 0;
-  //   }
-  //   if (!root.isDirectory()) {
-  //     Serial.println("Not a directory");
-  //     return 0;
-  //   }
-  //   File file = root.openNextFile();
-  //   int min_fn;
-  //   int pmin_fn = 700;
-  //   while (file) {
-  //     char *pch;
-  //     pch = strstr(file.name(), "sd_data_");
-  //     if (pch != NULL) {
-  //       char *after = pch + strlen("sd_data_");
-  //       // Serial.println(after);
-
-  //       char *dotPos = strstr(after, ".");
-  //       if (dotPos != NULL) {
-  //         *dotPos = '\0';
-  //       }
-  //       // Serial.println(after);
-
-  //       min_fn = atoi(after);  //converts the number in the string to an int
-  //       Serial.print("MIN_FN IS...");
-  //       Serial.print(min_fn);
-  //       if (min_fn < pmin_fn) {
-  //         pmin_fn = min_fn;
-  //       }
-  //       file = root.openNextFile();
-  //     }
-  //     Serial.println("we got the min file number as:");
-  //     Serial.println(pmin_fn);
-  //     if (pmin_fn != 700) {
-  //       return pmin_fn;
-  //     } else {
-  //       return -1;
-  //     }
-  //   }
-  // }
-
+  // ----------------
     int findMin(){
-    File root = SD.open("/");
-    
-    if (!root) {
-      Serial.println("Failed to open directory");
-      return -1;
-    }
-    if (!root.isDirectory()) {
-      Serial.println("Not a directory");
-      return -1;
-    }
-    else{
-      File file = root.openNextFile();
-      int min_fn=700;
-      int pmin_fn=700; 
-      while (file) {
-        char * pch;
-        pch = strstr(file.name(),"sd_data_");
-        if (pch!=NULL) {
-          char* after = pch + strlen("sd_data_");
-          Serial.println(after);
+      File root = SD.open("/");
+      
+      if (!root) {
+        Serial.println("Failed to open directory");
+        return -1;
+      }
+      if (!root.isDirectory()) {
+        Serial.println("Not a directory");
+        return -1;
+      }
+      else{
+        File file = root.openNextFile();
+        int min_fn=700;
+        int pmin_fn=700; 
+        while (file) {
+          char * pch;
+          pch = strstr(file.name(),"sd_data_");
+          if (pch!=NULL) {
+            char* after = pch + strlen("sd_data_");
+            Serial.println(after);
 
-          char* dotPos = strstr(after,".");
-          if (dotPos != NULL){
-            *dotPos = '\0';
-          }
-          // Serial.println(after);
-        
-          min_fn = atoi(after); //converts the number in the string to an int
-          Serial.print("MIN_FN IS...");
-          Serial.print(min_fn);
-          if (min_fn < pmin_fn) {
-            pmin_fn = min_fn;        
+            char* dotPos = strstr(after,".");
+            if (dotPos != NULL){
+              *dotPos = '\0';
             }
+          
+            min_fn = atoi(after); //converts the number in the string to an int
+            Serial.print("MIN_FN IS...");
+            Serial.print(min_fn);
+            if (min_fn < pmin_fn) {
+              pmin_fn = min_fn;        
+              }
+            }
+          file = root.openNextFile();
           }
-        file = root.openNextFile();
+          Serial.println("we got the min file number as:");
+          Serial.println(pmin_fn);
+          if (pmin_fn != 700)
+          { 
+            return pmin_fn;
+          }
+          else {
+            return -1;
         }
-        Serial.println("we got the min file number as:");
-        Serial.println(pmin_fn);
-        if (pmin_fn != 700)
-        { 
-          return pmin_fn;
-        }
-        else {
-          return -1;
       }
     }
-  }
 
   void listDir(fs::FS &fs, const char *dirname, uint8_t levels) {
     //Serial.println(dirname);
@@ -777,73 +749,121 @@ void tryConnectingToWiFi(){
   }
 
   void dataToCSV(int cfn_input) {
-
-    sen66.readMeasuredValues(
-    massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
-    massConcentrationPm10p0, humidity, temperature, vocIndex, noxIndex,
-    co2);
-
-    float mea[9] = {massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0, 
-    massConcentrationPm10p0, humidity, temperature, vocIndex, noxIndex, co2};
-
-    char cfn_buffer[16];
-
-    sprintf(cfn_buffer, "/sd_data_%d.csv", cfn_input);
-
-    myFile = SD.open(cfn_buffer, FILE_READ);
-    Serial.printf("This is a test message");
-    Serial.printf("Used space: %lluGB\n", SD.usedBytes() / (1024ULL * 1024ULL));
-    Serial.printf("Used space: %fMB\n", SD.usedBytes() / (1024.0 * 1024.0));
-
-    int smtn = SD.usedBytes();
-    Serial.println(smtn);
-    
-    float usage = SD.usedBytes() / (1024.0 * 1024.0);
-
-    
-
-    if (usage > 25600) {  //Usage in megabytes originally 100 //this checks if the SD card is too full... if it is, delete the oldest file //if (usage > 0.25) { -N-
-      Serial.println("We try deleting a file.");
-      int del_fn = findMin();
-      char delfn_buffer[16];
-      sprintf(delfn_buffer, "/sd_data_%d.csv", del_fn);
-      Serial.println("the file number we delete is:");
-      Serial.println(del_fn);
-      deleteFile(SD, delfn_buffer);
-    } else if (!myFile || myFile.size() == 0) { //if the file is nonexistant we make it!
-      Serial.println("Creating new file with headers...");
-      writeFile(SD, cfn_buffer, "PM 1.0, PM 2.5, PM4.0, PM10.0, Temperature, Humiditiy, VOC, NOx, CO2\n");
-    } else if (!myFile || myFile.size() > 50000000) { //10000 is 10kB! -N-
-      Serial.println("The start of a new file...");
-      countfn++;
-    } else {
-
-      char data_arr[9][32];
-      char dateAndTime[64];
-
-      int month = rtc.getMonth() + 1;
-      int day = rtc.getDay();
-      int year = rtc.getYear();
-      int hour = rtc.getHour(true);
-      int min = rtc.getMinute();
-
-      for (int i = 0; i < 9; i++) {
-        snprintf(data_arr[i], sizeof(data_arr[i]), "%.4f", mea[i]);
-        appendFile(SD, cfn_buffer, data_arr[i]);
-        appendFile(SD, cfn_buffer, ",");
+    // ---- ESP32 NOW setup ----- 
+    if((rtc.getYear() < 2000) || (stored_min != rtc.getMinute())) // if the year is wrong OR it hasn't updated in a MINUTE (could do hour or day)...  
+    {
+      Serial.print("YESSIR WE ARE UPDATING THE TIME WITH NTP STUFF \n");
+      if (esp_now_init() != ESP_OK) { // Init ESP-NOW
+        Serial.println("Error initializing ESP-NOW");
+        return;
       }
-
-      sprintf(dateAndTime, "Date: %d/%d/%d Time: %d:%d ", month, day, year, hour, min);
-      //Serial.println(dateAndTime);
-      //appendFile(SD, dateAndTime, ","); // might not be the correct method
-
-      appendFile(SD, cfn_buffer, "DONE \n");  
+      // Register receive callback
+      esp_now_register_recv_cb(OnDataRecv);
+      int timestamp = millis(); //wait 15 seconds to get time if has already recieved an NTP timestamp
+      while(myData.year == NULL || myData.second == myData_copy.second && (millis()-timestamp<15000) && first_time != 0) // while the data value has not updated //CHECK THE VALUE IN THE STRUCT
+      {
+        Serial.print("HELP IM STUCK HELP IM TRAPPED \n");
+        delay(1000);
+      }
+      first_time = 1;
+      Serial.print("IM FREEEEEEEEEEEEEEEE \n");
+      myData_copy = myData;
+      stored_min = rtc.getMinute();
+      esp_now_deinit();
+      canWriteAgain = true;
     }
+    else
+    {
+          sen66.readMeasuredValues(
+          massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
+          massConcentrationPm10p0, humidity, temperature, vocIndex, noxIndex,
+          co2);
 
-    canWriteAgain = true;
+          float mea[9] = {massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0, 
+          massConcentrationPm10p0, humidity, temperature, vocIndex, noxIndex, co2};
+
+          char cfn_buffer[16];
+
+          sprintf(cfn_buffer, "/sd_data_%d.csv", cfn_input);
+
+          myFile = SD.open(cfn_buffer, FILE_READ);
+          Serial.printf("This is a test message \n");
+          Serial.printf("Used space: %lluGB\n", SD.usedBytes() / (1024ULL * 1024ULL));
+          Serial.printf("Used space: %fMB\n", SD.usedBytes() / (1024.0 * 1024.0));
+
+          int smtn = SD.usedBytes();
+          Serial.println(smtn);
+          
+          float usage = SD.usedBytes() / (1024.0 * 1024.0);
+
+
+          if (usage > 25600) {  //Usage in megabytes originally 100 //this checks if the SD card is too full... if it is, delete the oldest file //if (usage > 0.25) { -N-
+            Serial.println("We try deleting a file.");
+            int del_fn = findMin();
+            char delfn_buffer[16];
+            sprintf(delfn_buffer, "/sd_data_%d.csv", del_fn);
+            Serial.println("the file number we delete is:");
+            Serial.println(del_fn);
+            deleteFile(SD, delfn_buffer);
+          } else if (!myFile || myFile.size() == 0) { //if the file is nonexistant we make it!
+            Serial.println("Creating new file with headers...");
+            writeFile(SD, cfn_buffer, "PM 1.0, PM 2.5, PM4.0, PM10.0, Temperature, Humiditiy, VOC, NOx, CO2\n");
+          } else if (!myFile || myFile.size() > 50000000) { //10000 is 10kB! -N-
+            Serial.println("The start of a new file...");
+            countfn++;
+          } else {
+
+            char data_arr[9][32];
+            char dateAndTime[64];
+
+            int month = rtc.getMonth() + 1;
+            int day = rtc.getDay();
+            int year = rtc.getYear();
+            int hour = rtc.getHour(true);
+            int min = rtc.getMinute();
+            int sec = rtc.getSecond();
+
+            for (int i = 0; i < 9; i++) {
+              snprintf(data_arr[i], sizeof(data_arr[i]), "%.4f", mea[i]);
+              appendFile(SD, cfn_buffer, data_arr[i]);
+              appendFile(SD, cfn_buffer, ",");
+            }
+
+            sprintf(dateAndTime, "%d/%d/%d %d:%d:%d ", month, day, year, hour, min, sec);
+            appendFile(SD, cfn_buffer, dateAndTime);
+            appendFile(SD, cfn_buffer, ",");
+            //Serial.println(dateAndTime);
+
+            appendFile(SD, cfn_buffer, "DONE \n");  
+          }
+
+          canWriteAgain = true;
+    }    
   }
 // ------------------------------------
 
+// -------- Time Synch Related Functions -------
+// Callback function when data is received
+  void OnDataRecv(const esp_now_recv_info_t *recv_info, const uint8_t *incomingData, int len) {
+    if (len == sizeof(myData)) {
+      // Copy incoming data into our struct
+      memcpy(&myData, incomingData, sizeof(myData));
+
+      // Convert MAC address to readable string
+      char macStr[18];
+      snprintf(macStr, sizeof(macStr), "%02X:%02X:%02X:%02X:%02X:%02X",
+              recv_info->src_addr[0], recv_info->src_addr[1], recv_info->src_addr[2],
+              recv_info->src_addr[3], recv_info->src_addr[4], recv_info->src_addr[5]);
+
+      // ----
+      rtc.setTime(myData.second, myData.minute, myData.hour, myData.day, myData.month, myData.year);  //-N- Automatically SETTING REAL TIME CLOCK
+      Serial.println(myData.hour); //-N- Printing the time
+    } else {
+      Serial.print("Unexpected data length: ");
+      Serial.println(len);
+    }
+  }
+// ---------------------------------------------
 void setup() {
 
 // ---- Serial Setup ----
@@ -857,6 +877,7 @@ void setup() {
 // ----- Sensor Setup -----
   Wire.begin(SDA_PIN, SCL_PIN);
   sen66.begin(Wire, SEN66_I2C_ADDR_6B);
+  WiFi.mode(WIFI_STA);  // Set device as Wi-Fi Station
 
   error = sen66.deviceReset();
   if (error != NO_ERROR) {
@@ -918,7 +939,6 @@ void setup() {
 // ------------------------------------
 
 // ---- RTC and SD Setup ----
-  rtc.setTime(30, 30, 16, 14, 7, 2025);  //-N- MANUALLY SETTING REAL TIME CLOCK
 
   if (!SD.begin()) {
     Serial.println("Card Mount Failed");
@@ -969,7 +989,7 @@ void loop() {
     lastUpdate = millis();
   }
 
-  if(canWriteAgain && millis() - lastTimeWrittenToSD > 3000){ //-N- set to 3000 again please!
+  if(canWriteAgain && millis() - lastTimeWrittenToSD > 3){ //-N- set to 3000 again please!
     canWriteAgain = false;
     dataToCSV(countfn);
     lastTimeWrittenToSD = millis();
