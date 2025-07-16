@@ -4,6 +4,9 @@
 #include <Wire.h>
 
 #include <WiFi.h>
+#include <WiFiManager.h>
+#include <ESPAsyncWebServer.h>
+#include <AsyncTCP.h>
 
 #include <FS.h>
 #include <SD.h>
@@ -15,6 +18,23 @@
 #include <XPT2046_Touchscreen.h>
 #include <lvgl.h>
 #include "ui.h"
+
+// ---- Webpage Related values and HTML ------------
+  //const char *soft_ap_ssid = "test123"; //change according to each module's number
+  //const char *soft_ap_ssid = "IndoorModuleLab12"; //change according to each module'sIndoorModuleLabXX
+  const char *soft_ap_ssid = "IndoorModuleLab13"; //change according to each module'sIndoorModuleLabXX
+
+  //essentially the ESP 32 creates it's own Wifi, this is what shows up as the "hotspot id" 
+  //const char *soft_ap_password = "IndoorModuleLab12";  //and this is the password
+  const char *soft_ap_password = "IndoorModuleLab13";  //and this is the password
+
+  AsyncWebServer server(80);
+  String serialBuffer = "";
+
+  TFT_eSPI tft = TFT_eSPI();
+
+  
+// ----
 
 // ---- Sensor related values ---- 
   SensirionI2cSen66 sen66;
@@ -34,7 +54,9 @@
   float massConcentrationPm2p5 = 0.0;
   float massConcentrationPm4p0 = 0.0;
   float massConcentrationPm10p0 = 0.0;
+  float ambientHumidity = 0.0;
   float humidity = 0.0;
+  float ambientTemperature = 0.0;
   float temperature = 0.0;
   float vocIndex = 0.0;
   float noxIndex = 0.0;
@@ -762,7 +784,9 @@ void tryConnectingToWiFi(){
       int timestamp = millis(); //wait 15 seconds to get time if has already recieved an NTP timestamp
       while(myData.year == NULL || myData.second == myData_copy.second && (millis()-timestamp<15000) && first_time != 0) // while the data value has not updated //CHECK THE VALUE IN THE STRUCT
       {
-        Serial.print("HELP IM STUCK HELP IM TRAPPED \n");
+        // Serial.print(myData.year);
+        // Serial.print();
+        Serial.print("waiting for NTP timestamp HELP IM STUCK IM TRAPPED \n");
         delay(1000);
       }
       first_time = 1;
@@ -787,8 +811,8 @@ void tryConnectingToWiFi(){
           sprintf(cfn_buffer, "/sd_data_%d.csv", cfn_input);
 
           myFile = SD.open(cfn_buffer, FILE_READ);
-          Serial.printf("This is a test message \n");
-          Serial.printf("Used space: %lluGB\n", SD.usedBytes() / (1024ULL * 1024ULL));
+          // Serial.printf("This is a test message \n");
+          Serial.printf("Used space: %lluMB\n", SD.usedBytes() / (1024ULL * 1024ULL));
           Serial.printf("Used space: %fMB\n", SD.usedBytes() / (1024.0 * 1024.0));
 
           int smtn = SD.usedBytes();
@@ -842,7 +866,7 @@ void tryConnectingToWiFi(){
   }
 // ------------------------------------
 
-// -------- Time Synch Related Functions -------
+// -------- Time Sync Related Functions -------
 // Callback function when data is received
   void OnDataRecv(const esp_now_recv_info_t *recv_info, const uint8_t *incomingData, int len) {
     if (len == sizeof(myData)) {
@@ -864,6 +888,323 @@ void tryConnectingToWiFi(){
     }
   }
 // ---------------------------------------------
+
+// --
+void printAndBuffer(String message, bool newline=true) {
+  if (newline) {
+    Serial.println(message);
+    serialBuffer += message + "\n";
+  } else {
+    Serial.print(message);
+    serialBuffer += message;
+  }
+
+while (serialBuffer.length() > 2000) {  // Adjust the size as necessary
+    int nextLineBreak = serialBuffer.indexOf('\n') + 1;
+    if (nextLineBreak > 0) {
+      serialBuffer = serialBuffer.substring(nextLineBreak);
+    } else {
+      serialBuffer = serialBuffer.substring(100);  // Default trimming
+    }
+  }
+}
+
+void appendToBuffer(char c) {
+    serialBuffer += c;
+    if (serialBuffer.length() > 2000) {
+        serialBuffer = "";  // Clear buffer when size limit is reached
+    }
+}
+String readScdCo2() {
+    
+    sen66.readMeasuredValues(
+        massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
+        massConcentrationPm10p0, ambientHumidity, ambientTemperature, vocIndex,
+        noxIndex, co2);
+    
+    return String(co2);
+}
+String readPm1p0() {
+    
+    sen66.readMeasuredValues(
+        massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
+        massConcentrationPm10p0, ambientHumidity, ambientTemperature, vocIndex,
+        noxIndex, co2);
+    
+    return String(massConcentrationPm1p0);
+}
+
+String readPm2p5() {
+    
+    sen66.readMeasuredValues(
+        massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
+        massConcentrationPm10p0, ambientHumidity, ambientTemperature, vocIndex,
+        noxIndex, co2);
+    
+    return String(massConcentrationPm2p5);
+}
+
+String readPm4p0() {
+    
+    sen66.readMeasuredValues(
+        massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
+        massConcentrationPm10p0, ambientHumidity, ambientTemperature, vocIndex,
+        noxIndex, co2);
+    
+    return String(massConcentrationPm4p0);
+}
+
+String readPm10p0() {
+    
+    sen66.readMeasuredValues(
+        massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
+        massConcentrationPm10p0, ambientHumidity, ambientTemperature, vocIndex,
+        noxIndex, co2);
+    
+    return String(massConcentrationPm10p0);
+}
+
+String readAmbientHumidity() {
+    
+    sen66.readMeasuredValues(
+        massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
+        massConcentrationPm10p0, ambientHumidity, ambientTemperature, vocIndex,
+        noxIndex, co2);
+    
+    return String(ambientHumidity);
+}
+
+String readAmbientTemperature() {
+    
+    sen66.readMeasuredValues(
+        massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
+        massConcentrationPm10p0, ambientHumidity, ambientTemperature, vocIndex,
+        noxIndex, co2);
+    
+    return String(ambientTemperature);
+}
+
+String readVocIndex() {
+    
+    sen66.readMeasuredValues(
+        massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
+        massConcentrationPm10p0, ambientHumidity, ambientTemperature, vocIndex,
+        noxIndex, co2);
+    
+    return String(vocIndex);
+}
+
+String readNoxIndex() {
+    
+    sen66.readMeasuredValues(
+        massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
+        massConcentrationPm10p0, ambientHumidity, ambientTemperature, vocIndex,
+        noxIndex, co2);
+    
+    return String(noxIndex);
+}
+
+const char index_html[] PROGMEM = R"rawliteral(
+<!DOCTYPE HTML><html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://kit.fontawesome.com/d91e44f906.js" crossorigin="anonymous"></script>
+  <style>
+    html {
+     font-family: Arial;
+     display: inline-block;
+     margin: 0px auto;
+     text-align: center;
+    }
+    h2 { font-size: 3.0rem; }
+    p { font-size: 3.0rem; }
+    .units { font-size: 1.2rem; }
+    .dht-labels{
+      font-size: 1.5rem;
+      vertical-align:middle;
+      padding-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Ecolibrium IAQ 13</h2>
+  <p>
+    <i class="fas fa-smog" style="color:#000000;"></i> 
+    <span class="dht-labels">PM 1.0</span>
+    <span id="pm1p0">%PM1P0%</span>
+    <sup class="units">ug/m3</sup>
+  </p>
+  <p>
+    <i class="fas fa-smog" style="color:#a0a0a0;"></i>
+    <span class="dht-labels">PM 2.5</span>
+    <span id="pm2p5">%PM2P5%</span>
+    <sup class="units">ug/m3</sup>
+  </p>
+  <p>
+    <i class="fas fa-smog" style="color:#afafaf;"></i>
+    <span class="dht-labels">PM 4.0</span>
+    <span id="pm4p0">%PM4P0%</span>
+    <sup class="units">ug/m3</sup>
+  </p>
+  <p>
+    <i class="fas fa-smog" style="color:#f0f0f0;"></i> 
+    <span class="dht-labels">PM 10.0</span>
+    <span id="pm10p0">%PM10P0%</span>
+    <sup class="units">ug/m3</sup>
+  </p>
+  <p>
+    <i class="fas fa-project-diagram" style="color:#631fc4;"></i> 
+    <span class="dht-labels">Carbon Dioxide</span>
+    <span id="co2">%CO2%</span>
+    <sup class="units">ppm</sup>
+  </p>
+  <p>
+    <i class="fas fa-tint" style="color:#00add6;"></i> 
+    <span class="dht-labels">Ambient Humidity</span>
+    <span id="ambienthumidity">%AMBIENTHUMIDITY%</span>
+    <sup class="units">&percnt;</sup>
+  </p>
+  <p>
+    <i class="fas fa-thermometer-half" style="color:#bada55;"></i>
+    <span class="dht-labels">Ambient Temperature</span>
+    <span id="ambienttemperature">%AMBIENTTEMPERATURE%</span>
+    <sup class="units">&deg;C</sup>
+  </p>
+  <p>
+    <i class="fas fa-lungs" style="color:#ffb6c1;"></i> 
+    <span class="dht-labels">Voc Index</span>
+    <span id="vocindex">%VOCINDEX%</span>
+    <sup class="units">-</sup>
+  </p>
+  <p>
+    <i class="fas fa-grin-squint-tears" style="color:#9b870c;"></i> 
+    <span class="dht-labels">Nox Index</span>
+    <span id="noxindex">%NOXINDEX%</span>
+    <sup class="units">-</sup>
+  </p>
+  <p>
+  <i class="fas fa-terminal" style="color:#ff6600;"></i>
+  <span class="dht-labels">Serial Monitor Output:</span>
+</p>
+<div style="height:300px; overflow:auto; border:1px solid #ccc; padding:5px;">
+  <pre id="serialOutput">%SERIALOUTPUT%</pre>
+</div>
+</body>
+<script>
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("pm1p0").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/pm1p0", true);
+  xhttp.send();
+}, 5000 ) ;
+
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("pm2p5").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/pm2p5", true);
+  xhttp.send();
+}, 5000 ) ;
+
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("pm4p0").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/pm4p0", true);
+  xhttp.send();
+}, 5000 ) ;
+
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("pm10p0").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/pm10p0", true);
+  xhttp.send();
+}, 5000 ) ;
+
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("co2").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/co2", true);
+  xhttp.send();
+}, 5000 ) ;
+
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("ambienthumidity").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/ambienthumidity", true);
+  xhttp.send();
+}, 5000 ) ;
+
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("ambienttemperature").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/ambienttemperature", true);
+  xhttp.send();
+}, 5000 ) ;
+
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("vocindex").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/vocindex", true);
+  xhttp.send();
+}, 5000 ) ;
+
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("noxindex").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/noxindex", true);
+  xhttp.send();
+}, 5000 ) ;
+
+setInterval(function ( ) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("serialOutput").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/serial", true);
+  xhttp.send();
+}, 5000 );
+
+</script>
+</html>)rawliteral";
+
+
 void setup() {
 
 // ---- Serial Setup ----
@@ -976,6 +1317,114 @@ void setup() {
   lastUpdate = millis();
   lastTimeWrittenToSD = millis();
 
+// ---- Webserver Setup
+  WiFi.mode(WIFI_AP_STA);
+  WiFiManager wm;   // WiFiManager, Local intialization. Once its business is done, there is no need to keep it around
+
+  bool res;
+
+  res = wm.autoConnect("AutoConnectAP","password"); // password protected ap
+
+  if(!res) {
+    printAndBuffer("Failed to connect");
+    // ESP.restart();
+  } 
+  else {
+    //if you get here you have connected to the WiFi    
+    printAndBuffer("connected...yeey :)");
+  }
+  WiFi.softAP(soft_ap_ssid, soft_ap_password);
+  //start sensors
+  printAndBuffer("ESP32 IP as soft AP: ");
+  printAndBuffer(WiFi.softAPIP().toString());
+
+printAndBuffer("Local network server:");
+printAndBuffer("http://",false);
+printAndBuffer(WiFi.localIP().toString());
+
+//_____________ Webpage Code ______________________ 
+ 
+  // Route for web page
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+      if (ON_STA_FILTER(request) || ON_AP_FILTER(request)) {
+          request->send_P(200, "text/html", index_html, processor);
+          return;
+      }
+    });
+  server.on("/pm1p0", HTTP_GET, [](AsyncWebServerRequest *request){
+      if (ON_STA_FILTER(request) || ON_AP_FILTER(request)) {
+          request->send_P(200, "text/plain", readPm1p0().c_str());
+          return;
+      }
+    });
+  server.on("/pm2p5", HTTP_GET, [](AsyncWebServerRequest *request){
+        if (ON_STA_FILTER(request) || ON_AP_FILTER(request)) {
+          request->send_P(200, "text/plain", readPm2p5().c_str());
+          return;
+    }
+  });
+
+  server.on("/pm4p0", HTTP_GET, [](AsyncWebServerRequest *request){
+        if (ON_STA_FILTER(request) || ON_AP_FILTER(request)) {
+          request->send_P(200, "text/plain", readPm4p0().c_str());
+          return;
+    }
+  });
+
+  server.on("/pm10p0", HTTP_GET, [](AsyncWebServerRequest *request){
+        if (ON_STA_FILTER(request) || ON_AP_FILTER(request)) {
+          request->send_P(200, "text/plain", readPm10p0().c_str());
+          return;
+    }
+  });
+
+  server.on("/co2", HTTP_GET, [](AsyncWebServerRequest *request){
+        if (ON_STA_FILTER(request) || ON_AP_FILTER(request)) {
+          request->send_P(200, "text/plain", readScdCo2().c_str());
+          return;
+    }
+  });
+
+  server.on("/ambienthumidity", HTTP_GET, [](AsyncWebServerRequest *request){
+        if (ON_STA_FILTER(request) || ON_AP_FILTER(request)) {
+          request->send_P(200, "text/plain", readAmbientHumidity().c_str());
+          return;
+    }
+  });
+
+  server.on("/ambienttemperature", HTTP_GET, [](AsyncWebServerRequest *request){
+        if (ON_STA_FILTER(request) || ON_AP_FILTER(request)) {
+          request->send_P(200, "text/plain", readAmbientTemperature().c_str());
+          return;
+    }
+  });
+
+    server.on("/vocindex", HTTP_GET, [](AsyncWebServerRequest *request){
+          if (ON_STA_FILTER(request) || ON_AP_FILTER(request)) {
+          request->send_P(200, "text/plain", readVocIndex().c_str());
+          return;
+    }
+  });
+
+    server.on("/noxindex", HTTP_GET, [](AsyncWebServerRequest *request){
+          if (ON_STA_FILTER(request) || ON_AP_FILTER(request)) {
+          request->send_P(200, "text/plain", readNoxIndex().c_str());
+          return;
+    }  
+  });
+    server.on("/serial", HTTP_GET, [](AsyncWebServerRequest *request){
+          if (ON_STA_FILTER(request) || ON_AP_FILTER(request)) {
+          request->send_P(200, "text/plain", serialBuffer.c_str());
+          return;
+    }
+  });
+
+    // Start server
+    server.begin();
+  printAndBuffer("Paste into web browser:");
+  printAndBuffer("http://", false); // false indicates that we're not adding a newline
+  printAndBuffer(WiFi.localIP().toString());
+
 }
 
 void loop() {
@@ -989,7 +1438,7 @@ void loop() {
     lastUpdate = millis();
   }
 
-  if(canWriteAgain && millis() - lastTimeWrittenToSD > 3){ //-N- set to 3000 again please!
+  if(canWriteAgain && millis() - lastTimeWrittenToSD > 3000){ //-N- set to 3000 again please!
     canWriteAgain = false;
     dataToCSV(countfn);
     lastTimeWrittenToSD = millis();
