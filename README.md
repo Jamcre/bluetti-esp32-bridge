@@ -11,3 +11,6 @@ When this is done we can make our first deployment (maybe just one sensor module
 ## Recently completed
 - integrate GUI with SD card logic
 - integrate RTC with that
+
+# Changes
+we changed partition to Huge APP (Tools -> Partition)
