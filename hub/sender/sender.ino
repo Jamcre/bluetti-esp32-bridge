@@ -6,6 +6,7 @@
 // MAC: 5c:01:3b:4f:8c:80
 uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};
 uint8_t broadcastAddress2[] = {0x5c, 0x01, 0x3b, 0x4f, 0xbd, 0xd8};
+uint8_t broadcastAddress3[] = {0x5c, 0x01, 0x3b, 0x4f, 0x9f, 0xf0}; //nafis
 
 // NTP Config
 const char* ntpServer = "pool.ntp.org";
@@ -69,6 +70,13 @@ void setup() {
     return;
   }
 
+  //register third peer  
+  memcpy(peerInfo.peer_addr, broadcastAddress3, 6);
+  if (esp_now_add_peer(&peerInfo) != ESP_OK){
+    Serial.println("Failed to add peer");
+    return;
+  }
+
 }
 
 void loop() {
@@ -100,7 +108,7 @@ void loop() {
   Serial.print("Clients connected: ");
   Serial.println(WiFi.softAPgetStationNum());
 
-  delay(2000);  // send every 2 seconds
+  delay(500);  // send every 0.5 seconds
 }
 
 // ESP-NOW send status callback
