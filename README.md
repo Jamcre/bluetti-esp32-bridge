@@ -16,6 +16,7 @@ We are ready to deploy one module for continuous monitoring.
 lvgl: usersetup montserral fonts -> 1
 eTSPI: left one pin unassigned
 we changed partition to Huge APP (Tools -> Partition)
+in User_Setup for the TFT library, left one line commnented out (double check with original library version)
 
 ## Hardware Setup
 Components:
