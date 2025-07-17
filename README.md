@@ -1,5 +1,7 @@
 ﻿# ecolibrium2025-sensors
 
+---
+
 ## Current tasks 07/17/25
 - clean up code to reduce lines and compiled memory footprint
 - add antennae
@@ -12,32 +14,7 @@ We are ready to deploy one module for continuous monitoring.
 - integrate RTC with that
 - integrate wifi hotspot and html logic to be compatable with data aggregation
 
-# Set up changes
-lvgl: usersetup montserral fonts -> 1
-eTSPI: left one pin unassigned
-we changed partition to Huge APP (Tools -> Partition)
-in User_Setup for the TFT library, left one line commnented out (double check with original library version)
-
-## Hardware Setup
-Components:
-The ESP CYD (Mainboard) The SEN66 sensor 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD)
-
-Where each cable goes:
-Sensor -> CYD
-
-White -> Red Blue -> Black Green -> Blue Yellow -> Yellow Black is unused Red is unused
-
-Pins definitions
-A specific JST port is used (note which) SDA is set to SCL is set to
-
-How to install CYD firmware
-Pull the CYD_firmware.ino and the libraries (Arduino libraries folder) folder from github. Move them to their correct locations (clarify which)
-
-Upload via Arduino IDE (elaborate)
-
-How to set up wifi details
-Physical Mounting and Case
-Now these devices are full fledged air quality sensors.
+---
 
 ## Project Goals
 To develop a system for continous monitoring of indoor + outdoor air conditions and quality. We hope to use the gathered data to inform building retrofits to reduce carbon emmisions, harm done to people's health, and energy bills.
@@ -51,6 +28,45 @@ A "tight" building envelope (minimizing natural infiltration) often reduces the 
 
 We use the system to understand the pollutant exposure over time for the interns working at Loisaida. When the indoor air quality is too low, we can open a door and use a fan to circulate fresh air into the room. This quantifies and mitigates pollutant exposure.
 
+---
+
+## Hardware Setup
+Components:
+- The ESP CYD (Mainboard) 
+- The SEN66 sensor 
+- 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD)
+- JST cable connector
+
+Where each cable goes:
+Sensor -> CYD
+
+White -> Red 
+Blue -> Black 
+Green -> Blue 
+Yellow -> Yellow 
+Black is unused 
+Red is unused
+
+Pins definitions
+A specific JST port is used (note which) SDA is set to SCL is set to
+
+How to install CYD firmware
+Pull the CYD_firmware.ino and the libraries (Arduino libraries folder) folder from github. Move them to their correct locations (clarify which)
+
+Upload via Arduino IDE (elaborate)
+
+How to set up wifi details
+Physical Mounting and Case
+Now these devices are full fledged air quality sensors.
+
+## Software Setup
+lvgl: usersetup montserral fonts -> 1
+eTSPI: left one pin unassigned
+we changed partition to Huge APP (Tools -> Partition)
+in User_Setup for the TFT library, left one line commnented out (double check with original library version)
+
+---
+## Other (probably to be sorted into technical docs)
 ### Ventilation Standards
 Usually standards regulate ventilation or filtration rather than pollutant levels so thats why there isnt much available.
 
@@ -138,7 +154,6 @@ This module is compatible with multiple development environments:
 - [ESP32-WROOM-32 Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf)
 ---
 
-test
 
 
 
