@@ -59,3 +59,84 @@ ASHRAE Standard 62.1-2013.pdf - perscribes minimum ventilation rate (cfm/person,
 GRIHA IAQ Standard Limits and Thresholds.jpg - limits proposed by Indian research team. Does not include NOx or Pm4. Considers HCHO but not VOc's as a category. Tentative CO2 recomendation of <1000 ppm
 
 GRIHA Comparison of Regulations and Guidelines.jpg - image includes EPA, OSHA, WHO, and other recomendations.
+
+# ESP32-2432S028R Cheap yellow Display (CYD)
+
+## Overview
+
+This module is a compact all-in-one ESP32-based development board designed for graphical interfaces and interactive applications that uses the ESP32-WROOM-32 as the base. It combines a dual-core microcontroller with a resistive touchscreen LCD, integrated peripherals, and versatile connectivity options. Ideal for prototyping embedded UI, IoT devices, and sensor-driven systems.
+
+---
+
+## 🔧 Specifications
+
+| Feature               | Description                                   |
+|----------------------|-----------------------------------------------|
+| **Microcontroller**  | ESP32-WROOM-32 (dual-core)                    |
+| **CPU Frequency**    | Up to 240 MHz                                 |
+| **SRAM**             | 520 KB                                        |
+| **ROM**              | 448 KB                                        |
+| **Flash Memory**     | 4 MB                                          |
+| **Display**          | 2.4" TFT LCD, 240x320 resolution              |
+| **Touchscreen**      | Resistive touch                               |
+| **WiFi**             | 802.11 b/g/n (2.4 GHz)                        |
+| **Bluetooth**        | Bluetooth v4.2 BR/EDR and BLE                 |
+| **Operating Voltage**        | 5 V                 |
+
+---
+
+## 🖥️ Display & Peripherals
+
+- **LCD Screen** with backlight control
+- **Resistive Touchscreen** controller
+- **Speaker Drive Circuit** for audio output
+- **Photosensitive Circuit** (ambient light sensing)
+- **RGB LED Control Circuit**
+- **TF (microSD) Card Interface**
+- **Serial Interface (UART)**
+- **DHT11 Sensor Interface** for temperature and humidity
+- **Addition General IO Ports** for general-purpose expansion
+
+---
+
+## 🔌 Interfaces
+
+- SPI for display and SD card
+- I2C for sensors
+- UART for serial communication
+- PWM for backlight or buzzer control
+- ADC/DAC for sensor input/output
+
+---
+
+## 📦 Software & Development Support
+
+This module is compatible with multiple development environments:
+- ✅ **Arduino IDE**
+- ✅ **ESP-IDF**
+- ✅ **MicroPython**
+- ✅ **Mixly (Graphical Programming)**
+
+---
+
+## 🔍 Applications
+
+- Environmental monitoring
+- Interactive control panels
+- IoT dashboards
+- Sensor data logging
+- DIY handheld consoles
+
+---
+
+## 🔗 Resources
+
+- [ESP32 Arduino Core](https://github.com/espressif/arduino-esp32)
+- [ESP32 Cheap Yellow Display](https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display/blob/main/README.md)
+- [ESP32-WROOM-32 Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf)
+---
+
+
+
+
+
