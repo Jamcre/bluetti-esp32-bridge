@@ -47,23 +47,26 @@ Yellow -> Yellow
 Black is unused 
 Red is unused
 
-Pins definitions
-A specific JST port is used (note which) SDA is set to SCL is set to
-
-How to install CYD firmware
-Pull the CYD_firmware.ino and the libraries (Arduino libraries folder) folder from github. Move them to their correct locations (clarify which)
-
-Upload via Arduino IDE (elaborate)
-
-How to set up wifi details
-Physical Mounting and Case
-Now these devices are full fledged air quality sensors.
+Pins definitions:
+The JST port on the CYD with IO22 and IO27 pins is used. SDA (data) is set to pin 22 SCL (clock) is set to pin 27.
 
 ## Software Setup
+How to install and set up CYD firmware:
+- Pull the CYD_firmware.ino and the libraries (Arduino libraries folder) folder from github. 
+- Replace your old Arduino 'libraries' folder with the one provided @ ecolibrium2025-sensors/_sensor/libraries
+
+Upload via Arduino IDE:
+- Tools -> Partition set to 'Huge APP'
+
+How to set up wifi details:
+Physical Mounting and Case:
+
 lvgl: usersetup montserral fonts -> 1
 eTSPI: left one pin unassigned
 we changed partition to Huge APP (Tools -> Partition)
 in User_Setup for the TFT library, left one line commnented out (double check with original library version)
+
+Now these devices are full fledged air quality sensors.
 
 ---
 ## Other (probably to be sorted into technical docs)
