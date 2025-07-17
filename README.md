@@ -55,16 +55,25 @@ How to install and set up CYD firmware:
 - Pull the CYD_firmware.ino and the libraries (Arduino libraries folder) folder from github. 
 - Replace your old Arduino 'libraries' folder with the one provided @ ecolibrium2025-sensors/_sensor/libraries
 
+Changes we made to default libraries (will be taken care of for you if you pull directly from our Github)
+- lvgl: usersetup montserral fonts -> 1
+- eTSPI: left one pin unassigned
+- in User_Setup for the TFT library, left one line commnented out (double check with original library version)
+
 Upload via Arduino IDE:
 - Tools -> Partition set to 'Huge APP'
+- set baud rate to 115200
+- if code uploads and the board has power it should run. check the serial monitor output. it should look like ...
 
 How to set up wifi details:
-Physical Mounting and Case:
+- connect to wifi access point 
+- add wifi settings username and password defined in code as "IndoorModuleXX"
+- it will create a new hotspot with its name "IndoorModuleXX"
+- you can connect to this wifi on your laptop and navigate to '192.168.4.1' to see the data!
+- the code also interfaces with our local data polling hub at Loisaida
 
-lvgl: usersetup montserral fonts -> 1
-eTSPI: left one pin unassigned
-we changed partition to Huge APP (Tools -> Partition)
-in User_Setup for the TFT library, left one line commnented out (double check with original library version)
+Physical Mounting and Case:
+- CAD files located in repo @
 
 Now these devices are full fledged air quality sensors.
 
