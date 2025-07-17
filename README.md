@@ -1,16 +1,18 @@
 ﻿# ecolibrium2025-sensors
 
-## Current problems 07/16/25
-- integrate wifi hotspot and html logic to be compatable with data aggregation
+## Current tasks 07/17/25
+- clean up code to reduce lines and compiled memory footprint
 - add antennae
 - print a case
  
-When this is done we can make our first deployment (maybe just one sensor module)
-
+We are ready to deploy one module for continuous monitoring.
 
 ## Recently completed
 - integrate GUI with SD card logic
 - integrate RTC with that
+- integrate wifi hotspot and html logic to be compatable with data aggregation
 
-# Changes
+# Set up changes
+lvgl: usersetup montserral fonts -> 1
+eTSPI: left one pin unassigned
 we changed partition to Huge APP (Tools -> Partition)
