@@ -34,6 +34,8 @@ Components:
 - The SEN66 sensor 
 - 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD)
 - JST cable connector
+- microSD
+- ESP32 providing the real time clock value via NTP (code in hub folder)
 
 Where each cable goes:
 
@@ -47,6 +49,10 @@ Where each cable goes:
 
 Pins definitions:
 The JST port on the CYD with IO22 and IO27 pins is used. SDA (data) is set to pin 22 SCL (clock) is set to pin 27.
+
+Insert the SD card into the CYD.
+
+Ensure the RTC is being provided via NTP (us the code in the hub folder)
 
 ## Software Setup
 How to install and set up CYD firmware:
