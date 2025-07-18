@@ -34,6 +34,8 @@ Components:
 - The SEN66 sensor 
 - 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD)
 - JST cable connector
+- microSD
+- ESP32 providing the real time clock value via NTP (code in hub folder)
 
 Where each cable goes:
 
@@ -47,6 +49,10 @@ Where each cable goes:
 
 Pins definitions:
 The JST port on the CYD with IO22 and IO27 pins is used. SDA (data) is set to pin 22 SCL (clock) is set to pin 27.
+
+Insert the SD card into the CYD.
+
+Ensure the RTC is being provided via NTP (us the code in the hub folder)
 
 ## Software Setup
 How to install and set up CYD firmware:
@@ -178,9 +184,21 @@ This module is compatible with multiple development environments:
 - [ESP32-WROOM-32 Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf)
 ---
 
+### LVGL Config changes we made (library is 9.1.0 but config is 9.2.0)
+----------
+* Line 15: set 0 to 1 to enable content
+* Line 79: #define LV_DEF_REFR_PERIOD  30 (originally 33)
+* Line 217: #define LV_USE_LOG 1 (originally 0)
+* Line 231: #define LV_LOG_PRINTF 1 (originally 0)
+* Line 388: #define LV_USE_PRIVATE_API 1 (originally 0)
+* Lines 396-416: enabled all monsterrat font sizes to 1
+* Lines 700-701 were added: 
+Memory used by FreeType to cache characters in kilobytes #define LV_FREETYPE_CACHE_SIZE 768
+* Lines 706-709 were added: 
+    /* Maximum number of opened FT_Face/FT_Size objects managed by this cache instance. */
+    /* (0:use system defaults) */
+    #define LV_FREETYPE_CACHE_FT_FACES 8
+    #define LV_FREETYPE_CACHE_FT_SIZES 8
 
-
-
-
-
-
+Line 911: #define LV_USE_TFT_ESPI 1 (originally 0)
+Line 920: #define LV_USE_ILI9341 1 (originally 0)
