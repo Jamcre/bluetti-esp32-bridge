@@ -10,9 +10,7 @@
 We are ready to deploy one module for continuous monitoring.
 
 ## Recently completed
-- integrate GUI with SD card logic
-- integrate RTC with that
-- integrate wifi hotspot and html logic to be compatable with data aggregation
+- integrated GUI,SD card logic, real-time clock, wifi hotspot, and html logic to be compatable with data aggregation
 
 ---
 
@@ -63,19 +61,33 @@ Changes we made to default libraries (will be taken care of for you if you pull 
 Upload via Arduino IDE:
 - Tools -> Partition set to 'Huge APP'
 - set baud rate to 115200
+  set the module name and password "IndoorModuleXX" to the desired unique name
 - if code uploads and the board has power it should run. check the serial monitor output. it should look like ...
 
 How to set up wifi details:
 - connect to wifi access point 
-- add wifi settings username and password defined in code as "IndoorModuleXX"
+- enter wifi settings username and password defined in code as "IndoorModuleXX"
 - it will create a new hotspot with its name "IndoorModuleXX"
-- you can connect to this wifi on your laptop and navigate to '192.168.4.1' to see the data!
+- you can connect to this new wifi hotspot on your laptop and navigate to '192.168.4.1' to see the data!
 - the code also interfaces with our local data polling hub at Loisaida
 
 Physical Mounting and Case:
-- CAD files located in repo @
+- CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD
 
 Now these devices are full fledged air quality sensors.
+
+---
+
+
+
+
+
+
+
+
+
+
+
 
 ---
 ## Other (probably to be sorted into technical docs)
