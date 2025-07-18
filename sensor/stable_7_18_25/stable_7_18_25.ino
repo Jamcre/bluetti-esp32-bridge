@@ -18,139 +18,126 @@
 #include <XPT2046_Touchscreen.h>
 #include <lvgl.h>
 #include "ui.h"
+#include "dataToCSV.h"
+#include "message_struct.h"
 
 // ---- Webpage Related values and HTML ------------
-  //const char *soft_ap_ssid = "test123"; //change according to each module's number
-  //const char *soft_ap_ssid = "IndoorModuleLab12"; //change according to each module'sIndoorModuleLabXX
-  const char *soft_ap_ssid = "IndoorModuleLab13"; //change according to each module'sIndoorModuleLabXX
 
-  //essentially the ESP 32 creates it's own Wifi, this is what shows up as the "hotspot id" 
-  //const char *soft_ap_password = "IndoorModuleLab12";  //and this is the password
-  const char *soft_ap_password = "IndoorModuleLab13";  //and this is the password
+//const char *soft_ap_ssid = "IndoorModuleLab12"; //change according to each module'sIndoorModuleLabXX
+const char *soft_ap_ssid = "IndoorModuleLab13"; //change according to each module'sIndoorModuleLabXX
 
-  AsyncWebServer server(80);
-  String serialBuffer = "";
+//essentially the ESP 32 creates it's own Wifi, this is what shows up as the "hotspot id" 
+const char *soft_ap_password = "IndoorModuleLab13";  //and this is the password
 
-  TFT_eSPI tft = TFT_eSPI();
+AsyncWebServer server(80);
+String serialBuffer = "";
 
-  
-// ----
+TFT_eSPI tft = TFT_eSPI();
+// -------------------------------------------------
 
 // ---- Sensor related values ---- 
-  SensirionI2cSen66 sen66;
+SensirionI2cSen66 sen66;
 
-  #ifdef NO_ERROR
-  #undef NO_ERROR
-  #endif
-  #define NO_ERROR 0
+#ifdef NO_ERROR
+#undef NO_ERROR
+#endif
+#define NO_ERROR 0
 
-  #define SDA_PIN 22
-  #define SCL_PIN 27
+#define SDA_PIN 22
+#define SCL_PIN 27
 
-  static char errorMessage[64];
-  static int16_t error;
+static char errorMessage[64];
+static int16_t error;
 
-  float massConcentrationPm1p0 = 0.0;
-  float massConcentrationPm2p5 = 0.0;
-  float massConcentrationPm4p0 = 0.0;
-  float massConcentrationPm10p0 = 0.0;
-  float ambientHumidity = 0.0;
-  float humidity = 0.0;
-  float ambientTemperature = 0.0;
-  float temperature = 0.0;
-  float vocIndex = 0.0;
-  float noxIndex = 0.0;
-  uint16_t co2 = 0;
+float massConcentrationPm1p0 = 0.0;
+float massConcentrationPm2p5 = 0.0;
+float massConcentrationPm4p0 = 0.0;
+float massConcentrationPm10p0 = 0.0;
+float ambientHumidity = 0.0;
+float humidity = 0.0;
+float ambientTemperature = 0.0;
+float temperature = 0.0;
+float vocIndex = 0.0;
+float noxIndex = 0.0;
+uint16_t co2 = 0;
 
-  enum SensorValueType {
-    PM1P0,
-    PM2P5,
-    PM4P0,
-    PM10P0,
-    HUMIDITY,
-    TEMPERATURE,
-    VOCINDEX,
-    NOXINDEX,
-    CO2
-  };
+enum SensorValueType {
+  PM1P0,
+  PM2P5,
+  PM4P0,
+  PM10P0,
+  HUMIDITY,
+  TEMPERATURE,
+  VOCINDEX,
+  NOXINDEX,
+  CO2
+};
 // ------------------------
 
 // ---- Display related values ----
-  #define SCREEN_WIDTH 320
-  #define SCREEN_HEIGHT 240
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
 
-  #define DRAW_BUF_SIZE (SCREEN_WIDTH * SCREEN_HEIGHT / 10 * (LV_COLOR_DEPTH / 8))
-  uint32_t draw_buf[DRAW_BUF_SIZE / 4];
+#define DRAW_BUF_SIZE (SCREEN_WIDTH * SCREEN_HEIGHT / 10 * (LV_COLOR_DEPTH / 8))
+uint32_t draw_buf[DRAW_BUF_SIZE / 4];
 
-  unsigned long lastUpdate = 0;
+unsigned long lastUpdate = 0;
 // --------------------------------
 
 // ---- Color and Text Indicator values -----
-  lv_color_t primary_color;
-  lv_color_t secondary_color;
-  const char* indicator_text;
+lv_color_t primary_color;
+lv_color_t secondary_color;
+const char* indicator_text;
 
-  enum Indicator {
-      GOOD,
-      FAIR,
-      BAD,
-      POOR
-    };
+enum Indicator {
+  GOOD,
+  FAIR,
+  BAD,
+  POOR
+};
 // ------------------------------------------
 
 // ---- Touchscreen related values ----
-  // Touchscreen pins
-  #define XPT2046_IRQ 36   // T_IRQ
-  #define XPT2046_MOSI 32  // T_DIN
-  #define XPT2046_MISO 39  // T_OUT
-  #define XPT2046_CLK 25   // T_CLK
-  #define XPT2046_CS 33    // T_CS
 
-  SPIClass touchscreenSPI = SPIClass(HSPI);
-  XPT2046_Touchscreen touchscreen(XPT2046_CS, XPT2046_IRQ);
+// Touchscreen pins
+#define XPT2046_IRQ 36   // T_IRQ
+#define XPT2046_MOSI 32  // T_DIN
+#define XPT2046_MISO 39  // T_OUT
+#define XPT2046_CLK 25   // T_CLK
+#define XPT2046_CS 33    // T_CS
 
-  // Touchscreen coordinates: (x, y) and pressure (z)
-  int x, y, z;
+SPIClass touchscreenSPI = SPIClass(HSPI);
+XPT2046_Touchscreen touchscreen(XPT2046_CS, XPT2046_IRQ);
+
+// Touchscreen coordinates: (x, y) and pressure (z)
+int x, y, z;
 // ------------------------------------
 
 // ---- Wi-Fi related values ----
+TaskHandle_t scanTaskHandler = NULL;
+TaskHandle_t wiFiTaskHandle = NULL;
 
-  TaskHandle_t scanTaskHandler = NULL;
-  TaskHandle_t wiFiTaskHandle = NULL;
-
-  String savedSSID, savedPassword;
-  bool canScanAgain = true;
-
+String savedSSID, savedPassword;
+bool canScanAgain = true;
 // ------------------------------
 
 // ---- SD Card related values ----
+#define SD_CS 5
 
-  #define SD_CS 5
-
-  ESP32Time rtc(0);
-  File myFile;
-  int countfn = 0;
-  bool canWriteAgain = true;
-  unsigned long lastTimeWrittenToSD = 0;
-  bool first_time = 0;
-
+ESP32Time rtc(0);
+File myFile;
+int countfn = 0;
+bool canWriteAgain = true;
+unsigned long lastTimeWrittenToSD = 0;
+bool first_time = 0;
 // --------------------------------
 
 // ---- Time Synch related values ----
-  // Define the structure to receive
-  typedef struct message_struct {
-    int year;
-    int month;
-    int day;
-    int hour;
-    int minute;
-    int second;
-  } message_struct;
-
-  message_struct myData;
-  message_struct myData_copy;
-  int stored_min = 0;
-// --------------------------------
+//struct has already been created in message_struct.h
+message_struct myData;
+message_struct myData_copy;
+int stored_min = 0;
+// -----------------------------------
 
 String readSensorValue(SensorValueType type) {
 
@@ -209,7 +196,9 @@ String processor(const String &str) {
   return String("Value doesn't exist");
 }
 
-void updateIndicatorBasedOnThreshold(float current_value, float first_threshold, float second_threshold, float third_threshold, float fourth_threshold){
+void updateIndicatorBasedOnThreshold(float current_value, float first_threshold, 
+                                    float second_threshold, float third_threshold, float fourth_threshold){
+
   if(current_value >= first_threshold && current_value <= second_threshold){
       setColorAndTextBasedOnIndicator(GOOD);
     }
@@ -230,7 +219,8 @@ void updateArcWidget(lv_obj_t * ui_arc, float sensor_value, lv_color_t primary_c
   lv_obj_set_style_bg_color(ui_arc, secondary_color, LV_PART_KNOB | LV_STATE_DEFAULT);
 }
 
-void updateTextWidget(lv_obj_t * ui_state_text, const char* state_text,  lv_obj_t * ui_value_text, const char* value_text, lv_obj_t * ui_label_text, lv_color_t primary_color){
+void updateTextWidget(lv_obj_t * ui_state_text, const char* state_text, lv_obj_t * ui_value_text,
+                      const char* value_text, lv_obj_t * ui_label_text, lv_color_t primary_color){
   lv_label_set_text(ui_state_text, state_text);
   lv_obj_set_style_text_color(ui_state_text, primary_color, LV_PART_MAIN | LV_STATE_DEFAULT);
 
@@ -316,15 +306,13 @@ void updateSensorValuesOnDisplay(lv_timer_t *timer){
         updateArcWidget(ui_pm100Arc, massConcentrationPm10p0, primary_color, secondary_color);
         updateTextWidget(ui_pm100StateText, indicator_text, ui_pm100ValueText, pm100_chars, ui_pm100LabelText, primary_color);
     // -------------------------------
-  }
-  else if(lv_scr_act() == ui_tempScreen){
+  } else if(lv_scr_act() == ui_tempScreen) {
 
     String temp_str = String(temperature);
     const char* temp_chars = temp_str.c_str();
 
     String hum_str = String(humidity);
     const char* hum_chars = hum_str.c_str();
-
 
     // ---- Updating Temperature gauge ----
         updateIndicatorBasedOnThreshold(temperature, 18, 20, 24, 26);
@@ -337,8 +325,7 @@ void updateSensorValuesOnDisplay(lv_timer_t *timer){
         updateArcWidget(ui_humArc, humidity, primary_color, secondary_color);
         updateTextWidget(ui_humStateText, indicator_text, ui_humValueText, hum_chars, ui_humLabelText, primary_color);
     // -------------------------------
-  }
-  else if(lv_scr_act() == ui_vocScreen){
+  } else if(lv_scr_act() == ui_vocScreen) {
 
     String voc_str = String((int)vocIndex);
     const char* voc_chars = voc_str.c_str();
@@ -358,8 +345,7 @@ void updateSensorValuesOnDisplay(lv_timer_t *timer){
         updateArcWidget(ui_noxArc, noxIndex, primary_color, secondary_color);
         updateTextWidget(ui_noxStateText, indicator_text, ui_noxValueText, nox_chars, ui_noxLabelText, primary_color);
     // -------------------------------
-  }
-  else if(lv_scr_act() == ui_co2Screen){
+  } else if(lv_scr_act() == ui_co2Screen) {
 
     String co2_str = String(co2);
     const char* co2_chars = co2_str.c_str();
@@ -404,19 +390,19 @@ void touchscreen_read(lv_indev_t * indev, lv_indev_data_t * data) {
 
 // ---- WiFi Selection and Scanning Functions ----
 
-  void setWiFiToDropdown(lv_event_t * e){
-      char buf[32];
-      lv_dropdown_get_selected_str(ui_WiFiSelectionScreenDropdown, buf, sizeof(buf));
+  void setWiFiToDropdown(lv_event_t * e) {
+    char buf[32];
+    lv_dropdown_get_selected_str(ui_WiFiSelectionScreenDropdown, buf, sizeof(buf));
 
-      savedSSID = String(buf);
-      savedSSID.trim();
-      lv_dropdown_set_text(ui_WiFiSelectionScreenDropdown, savedSSID.c_str());
+    savedSSID = String(buf);
+    savedSSID.trim();
+    lv_dropdown_set_text(ui_WiFiSelectionScreenDropdown, savedSSID.c_str());
 
-      vTaskDelete(scanTaskHandler);
-      vTaskDelay(100);
+    vTaskDelete(scanTaskHandler);
+    vTaskDelay(100);
       
-      canScanAgain = true;
-      lastUpdate = millis();
+    canScanAgain = true;
+    lastUpdate = millis();
 
   }
 
@@ -426,7 +412,7 @@ void touchscreen_read(lv_indev_t * indev, lv_indev_data_t * data) {
       int n = WiFi.scanNetworks();
       if (n <= 0 && WiFi.scanComplete()) {
         lv_dropdown_add_option(ui_WiFiSelectionScreenDropdown, "No networks found", LV_DROPDOWN_POS_LAST);     
-      }else if(WiFi.scanComplete()) {
+      } else if(WiFi.scanComplete()) {
         lv_dropdown_clear_options(ui_WiFiSelectionScreenDropdown); 
         vTaskDelay(5);
         for (int i = 0; i < n; ++i) {
@@ -441,12 +427,14 @@ void touchscreen_read(lv_indev_t * indev, lv_indev_data_t * data) {
   }
 
   void networkScanner(){
-    xTaskCreate(scanWiFiTask,
-                  "ScanWIFITask",
-                  4096,
-                  NULL,
-                  1,
-                  &scanTaskHandler);
+    xTaskCreate(
+      connectToWiFiTask,   // WiFi Task
+      "ConnectToWiFiTask",    
+      4048,                // RAM For task (4KB)
+      NULL,                // Input parameter (SSID)
+      1,                   // Priority (1 = low)
+      &wiFiTaskHandle     
+    );
   }
 
 // -----------------------------------------------
@@ -458,41 +446,40 @@ void assignPwd(){
 }
 
 void connectToWiFiTask(void *parameter) {
+  WiFi.disconnect(true);
+  WiFi.mode(WIFI_STA);
+
+  WiFi.begin(savedSSID.c_str(), savedPassword.c_str());
+
+  //If after 10 seconds (20 iterations x 500ms) cannot connect, stop.
+  int timeout = 20;
+  while ( WiFi.status() != WL_CONNECTED && timeout > 0 ) {
+    vTaskDelay(500);
+    Serial.print(".__.");
+    timeout--;
+  }
+
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.printf("\nWiFi connected! IP: %s\n", WiFi.localIP().toString().c_str());
+    Serial.println(savedSSID);
+    Serial.println(savedPassword);
+
+    _ui_flag_modify(ui_LoadingPanelWiFiSelectionScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    _ui_flag_modify(ui_ConnectedWiFiPanelWiFiSelectionScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    _ui_flag_modify(ui_ForgetWiFiButtonWiFiSelectionScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    lv_label_set_text(ui_ConnectedWiFiNameLabelWiFiSelectionScreen, savedSSID.c_str());
+  } else {
+    Serial.println("\nConnect fail! Please check SSID & Password.");
+    Serial.println(savedSSID);
+    Serial.println(savedPassword);
+    _ui_flag_modify(ui_FailedConnectionPanelWiFiSelectionScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    vTaskDelay(2000);
+    _ui_flag_modify(ui_FailedConnectionPanelWiFiSelectionScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+
+    //just turn off WiFi and end the task
     WiFi.disconnect(true);
-    WiFi.mode(WIFI_STA);
-
-    WiFi.begin(savedSSID.c_str(), savedPassword.c_str());
-
-    //If after 10 seconds (20 iterations x 500ms) cannot connect, stop.
-    int timeout = 20;
-    while ( WiFi.status() != WL_CONNECTED && timeout > 0 ) {
-        vTaskDelay(500);
-        Serial.print(".__.");
-        timeout--;
-    }
-
-    if (WiFi.status() == WL_CONNECTED) {
-        Serial.printf("\nWiFi connected! IP: %s\n", WiFi.localIP().toString().c_str());
-        Serial.println(savedSSID);
-        Serial.println(savedPassword);
-
-        _ui_flag_modify(ui_LoadingPanelWiFiSelectionScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        _ui_flag_modify(ui_ConnectedWiFiPanelWiFiSelectionScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_ForgetWiFiButtonWiFiSelectionScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        lv_label_set_text(ui_ConnectedWiFiNameLabelWiFiSelectionScreen, savedSSID.c_str());
-
-    } else {
-        Serial.println("\nConnect fail! Please check SSID & Password.");
-        Serial.println(savedSSID);
-        Serial.println(savedPassword);
-        _ui_flag_modify(ui_FailedConnectionPanelWiFiSelectionScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        vTaskDelay(2000);
-        _ui_flag_modify(ui_FailedConnectionPanelWiFiSelectionScreen, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-
-        //just turn off WiFi and end the task
-        WiFi.disconnect(true);
-        WiFi.mode(WIFI_OFF);
-    }
+    WiFi.mode(WIFI_OFF);
+  }
 
     canScanAgain = true;
     lastUpdate = millis();
@@ -512,359 +499,20 @@ void tryConnectingToWiFi(){
 
   const char* ssid = savedSSID.c_str();
   if (*ssid) {
-      xTaskCreate(
-          connectToWiFiTask,      // WiFi Task
-          "ConnectToWiFiTask",    
-          4048,          // RAM For task (4KB)
-          NULL,   // Input parameter (SSID)
-          1,             // Priority (1 = low)
-          &wiFiTaskHandle     
+    xTaskCreate(
+        connectToWiFiTask,   // WiFi Task
+        "ConnectToWiFiTask",    
+        4048,                // RAM For task (4KB)
+        NULL,                // Input parameter (SSID)
+        1,                   // Priority (1 = low)
+        &wiFiTaskHandle     
       );
   }
   
 }
 
 // -------- SD Card Functions ---------
-  int findMax() {
-    File root = SD.open("/");
-    int max_fn = 0;
-    int pmax_fn = 0;
-    if (!root) {
-      Serial.println("Failed to open directory");
-      return 0;
-    }
-    if (!root.isDirectory()) {
-      Serial.println("Not a directory");
-      return 0;
-    }
-    File file = root.openNextFile();
-    while (file) {
-      char *pch;
-      pch = strstr(file.name(), "sd_data_");
-      if (pch != NULL) {
-        char *after = pch + strlen("sd_data_");
-        // Serial.println(after);
-
-        char *dotPos = strstr(after, ".");
-        if (dotPos != NULL) {
-          *dotPos = '\0';
-        }
-        // Serial.println(after);
-        max_fn = atoi(after);  //converts the number in the string to an int
-        if (max_fn > pmax_fn) {
-          pmax_fn = max_fn;
-        }
-      }
-
-      // else {}
-
-      file = root.openNextFile();
-    }
-    Serial.println("we got the max file number as:");
-    Serial.println(pmax_fn);
-    return pmax_fn;
-  }
-
-  // ----------------
-    int findMin(){
-      File root = SD.open("/");
-      
-      if (!root) {
-        Serial.println("Failed to open directory");
-        return -1;
-      }
-      if (!root.isDirectory()) {
-        Serial.println("Not a directory");
-        return -1;
-      }
-      else{
-        File file = root.openNextFile();
-        int min_fn=700;
-        int pmin_fn=700; 
-        while (file) {
-          char * pch;
-          pch = strstr(file.name(),"sd_data_");
-          if (pch!=NULL) {
-            char* after = pch + strlen("sd_data_");
-            Serial.println(after);
-
-            char* dotPos = strstr(after,".");
-            if (dotPos != NULL){
-              *dotPos = '\0';
-            }
-          
-            min_fn = atoi(after); //converts the number in the string to an int
-            Serial.print("MIN_FN IS...");
-            Serial.print(min_fn);
-            if (min_fn < pmin_fn) {
-              pmin_fn = min_fn;        
-              }
-            }
-          file = root.openNextFile();
-          }
-          Serial.println("we got the min file number as:");
-          Serial.println(pmin_fn);
-          if (pmin_fn != 700)
-          { 
-            return pmin_fn;
-          }
-          else {
-            return -1;
-        }
-      }
-    }
-
-  void listDir(fs::FS &fs, const char *dirname, uint8_t levels) {
-    //Serial.println(dirname);
-
-    File root = fs.open(dirname);
-    if (!root) {
-      Serial.println("Failed to open directory");
-      return;
-    }
-    if (!root.isDirectory()) {
-      Serial.println("Not a directory");
-      return;
-    }
-
-    File file = root.openNextFile();
-    while (file) {
-      if (file.isDirectory()) {
-        Serial.print("  DIR : ");
-        Serial.println(file.name());
-        if (levels) {
-          listDir(fs, file.path(), levels - 1);
-        }
-      } else {
-        Serial.print("  FILE: ");
-        Serial.print(file.name());
-        Serial.print("  SIZE: ");
-        Serial.println(file.size());
-      }
-      file = root.openNextFile();
-    }
-  }
-
-  void createDir(fs::FS &fs, const char *path) {
-    //Serial.printf("Creating Dir: %s\n", path);
-    if (fs.mkdir(path)) {
-      Serial.println("Dir created");
-    } else {
-      Serial.println("mkdir failed");
-    }
-  }
-
-  void removeDir(fs::FS &fs, const char *path) {
-    //Serial.printf("Removing Dir: %s\n", path);
-    if (fs.rmdir(path)) {
-      Serial.println("Dir removed");
-    } else {
-      Serial.println("rmdir failed");
-    }
-  }
-
-  void readFile(fs::FS &fs, const char *path) {
-    //Serial.printf("Reading file: %s\n", path);
-
-    File file = fs.open(path);
-    if (!file) {
-      Serial.println("Failed to open file for reading");
-      return;
-    }
-
-    Serial.print("Read from file: ");
-    while (file.available()) {
-      Serial.write(file.read());
-    }
-    file.close();
-  }
-
-  void writeFile(fs::FS &fs, const char *path, const char *message) {
-    //Serial.printf("Writing file: %s\n", path);
-
-    File file = fs.open(path, FILE_WRITE);
-    if (!file) {
-      Serial.println("Failed to open file for writing");
-      return;
-    }
-    if (file.print(message)) {
-      Serial.println("File written");
-    } else {
-      Serial.println("Write failed");
-    }
-    file.close();
-  }
-
-  void appendFile(fs::FS &fs, const char *path, const char *message) {
-    //Serial.printf("Appending to file: %s\n", path);
-
-    File file = fs.open(path, FILE_APPEND);
-    if (!file) {
-      Serial.println("Failed to open file for appending");
-      return;
-    }
-    if (file.print(message)) {
-      // Serial.println("Message appended");
-    } else {
-      Serial.println("Append failed");
-    }
-    file.close();
-  }
-
-  void renameFile(fs::FS &fs, const char *path1, const char *path2) {
-    Serial.printf("Renaming file %s to %s\n", path1, path2);
-    if (fs.rename(path1, path2)) {
-      Serial.println("File renamed");
-    } else {
-      Serial.println("Rename failed");
-    }
-  }
-
-  void deleteFile(fs::FS &fs, const char *path) {
-    Serial.printf("Deleting file: %s\n", path);
-    if (fs.remove(path)) {
-      Serial.println("File deleted");
-    } else {
-      Serial.println("Delete failed");
-    }
-  }
-
-  void testFileIO(fs::FS &fs, const char *path) {
-    File file = fs.open(path);
-    static uint8_t buf[512];
-    size_t len = 0;
-    uint32_t start = millis();
-    uint32_t end = start;
-    if (file) {
-      len = file.size();
-      size_t flen = len;
-      start = millis();
-      while (len) {
-        size_t toRead = len;
-        if (toRead > 512) {
-          toRead = 512;
-        }
-        file.read(buf, toRead);
-        len -= toRead;
-      }
-      end = millis() - start;
-      Serial.printf("%u bytes read for %lu ms\n", flen, end);
-      file.close();
-    } else {
-      Serial.println("Failed to open file for reading");
-    }
-
-    file = fs.open(path, FILE_WRITE);
-    if (!file) {
-      Serial.println("Failed to open file for writing");
-      return;
-    }
-
-    size_t i;
-    start = millis();
-    for (i = 0; i < 2048; i++) {
-      file.write(buf, 512);
-    }
-    end = millis() - start;
-    Serial.printf("%u bytes written for %lu ms\n", 2048 * 512, end);
-    file.close();
-  }
-
-  void dataToCSV(int cfn_input) {
-    // ---- ESP32 NOW setup ----- 
-    if((rtc.getYear() < 2000) || (stored_min != rtc.getMinute())) // if the year is wrong OR it hasn't updated in a MINUTE (could do hour or day)...  
-    {
-      Serial.print("YESSIR WE ARE UPDATING THE TIME WITH NTP STUFF \n");
-      if (esp_now_init() != ESP_OK) { // Init ESP-NOW
-        Serial.println("Error initializing ESP-NOW");
-        return;
-      }
-      // Register receive callback
-      esp_now_register_recv_cb(OnDataRecv);
-      int timestamp = millis(); //wait 15 seconds to get time if has already recieved an NTP timestamp
-      while(myData.year == NULL || myData.second == myData_copy.second && (millis()-timestamp<15000) && first_time != 0) // while the data value has not updated //CHECK THE VALUE IN THE STRUCT
-      {
-        // Serial.print(myData.year);
-        // Serial.print();
-        Serial.print("waiting for NTP timestamp HELP IM STUCK IM TRAPPED \n");
-        delay(1000);
-      }
-      first_time = 1;
-      Serial.print("IM FREEEEEEEEEEEEEEEE \n");
-      myData_copy = myData;
-      stored_min = rtc.getMinute();
-      esp_now_deinit();
-      canWriteAgain = true;
-    }
-    else
-    {
-          sen66.readMeasuredValues(
-          massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0,
-          massConcentrationPm10p0, humidity, temperature, vocIndex, noxIndex,
-          co2);
-
-          float mea[9] = {massConcentrationPm1p0, massConcentrationPm2p5, massConcentrationPm4p0, 
-          massConcentrationPm10p0, humidity, temperature, vocIndex, noxIndex, co2};
-
-          char cfn_buffer[16];
-
-          sprintf(cfn_buffer, "/sd_data_%d.csv", cfn_input);
-
-          myFile = SD.open(cfn_buffer, FILE_READ);
-          // Serial.printf("This is a test message \n");
-          Serial.printf("Used space: %lluMB\n", SD.usedBytes() / (1024ULL * 1024ULL));
-          Serial.printf("Used space: %fMB\n", SD.usedBytes() / (1024.0 * 1024.0));
-
-          int smtn = SD.usedBytes();
-          Serial.println(smtn);
-          
-          float usage = SD.usedBytes() / (1024.0 * 1024.0);
-
-
-          if (usage > 25600) {  //Usage in megabytes originally 100 //this checks if the SD card is too full... if it is, delete the oldest file //if (usage > 0.25) { -N-
-            Serial.println("We try deleting a file.");
-            int del_fn = findMin();
-            char delfn_buffer[16];
-            sprintf(delfn_buffer, "/sd_data_%d.csv", del_fn);
-            Serial.println("the file number we delete is:");
-            Serial.println(del_fn);
-            deleteFile(SD, delfn_buffer);
-          } else if (!myFile || myFile.size() == 0) { //if the file is nonexistant we make it!
-            Serial.println("Creating new file with headers...");
-            writeFile(SD, cfn_buffer, "PM 1.0, PM 2.5, PM4.0, PM10.0, Temperature, Humiditiy, VOC, NOx, CO2\n");
-          } else if (!myFile || myFile.size() > 50000000) { //10000 is 10kB! -N-
-            Serial.println("The start of a new file...");
-            countfn++;
-          } else {
-
-            char data_arr[9][32];
-            char dateAndTime[64];
-
-            int month = rtc.getMonth() + 1;
-            int day = rtc.getDay();
-            int year = rtc.getYear();
-            int hour = rtc.getHour(true);
-            int min = rtc.getMinute();
-            int sec = rtc.getSecond();
-
-            for (int i = 0; i < 9; i++) {
-              snprintf(data_arr[i], sizeof(data_arr[i]), "%.4f", mea[i]);
-              appendFile(SD, cfn_buffer, data_arr[i]);
-              appendFile(SD, cfn_buffer, ",");
-            }
-
-            sprintf(dateAndTime, "%d/%d/%d %d:%d:%d ", month, day, year, hour, min, sec);
-            appendFile(SD, cfn_buffer, dateAndTime);
-            appendFile(SD, cfn_buffer, ",");
-            //Serial.println(dateAndTime);
-
-            appendFile(SD, cfn_buffer, "DONE \n");  
-          }
-
-          canWriteAgain = true;
-    }    
-  }
-// ------------------------------------
+// moved to dataToCSV .cpp and .h!!
 
 // -------- Time Sync Related Functions -------
 // Callback function when data is received
@@ -1219,7 +867,6 @@ void setup() {
   Wire.begin(SDA_PIN, SCL_PIN);
   sen66.begin(Wire, SEN66_I2C_ADDR_6B);
   WiFi.mode(WIFI_STA);  // Set device as Wi-Fi Station
-
   error = sen66.deviceReset();
   if (error != NO_ERROR) {
     Serial.print("Error trying to execute deviceReset(): ");
@@ -1228,7 +875,6 @@ void setup() {
     return;
   }
   delay(1200);
-
   int8_t serialNumber[32] = { 0 };
   error = sen66.getSerialNumber(serialNumber, 32);
   if (error != NO_ERROR) {
@@ -1240,7 +886,6 @@ void setup() {
   Serial.print("serialNumber: ");
   Serial.print((const char *)serialNumber);
   Serial.println();
-
   error = sen66.startContinuousMeasurement();
   if (error != NO_ERROR) {
     Serial.print("Error trying to execute startContinuousMeasurement(): ");
@@ -1260,21 +905,19 @@ void setup() {
 
   // Set the Touchscreen rotation in landscape mode
   touchscreen.setRotation(3);
-
   lv_display_t *disp;
+
   // Initialize the TFT display using the TFT_eSPI library
   disp = lv_tft_espi_create(SCREEN_WIDTH, SCREEN_HEIGHT, draw_buf, sizeof(draw_buf));
   lv_display_set_rotation(disp, LV_DISPLAY_ROTATION_0);
-
     
   // Initialize an LVGL input device object (Touchscreen)
   lv_indev_t * indev = lv_indev_create();
   lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
+
   // Set the callback function to read Touchscreen input
   lv_indev_set_read_cb(indev, touchscreen_read);
-
   ui_init();
-
   lv_timer_t* updateDisplay = lv_timer_create(updateSensorValuesOnDisplay, 2000, NULL);
 
 // ------------------------------------
@@ -1305,19 +948,19 @@ void setup() {
   }
 
   int cardSize = SD.cardSize() / (1024 * 1024);
-  Serial.printf("SD Card Size: %lluMB\n", cardSize);
-  Serial.printf("Total space: %lluMB\n", SD.totalBytes() / (1024.0 * 1024.0));
-  Serial.printf("Used space: %lluMB\n", SD.usedBytes() / (1024.0 * 1024.0));
+  Serial.printf("SD Card Size: %u\n", cardSize);
+  Serial.printf("Total space: %fMB\n", SD.totalBytes() / (1024.0 * 1024.0));
+  Serial.printf("Used space: %fMB\n", SD.usedBytes() / (1024.0 * 1024.0));
 
+  int findMax();
   countfn = findMax() + 1;
 
 // --------------------------
-
   //networkScanner();
   lastUpdate = millis();
   lastTimeWrittenToSD = millis();
 
-// ---- Webserver Setup
+  // ---- Webserver Setup
   WiFi.mode(WIFI_AP_STA);
   WiFiManager wm;   // WiFiManager, Local intialization. Once its business is done, there is no need to keep it around
 
@@ -1338,9 +981,9 @@ void setup() {
   printAndBuffer("ESP32 IP as soft AP: ");
   printAndBuffer(WiFi.softAPIP().toString());
 
-printAndBuffer("Local network server:");
-printAndBuffer("http://",false);
-printAndBuffer(WiFi.localIP().toString());
+  printAndBuffer("Local network server:");
+  printAndBuffer("http://",false);
+  printAndBuffer(WiFi.localIP().toString());
 
 //_____________ Webpage Code ______________________ 
  
@@ -1419,8 +1062,8 @@ printAndBuffer(WiFi.localIP().toString());
     }
   });
 
-    // Start server
-    server.begin();
+  // Start server
+  server.begin();
   printAndBuffer("Paste into web browser:");
   printAndBuffer("http://", false); // false indicates that we're not adding a newline
   printAndBuffer(WiFi.localIP().toString());
@@ -1443,5 +1086,4 @@ void loop() {
     dataToCSV(countfn);
     lastTimeWrittenToSD = millis();
   }
-
 }
