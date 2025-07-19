@@ -202,3 +202,8 @@ Memory used by FreeType to cache characters in kilobytes #define LV_FREETYPE_CAC
 
 Line 911: #define LV_USE_TFT_ESPI 1 (originally 0)
 Line 920: #define LV_USE_ILI9341 1 (originally 0)
+
+### TFT_espi User Setup
+Line 56: commented out #define ILI9341_DRIVER (generic driver)
+Line 57: UNcommented #define ILI9341_2_DRIVER (using this driver)
+Line 98: UNcommented 
