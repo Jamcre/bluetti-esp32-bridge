@@ -88,18 +88,18 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Your sensor will not start recording data until you set up the RTC 'hub'.
 
 ### Physical Mounting and Case:
-- CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD.
-- aensure the sensor node is mounted such that water does not infiltrate.
+- CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD.- aensure the sensor node is mounted such that water does not infiltrate.
+
 
 ## Real Time Clock 'Hub'
 ### How to download and set up RTC hub firmware:
-- Locate the 'hub' folder in your extracted files from Github.
-- Inside, open the folder named 'sender'. 
-- Rename 'secrets_example.h' to 'secrets.h'.
-- Add your wifi details to the contents of 'secrets.h'.
-- Replace the contents of "sender.ino' to include the MAC address's of your sensor nodes at the top of the file.
+- In the 'ecolibrium-2025' folder you extracted, mavigate to the 'hub' subfolder
+- Inside the 'hub' folder, open the subfolder named 'sender' where you should see a C header file labeled 'secrets_example' and a .ino file labeled 'sender'
+- Rename 'secrets_example.h' to 'secrets.h' and open it in a text editor of your choice
+- Add your wifi details to the contents of 'secrets.h' by filling in where the quotes are (do not delete the quotes).
+- Using the MAC address if your CYD that you recorded before from the 'Output' menu, replace the contents of "sender.ino' to include the MAC address's of your sensor nodes at the top of the file.
     - To find a board's MAC address, look at the 'Output' in Arduino IDE after uploading a sketch to it.
-    - replace the comma seperated codes inside the {} in the lines that look like this: "uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};"
+    - Replace the comma seperated codes inside the {} in the lines that look like this: "uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};"
 
 - Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remeber they are numbered 1, 2, 3, 4, ...).
 
@@ -109,7 +109,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - You should see frequent outputs indicating the time is being broadcast.
 - You will likely see zero registered clients even while your sensor nodes are working properly. this is because your nodes only briefly connect for the time then immediately disconnect
 
-## How to set up wifi details for your sensor node:
+### How to set up wifi details for your sensor node:
 - You will need another device capable of connecting to wifi for the following steps.
 - Connect to wifi access point.
 - Enter wifi settings username and password defined in code as "IndoorModuleXX".
@@ -117,6 +117,9 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - You can connect to this new wifi hotspot on your laptop and navigate to '192.168.4.1' to see the data!
 - Only connect with one device at a time.
 - The code also interfaces with our local data polling hub at Loisaida.
+
+### Physical Mounting and Case:
+- CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD
 
 Now these devices are full fledged air quality sensors. They will save their indoor air quality measurements to their SD card. Their screen displays real-time temperature, humidity, and pollutant concentration measurements. An example file is included in the sensor folder.
 
