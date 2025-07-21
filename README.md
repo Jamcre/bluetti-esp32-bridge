@@ -57,8 +57,9 @@ Insert the SD card into the CYD.
 
 ## Sensor Software Setup
 
-### Pre-requisites
-- Only software requirement beforehand is to have Arduino IDE on your device
+### Prerequisites
+- Arduino IDE
+    - You can download the latest release [here](https://www.arduino.cc/en/software/)
 
 ### Download the latest release from Github:
 - You are currently in the the 'github repository'
