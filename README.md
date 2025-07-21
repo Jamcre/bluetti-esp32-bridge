@@ -68,7 +68,7 @@ This setup has three main parts. First, you will setup your sensor node and get 
 - Select the option to 'Extract'.
 - This will create a new folder with the same name. Inside, there is all of the code you need.
 
-### How to download and set up the esp32 - CYD firmware:
+### How to download and set up the ESP32-CYD firmware:
 - From sensors, pull the stable folder and the libraries (Arduino libraries folder) folder.
 - Replace your old Arduino 'libraries' folder with the one provided @ ecolibrium2025-sensors/_sensor/libraries
 
@@ -81,8 +81,9 @@ Changes we made to default libraries will be taken care of for you if you pull d
 ### How to upload sketch via Arduino IDE:
 - Open the 'stable.ino' file located in the sensors/stable folder with Arduino IDE.
 - Plug your CYD board into your laptop using a USB C cable.
-- In the menu at the top, select the port you are using and select your board to be the "esp32-2432s028r cyd".
+- In the menu at the top, select the port you are using and select your board to be the "ESP32-2432S028R CYD".
 - Click Tools (top menu) -> Set Partition set to 'Huge APP'.
+    ![partition setup](https://imgur.com/XM4l5Na)
 - Open Serial Monitor (maginifying glass icon in top right).
 - Set baud rate (right side of the Serial Monitor window) to 115200.
 - In the stable.ino file, at lines 27 and 30, set the module name and password "IndoorModuleXX" to the desired unique name.
