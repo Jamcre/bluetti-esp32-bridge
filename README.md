@@ -56,6 +56,7 @@ The JST port on the CYD with IO22 and IO27 pins is used. SDA (data) is set to pi
 Insert the SD card into the CYD.
 
 ## Sensor Software Setup
+This setup has three main parts. First, you will setup your sensor node and get it's MAC address. Then, you will set up your RTC hub with the Mac Address you got. Finally, you will complete the wifi setup.
 
 ### Pre-requisites
 - Only software requirement beforehand is to have Arduino IDE on your device
@@ -90,18 +91,6 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - look at the 'Output' in Arduino IDE and record the node's MAC Address, this will be used to set up the RTC hub.
 - your sensor will not work properly until you set up the RTC 'hub'.
 
-### How to set up wifi details:
-- You will need another device capable of connecting to wifi for the following steps.
-- Connect to wifi access point.
-- Enter wifi settings username and password defined in code as "IndoorModuleXX".
-- It will create a new hotspot with its name "IndoorModuleXX".
-- You can connect to this new wifi hotspot on your laptop and navigate to '192.168.4.1' to see the data!
-- Only connect with one device at a time.
-- The code also interfaces with our local data polling hub at Loisaida.
-
-### Physical Mounting and Case:
-- CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD
-
 ## Real Time Clock 'Hub'
 ### How to download and set up RTC hub firmware:
 - Locate the 'hub' folder in your extracted files from Github.
@@ -119,6 +108,18 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Upload your script.
 - You should see frequent outputs indicating the time is being broadcast.
 - You will likely see zero registered clients even while your sensor nodes are working properly. this is because your nodes only briefly connect for the time then immediately disconnect
+
+### How to set up wifi details for your sensor node:
+- You will need another device capable of connecting to wifi for the following steps.
+- Connect to wifi access point.
+- Enter wifi settings username and password defined in code as "IndoorModuleXX".
+- It will create a new hotspot with its name "IndoorModuleXX".
+- You can connect to this new wifi hotspot on your laptop and navigate to '192.168.4.1' to see the data!
+- Only connect with one device at a time.
+- The code also interfaces with our local data polling hub at Loisaida.
+
+### Physical Mounting and Case:
+- CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD
 
 Now these devices are full fledged air quality sensors. They will save their indoor air quality measurements to their SD card. Their screen displays real-time temperature, humidity, and pollutant concentration measurements. An example file is included in the sensor folder.
 
