@@ -6,7 +6,7 @@
 To develop a system for continous monitoring of indoor + outdoor air conditions and quality. We hope to use the gathered data to inform building retrofits to reduce carbon emmisions, harm done to people's health, and energy bills.
 
 ### What we measure
-We measure temperature, humidity, carbon dioxide, volitaile organics index, nitric oxide gasses index, and particulate matter. Four categories of particulate matter are measured: PM 1, PM2,5, PM4, and PM10.
+We measure temperature, humidity, carbon dioxide, volitaile organics index, nitric oxide gasses index, and particulate matter. Four categories of particulate matter are measured: PM 1, PM2.5, PM4, and PM10.
 
 Sensirion Gas Index: https://github.com/Sensirion/gas-index-algorithm
 
