@@ -24,10 +24,10 @@
 // ---- Webpage Related values and HTML ------------
 
 //const char *soft_ap_ssid = "IndoorModuleLab12"; //change according to each module'sIndoorModuleLabXX
-const char *soft_ap_ssid = "IndoorModuleLab13"; //change according to each module'sIndoorModuleLabXX
+const char *soft_ap_ssid = "IndoorModuleLab14"; //change according to each module'sIndoorModuleLabXX
 
 //essentially the ESP 32 creates it's own Wifi, this is what shows up as the "hotspot id" 
-const char *soft_ap_password = "IndoorModuleLab13";  //and this is the password
+const char *soft_ap_password = "IndoorModuleLab14";  //and this is the password
 
 AsyncWebServer server(80);
 String serialBuffer = "";
@@ -675,7 +675,7 @@ const char index_html[] PROGMEM = R"rawliteral(
   </style>
 </head>
 <body>
-  <h2>Ecolibrium IAQ 13</h2>
+  <h2>Ecolibrium IAQ 14</h2>
   <p>
     <i class="fas fa-smog" style="color:#000000;"></i> 
     <span class="dht-labels">PM 1.0</span>

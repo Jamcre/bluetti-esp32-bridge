@@ -290,7 +290,7 @@ void dataToCSV(int cfn_input) {
       deleteFile(SD, delfn_buffer);
     } else if (!myFile || myFile.size() == 0) { //if the file is nonexistant we make it!
       Serial.println("Creating new file with headers...");
-      writeFile(SD, cfn_buffer, "PM 1.0, PM 2.5, PM4.0, PM10.0, Temperature, Humiditiy, VOC, NOx, CO2\n");
+      writeFile(SD, cfn_buffer, "PM 1, PM 2.5, PM4, PM10, Humidity, Temperature, VOC, NOx, CO2, Time, DONE\n");
     } else if (!myFile || myFile.size() > 50000000) { //10000 is 10kB! -N-
       Serial.println("The start of a new file...");
       countfn++;
