@@ -77,7 +77,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Open the 'stable.ino' file with Arduino IDE.
 - Plug your CYD board into your laptop using a USB C cable.
 - In Arduino IDE, navigate to the 'Select Board' menu at the top, select the port you are using and select your board to be the "ESP32-2432S028R CYD" (you can type CYD into the search bar to get the board)
-- Click Tools (top menu) -> Set Partition set to 'Huge APP'.
+- Click Tools (top menu) -> Set Partition Scheme to 'Huge APP'.
 ![partition setup](https://imgur.com/XM4l5Na.jpeg)
 - Open Serial Monitor (maginifying glass icon in top right).
 - Set baud rate (a dropdown menu on the right side of the Serial Monitor window) to 115200.
