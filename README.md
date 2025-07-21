@@ -108,7 +108,12 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Inside, open the folder named 'sender'. 
 - Rename 'secrets_example.h' to 'secrets.h'.
 - Add your wifi details to the contents of 'secrets.h'.
-- Replace the contents of "sender.ino' to include the MAC address's of your sensor nodes.
+- Replace the contents of "sender.ino' to include the MAC address's of your sensor nodes at the top of the file.
+    - To find a board's MAC address, ;ook at the 'Output' in Arduino IDE after uploading a sketch to it.
+    - replace the comma seperated codes inside the {} in the lines that look like this: "uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};"
+
+
+
 - Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remeber they are numbered 1, 2, 3, 4, ...).
 
 ### Upload via Arduino IDE:
