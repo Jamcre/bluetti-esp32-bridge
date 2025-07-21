@@ -39,10 +39,20 @@ Where each wire goes:
 | Black                | Unconnected            |
 | Red                  | Unconnected            |
 
+These are what the pins on the CYD board look like up close:
+<picture>
+  <img src="https://imgur.com/sOC1x62.jpeg" alt="Flowers" style="width:auto;">
+</picture>
+
 Pins definitions:
 The JST port on the CYD with IO22 and IO27 pins is used. SDA (data) is set to pin 22 SCL (clock) is set to pin 27.
 
 Insert the SD card into the CYD.
+
+The primary components should look like this once connected:
+<picture>
+  <img src="https://imgur.com/1J5RoLy.jpeg" alt="Flowers" style="width:auto;">
+</picture>
 
 ## Sensor Software Setup
 This setup has three main parts. First, you will setup your sensor node and get it's MAC address. Then, you will set up your RTC hub with the Mac Address you got. Finally, you will complete the wifi setup.
