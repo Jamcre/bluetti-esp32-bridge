@@ -206,4 +206,17 @@ Line 920: #define LV_USE_ILI9341 1 (originally 0)
 ### TFT_espi User Setup
 Line 56: commented out #define ILI9341_DRIVER (generic driver)
 Line 57: UNcommented #define ILI9341_2_DRIVER (using this driver)
-Line 98: UNcommented 
+Line 98: UNcommented #define TFT_WIDTH  240 // ST7789 240 x 240 and 240 x 320
+Line 102: #define TFT_HEIGHT 320 // ST7789 240 x 320
+Line 142: UNcommented #define TFT_BL   21 (original value was 32)
+Lines 180-183: Commented multiple pin definitions (PIN_D8, PIN_D3, AND PIN_D4) and TFT_RST
+Lines 217: Commented #define TFT_MISO 12
+Line 218: UNcommented #define TFT_MOSI 13 (originally was 23)
+Line 219: UNcommented #define TFT_SCLK 14 (originally was 18)
+Line 220: UNcommented #define TFT_CS   15  // Chip select control pin
+Line 221: UNcommented #define TFT_DC    2  // Data Command control pin
+Line 223: UNcommented #define TFT_RST  -1 (display reset is connected to ESP32 reset)
+Line 225: ADDED #define TOUCH_CS 33     // Chip select pin (T_CS) of touch screen
+Line 370: Commented #define SPI_FREQUENCY  27000000
+Line 372: UNcommented #define SPI_FREQUENCY  55000000
+Line 384: UNcommented #define USE_HSPI_PORT
