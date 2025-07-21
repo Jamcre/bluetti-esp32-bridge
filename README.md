@@ -18,7 +18,7 @@ We are ready to deploy one module for continuous monitoring.
 To develop a system for continous monitoring of indoor + outdoor air conditions and quality. We hope to use the gathered data to inform building retrofits to reduce carbon emmisions, harm done to people's health, and energy bills.
 
 ### What we measure
-We measure temperature, humidity, carbon dioxide, volitaile organics index, nitric gasses index, and particulate matter. Four categories of particulate matter are measured: PM 1, PM2,5, PM4, and PM10.
+We measure temperature, humidity, carbon dioxide, volitaile organics index, nitric oxide gasses index, and particulate matter. Four categories of particulate matter are measured: PM 1, PM2,5, PM4, and PM10.
 
 Sensirion Gas Index: https://github.com/Sensirion/gas-index-algorithm
 
@@ -97,15 +97,6 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - If code uploads and the board has power it should run. Check the serial monitor output. These outputs attempt to explain what the program is doing.
 - After uploading the code, look at the start of the 'Output' window in Arduino IDE and record the node's MAC Address, this will be used to set up the RTC hub.
 - Your sensor will not start recording data until you set up the RTC 'hub'.
-
-### How to set up wifi details:
-- You will need another device capable of connecting to wifi for the following steps.
-- Connect to wifi access point.
-- Enter wifi settings username and password defined in code as "IndoorModuleXX".
-- It will create a new hotspot with its name "IndoorModuleXX".
-- You can connect to this new wifi hotspot on your laptop and navigate to '192.168.4.1' to see the data!
-- Only connect with one device at a time.
-- The code also interfaces with our local data polling hub at Loisaida.
 
 ### Physical Mounting and Case:
 - CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD
