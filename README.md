@@ -19,13 +19,13 @@ We use the system to understand the pollutant exposure over time for the interns
 
 ## Hardware Setup
 Requirements:
-- The esp32-2432S028R CYD (Mainboard) 
+- The ESP32-2432S028R CYD (Mainboard) 
 - The SEN66 sensor with 6 cable JST connector (provided by SENSIRION with sensor purchase)
 - 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD) (optional)
 - 4-cable JST cable connector (for CYD)
 - microSD
 - Secondary ESP32 providing the real time clock value via NTP (code in hub folder)
-- Type C to compatible laptop port cable
+- Type C to compatible laptop port cable (make sure it supports data transfers)
 - *NOTE*: The provided JST by SENISIRION has exposed wire at the ends. To connect to the 4-cable JST for the CYD, you can use male and female jumper wire connectors to connect the wires.
 
 Where each wire goes:
@@ -64,7 +64,7 @@ This setup has three main parts. First, you will setup your sensor node and get 
 - Open a new file manager tab and navigate to the 'Arduino' folder, which should have 'libraries' and 'sketches' subfolders inside of it
 - From the file manager tab that has the 'sensor' folder open, move the subfolder labeled 'stable' inside Arduino's 'sketches' folder
 - Before proceeding, read the NOTE written below to make sure you do not lose any files
-- Replace your old Arduino 'libraries' folder with the one provided @ ecolibrium2025-sensors/_sensor/libraries
+- Replace your old Arduino 'libraries' folder with the one provided @ ecolibrium2025-sensors/_sensor/libraries (add link to this)
 
 *NOTE*: 
 
@@ -73,12 +73,14 @@ By replacing your old 'libraries' folder with the provided one on Git, you would
 Changes we made to default libraries will be taken care of for you if you pull directly from our Github (changes explained in later section)
 
 ### How to upload sketch via Arduino IDE:
-- Open the 'stable' folder to see a .INO file labeled 'stable' along with other dependent files
+- Open the 'stable' folder to see a .ino file labeled 'stable' along with other dependent files
 - Open the 'stable.ino' file with Arduino IDE.
 - Plug your CYD board into your laptop using a USB C cable.
 - In Arduino IDE, navigate to the 'Select Board' menu at the top, select the port you are using and select your board to be the "ESP32-2432S028R CYD" (you can type CYD into the search bar to get the board)
 - Click Tools (top menu) -> Set Partition Scheme to 'Huge APP'.
-![partition setup](https://imgur.com/XM4l5Na.jpeg)
+<picture>
+  <img src="https://imgur.com/XM4l5Na.jpeg" alt="Flowers" style="width:auto;">
+</picture>
 - Open Serial Monitor (maginifying glass icon in top right).
 - Set baud rate (a dropdown menu on the right side of the Serial Monitor window) to 115200.
 - In the stable.ino file, at lines 28 and 31, set the module name and password "IndoorModuleXX" to the desired unique name
@@ -88,7 +90,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Your sensor will not start recording data until you set up the RTC 'hub'.
 
 ### Physical Mounting and Case:
-- CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD.
+- CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD. (link needed)
 - ensure the sensor node is mounted such that water does not infiltrate.
 
 ## Real Time Clock 'Hub'
@@ -136,7 +138,7 @@ Now these devices are full fledged air quality sensors. They will save their ind
 
 
 ---
-# ESP32-2432S028R Cheap yellow Display (CYD)
+# ESP32-2432S028R Cheap Yellow Display (CYD)
 
 ## Overview
 
