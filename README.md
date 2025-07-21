@@ -39,14 +39,6 @@ Components:
 
 Where each cable goes:
 
-- Sensor -> CYD
-- White -> Red 
-- Blue -> Black 
-- Green -> Blue 
-- Yellow -> Yellow 
-- Black is unused 
-- Red is unused
-
 | Sensor               | CYD                                   |
 |----------------------|-----------------------------------------------|
 | White                |Red
