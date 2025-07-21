@@ -71,9 +71,12 @@ Insert the SD card into the CYD.
 ### How to download and set up the esp32 - CYD firmware:
 - From sensors, pull the stable folder and the libraries (Arduino libraries folder) folder.
 - Replace your old Arduino 'libraries' folder with the one provided @ ecolibrium2025-sensors/_sensor/libraries
-- *NOTE*: By replacing your old 'libraries' folder with the provided one on Git, you would lose any libraries that are downloaded on your laptop and but not in this Git folder. We suggest that to recover those libraries, you should either   redownload them or save them elsewhere and move them back into your Arduino 'libraries' folder after downloading this one.
 
-Changes we made to default libraries will be taken care of for you if you pull directly from our Github (changes explained in depth later)
+*NOTE*: 
+
+By replacing your old 'libraries' folder with the provided one on Git, you would lose any libraries that are downloaded on your laptop and but not in this Git folder. We suggest that to recover those libraries, you should either   redownload them or save them elsewhere and move them back into your Arduino 'libraries' folder after downloading this one.
+
+Changes we made to default libraries will be taken care of for you if you pull directly from our Github (changes explained in later section)
 
 ### How to upload sketch via Arduino IDE:
 - Open the 'stable.ino' file located in the sensors/stable folder with Arduino IDE.
@@ -83,6 +86,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - In the stable.ino file, at lines 27 and 30, set the module name and password "IndoorModuleXX" to the desired unique name.
 - if code uploads and the board has power it should run. check the serial monitor output. these outputs attempt to explain what the program is doing.
 - look at the 'Output' in Arduino IDE and record the node's MAC Address, this will be used to set up the RTC hub.
+- your sensor will not work properly until you set up the RTC 'hub'.
 
 ### How to set up wifi details:
 - You will need another device capable of connecting to wifi for the following steps.
