@@ -62,8 +62,7 @@ Insert the SD card into the CYD.
     - You can download the latest release [here](https://www.arduino.cc/en/software/)
 
 ### Download the latest release from Github:
-- You are currently in the the 'github repository'
-- Navigate to the [releases section](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/releases).
+- Navigate to [releases](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/releases) and download the latest release.
 - Click the latest release and download the .zip folder
 - Open file explorer and right-click the folder you just downloaded. 
 - Select the option to 'Extract'.
