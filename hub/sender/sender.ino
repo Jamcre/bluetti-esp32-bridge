@@ -3,10 +3,15 @@
 #include "time.h"
 #include <esp_now.h>
 
-// MAC: 5c:01:3b:4f:8c:80
+// To get you MAC Address you can find it in the Arduino IDE output when you Upload a script
+// Example MAC: 5c:01:3b:4f:8c:80
+
 uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};
 uint8_t broadcastAddress2[] = {0x5c, 0x01, 0x3b, 0x4f, 0xbd, 0xd8};
 uint8_t broadcastAddress3[] = {0x5c, 0x01, 0x3b, 0x4f, 0x9f, 0xf0}; //nafis
+uint8_t broadcastAddress4[] = {0x5c, 0x01, 0x3b, 0x4f, 0xf1, 0x78}; //sumit
+uint8_t broadcastAddress5[] = {0x5c, 0x01, 0x3b, 0x4f, 0x19, 0x64}; //gaudi
+uint8_t broadcastAddress6[] = {0x5c, 0x01, 0x3b, 0x4f, 0x8c, 0x80}; // alviee
 
 // NTP Config
 const char* ntpServer = "pool.ntp.org";
