@@ -83,6 +83,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Plug your CYD board into your laptop using a USB C cable.
 - In the menu at the top, select the port you are using and select your board to be the "ESP32-2432S028R CYD".
 - Click Tools (top menu) -> Set Partition set to 'Huge APP'.
+![partition setup](https://imgur.com/XM4l5Na.jpeg)
 - Open Serial Monitor (maginifying glass icon in top right).
 - Set baud rate (right side of the Serial Monitor window) to 115200.
 - In the stable.ino file, at lines 27 and 30, set the module name and password "IndoorModuleXX" to the desired unique name.
