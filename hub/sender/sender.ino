@@ -59,7 +59,7 @@ void setup() {
 
   esp_now_register_send_cb(OnDataSent);
 
-  // Register peer
+  // Register first peer
   peerInfo.channel = 0;
   peerInfo.encrypt = false;
   memcpy(peerInfo.peer_addr, broadcastAddress1, 6);
@@ -77,6 +77,27 @@ void setup() {
 
   //register third peer  
   memcpy(peerInfo.peer_addr, broadcastAddress3, 6);
+  if (esp_now_add_peer(&peerInfo) != ESP_OK){
+    Serial.println("Failed to add peer");
+    return;
+  }
+
+  //register fourth peer  
+  memcpy(peerInfo.peer_addr, broadcastAddress4, 6);
+  if (esp_now_add_peer(&peerInfo) != ESP_OK){
+    Serial.println("Failed to add peer");
+    return;
+  }
+
+  //register fifth peer  
+  memcpy(peerInfo.peer_addr, broadcastAddress5, 6);
+  if (esp_now_add_peer(&peerInfo) != ESP_OK){
+    Serial.println("Failed to add peer");
+    return;
+  }
+
+  //register sixth peer  
+  memcpy(peerInfo.peer_addr, broadcastAddress6, 6);
   if (esp_now_add_peer(&peerInfo) != ESP_OK){
     Serial.println("Failed to add peer");
     return;
