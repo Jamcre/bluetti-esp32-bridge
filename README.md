@@ -39,10 +39,20 @@ Where each wire goes:
 | Black                | Unconnected            |
 | Red                  | Unconnected            |
 
+These are what the pins on the CYD board look like up close:
+<picture>
+  <img src="https://imgur.com/sOC1x62.jpeg" alt="Flowers" style="width:auto;">
+</picture>
+
 Pins definitions:
 The JST port on the CYD with IO22 and IO27 pins is used. SDA (data) is set to pin 22 SCL (clock) is set to pin 27.
 
 Insert the SD card into the CYD.
+
+The primary components should look like this once connected:
+<picture>
+  <img src="https://imgur.com/1J5RoLy.jpeg" alt="Flowers" style="width:auto;">
+</picture>
 
 ## Sensor Software Setup
 This setup has three main parts. First, you will setup your sensor node and get it's MAC address. Then, you will set up your RTC hub with the Mac Address you got. Finally, you will complete the wifi setup.
@@ -81,6 +91,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 <picture>
   <img src="https://imgur.com/XM4l5Na.jpeg" alt="Flowers" style="width:auto;">
 </picture>
+
 - Open Serial Monitor (maginifying glass icon in top right)
 - Set baud rate (a dropdown menu on the right side of the Serial Monitor window) to 115200
 - In the stable.ino file, at lines 28 and 31, set the module name and password "IndoorModuleXX" to the desired unique name
@@ -103,7 +114,10 @@ Changes we made to default libraries will be taken care of for you if you pull d
     - To find a board's MAC address, look at the 'Output' in Arduino IDE after uploading a sketch to it.
     - Replace the comma seperated codes inside the {} in the lines that look like this: "uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};" (keep the 0x, only change the last two characters of each part of the address)
 
-- Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remember they are numbered 1, 2, 3, 4, ...)
+- Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remember they are numbered 1, 2, 3, 4, ...).
+<picture>
+  <img src="https://imgur.com/LK2398K.jpeg" alt="Flowers" style="width:auto;">
+</picture>
 
 ### Upload via Arduino IDE:
 - The same Arduino libraries setup used for the sensor node will allow you to compile sender.ino
