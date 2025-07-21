@@ -1,3 +1,5 @@
 hardware/
 libraries/
 .DS_Store
+
+secrets.h
