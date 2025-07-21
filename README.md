@@ -29,78 +29,81 @@ We use the system to understand the pollutant exposure over time for the interns
 ---
 
 ## Hardware Setup
-Components:
+Requirements:
 - The ESP32 CYD (Mainboard) 
-- The SEN66 sensor 
+- The SEN66 sensor with 6 cable JST connector (provided by SENSIRION)
 - 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD)
-- JST cable connector
+- 4-cable JST cable connector (for CYD)
 - microSD
 - Secondary ESP32 providing the real time clock value via NTP (code in hub folder)
+- Type C to compatible laptop port cable
+- *NOTE*: The provided JST by SENISIRION has exposed wire at the ends. To connect to the 4-cable JST for the CYD, you can use male and female jumper wire connectors to connect the wires.
 
-Where each cable goes:
+Where each wire goes:
 
-| Sensor               | CYD                                   |
+| Sensor               | CYD Pins                                  |
 |----------------------|-----------------------------------------------|
-| White                |Red
-| Blue   |  Black                               |
-| Green            | Blue                                      |
-| Yellow              | Yellow                                         |
-| Black     | Unused                                         |
-| Red          | Unused              |
+| White                |3.3 V
+| Blue   |  GND                               |
+| Green            | IO22         |
+| Yellow              | IO27     |
+| Black     | Unconnected                                         |
+| Red          | Unconnected              |
 
 Pins definitions:
 The JST port on the CYD with IO22 and IO27 pins is used. SDA (data) is set to pin 22 SCL (clock) is set to pin 27.
 
 Insert the SD card into the CYD.
 
-Ensure the RTC is being provided via NTP (use the code in the hub folder)
-
 ## Software Setup
 ### Sensor Node
-How to download and set up CYD firmware:
-- Pull the CYD_firmware.ino and the libraries (Arduino libraries folder) folder from github. 
+Requirements:
+- Only software requirement beforehand is to have Arduino IDE on your device
+
+### How to download and set up CYD firmware:
+- From sensors, pull the stable folder and the libraries (Arduino libraries folder) folder from github. 
 - Replace your old Arduino 'libraries' folder with the one provided @ ecolibrium2025-sensors/_sensor/libraries
+- *NOTE*: By replacing your old 'libraries' folder with the provided one on Git, you would lose any libraries that are downloaded on your laptop and but not in this Git folder. We suggest that to recover those libraries, you should either   redownload them or save them elsewhere and move them back into your Arduino 'libraries' folder after downloading this one.
 
-Changes we made to default libraries (will be taken care of for you if you pull directly from our Github)
-- lvgl: usersetup montserral fonts -> 1
-- eTSPI: left one pin unassigned
-- in User_Setup for the TFT library, left one line commnented out (double check with original library version)
+Changes we made to default libraries will be taken care of for you if you pull directly from our Github (changes explained in depth later)
 
-Upload via Arduino IDE:
-- Tools -> Partition set to 'Huge APP'
-- set baud rate to 115200
-  set the module name and password "IndoorModuleXX" to the desired unique name
-- if code uploads and the board has power it should run. check the serial monitor output. it should look like ...
+### How to upload sketch via Arduino IDE:
+- Click Tools (top menu) -> Set Partition set to 'Huge APP'
+- Open Serial Monitor (maginifying glass icon in top right)
+- Set baud rate (right side of the Serial Monitor window) to 115200
+ - In the stable.ino file, at lines 27 and 30, set the module name and password "IndoorModuleXX" to the desired unique name
+- if code uploads and the board has power it should run. check the serial monitor output. these outputs attempt to explain what the program is doing.
 - look at the 'Output' in Arduino IDE and record the node's MAC Address, this will be used to set up the RTC hub
 
-How to set up wifi details:
-- connect to wifi access point 
-- enter wifi settings username and password defined in code as "IndoorModuleXX"
-- it will create a new hotspot with its name "IndoorModuleXX"
-- you can connect to this new wifi hotspot on your laptop and navigate to '192.168.4.1' to see the data!
-- the code also interfaces with our local data polling hub at Loisaida
+### How to set up wifi details:
+- You will need another device capable of connecting to wifi for the following steps
+- Connect to wifi access point 
+- Enter wifi settings username and password defined in code as "IndoorModuleXX"
+- It will create a new hotspot with its name "IndoorModuleXX"
+- You can connect to this new wifi hotspot on your laptop and navigate to '192.168.4.1' to see the data!
+- The code also interfaces with our local data polling hub at Loisaida
 
-Physical Mounting and Case:
+### Physical Mounting and Case:
 - CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD
 
-### Real Time Clock 'Hub'
-How to download and set up RTC hub firmware:
+## Real Time Clock 'Hub'
+### How to download and set up RTC hub firmware:
 - Pull the sender.ino folder from Github. 
 - Rename 'secrets_example.h' to 'secrets.h'
 - Add your wifi details to the contents of 'secrets.h'
-- replace the contents of "sender.ino' to include the MAC address's of your sensor nodes
-- look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remeber they are numbered 1, 2, 3, 4, ...)
+- Replace the contents of "sender.ino' to include the MAC address's of your sensor nodes
+- Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remeber they are numbered 1, 2, 3, 4, ...)
 
-Upload via Arduino IDE:
+### Upload via Arduino IDE:
 - The same Arduino libraries setup used for the sensor node will allow you to compile sender.ino
-- set baud rate to 115200
-- upload your script
-- you should see the rtc clock sending the time quite frequently
-- you will likely see zero registered clients even while your sensor nodes are working properly. this is because your nodes only briefly connect for the time then immediately disconnect
+- Set baud rate to 115200
+- Upload your script
+- You should see the rtc clock sending the time quite frequently
+- You will likely see zero registered clients even while your sensor nodes are working properly. this is because your nodes only briefly connect for the time then immediately disconnect
 
-Now these devices are full fledged air quality sensors. They will save their indoor air quality measurements to their SD card. An example file is included in the sensor folder.
+Now these devices are full fledged air quality sensors. They will save their indoor air quality measurements to their SD card. Their screen displays real-time temperature, humidity, and pollutant concentration measurements. An example file is included in the sensor folder.
 
-Note: At Loisaida Lab, a seperate system scrapes the generated html and renders the measurements on a live dashboard.
+*NOTE*: This system was designed specifically to be run at Loisaida Lab. At Loisaida Lab, a seperate system scrapes the generated html and renders the measurements on a live dashboard.
 
 ---
 
