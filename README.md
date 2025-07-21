@@ -30,8 +30,8 @@ We use the system to understand the pollutant exposure over time for the interns
 
 ## Hardware Setup
 Requirements:
-- The ESP32 CYD (Mainboard) 
-- The SEN66 sensor with 6 cable JST connector (provided by SENSIRION)
+- The esp32-2432s028r cyd (Mainboard) 
+- The SEN66 sensor with 6 cable JST connector (provided by SENSIRION with sensor purchase)
 - 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD)
 - 4-cable JST cable connector (for CYD)
 - microSD
@@ -55,15 +55,14 @@ The JST port on the CYD with IO22 and IO27 pins is used. SDA (data) is set to pi
 
 Insert the SD card into the CYD.
 
-## Software Setup
+## Sensor Software Setup
 
 ### Pre-requisites
 - Only software requirement beforehand is to have Arduino IDE on your device
 
 ### Download the latest release from Github:
 - You are currently in the the 'github repository'
-- If you scroll up to the top, on the right side of the page, you should see a releases section.
-- Click "Releases".
+- Navigate to the [releases section](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/releases).
 - Click the latest release and download the .zip folder
 - Open file explorer and right-click the folder you just downloaded. 
 - Select the option to 'Extract'.
@@ -82,7 +81,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 ### How to upload sketch via Arduino IDE:
 - Open the 'stable.ino' file located in the sensors/stable folder with Arduino IDE.
 - Plug your CYD board into your laptop using a USB C cable.
-- In the menu at the top, select the port you are using and select your board to be the "ESP32CYD" (replace with precise name)
+- In the menu at the top, select the port you are using and select your board to be the "esp32-2432s028r cyd".
 - Click Tools (top menu) -> Set Partition set to 'Huge APP'.
 - Open Serial Monitor (maginifying glass icon in top right).
 - Set baud rate (right side of the Serial Monitor window) to 115200.
@@ -97,6 +96,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Enter wifi settings username and password defined in code as "IndoorModuleXX".
 - It will create a new hotspot with its name "IndoorModuleXX".
 - You can connect to this new wifi hotspot on your laptop and navigate to '192.168.4.1' to see the data!
+- Only connect with one device at a time.
 - The code also interfaces with our local data polling hub at Loisaida.
 
 ### Physical Mounting and Case:
@@ -112,10 +112,9 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remeber they are numbered 1, 2, 3, 4, ...).
 
 ### Upload via Arduino IDE:
-- The same Arduino libraries setup used for the sensor node will allow you to compile sender.ino
-- Set baud rate to 115200
-- Upload your script
-- You should see the rtc clock sending the time quite frequently
+- The same Arduino libraries setup used for the sensor node will allow you to compile sender.ino.
+- Upload your script.
+- You should see frequent outputs indicating the time is being broadcast.
 - You will likely see zero registered clients even while your sensor nodes are working properly. this is because your nodes only briefly connect for the time then immediately disconnect
 
 Now these devices are full fledged air quality sensors. They will save their indoor air quality measurements to their SD card. Their screen displays real-time temperature, humidity, and pollutant concentration measurements. An example file is included in the sensor folder.
