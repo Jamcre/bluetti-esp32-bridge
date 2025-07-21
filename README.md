@@ -31,7 +31,7 @@ We use the system to understand the pollutant exposure over time for the interns
 
 ## Hardware Setup
 Requirements:
-- The esp32-2432s028r CYD (Mainboard) 
+- The esp32-2432S028R CYD (Mainboard) 
 - The SEN66 sensor with 6 cable JST connector (provided by SENSIRION with sensor purchase)
 - 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD)
 - 4-cable JST cable connector (for CYD)
