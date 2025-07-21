@@ -30,7 +30,7 @@ We use the system to understand the pollutant exposure over time for the interns
 
 ## Hardware Setup
 Requirements:
-- The esp32-2432s028r cyd (Mainboard) 
+- The esp32-2432s028r CYD (Mainboard) 
 - The SEN66 sensor with 6 cable JST connector (provided by SENSIRION with sensor purchase)
 - 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD)
 - 4-cable JST cable connector (for CYD)
@@ -62,14 +62,17 @@ Insert the SD card into the CYD.
 
 ### Download the latest release from Github:
 - You are currently in the the 'github repository'
-- Navigate to the [releases section](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/releases).
-- Click the latest release and download the .zip folder
-- Open file explorer and right-click the folder you just downloaded. 
+- Navigate to the [releases section](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/releases)
+- Click the latest release and download the .zip folder called Source Code
+- Open file explorer and right-click the folder you just downloaded 
 - Select the option to 'Extract'.
 - This will create a new folder with the same name. Inside, there is all of the code you need.
 
-### How to download and set up the esp32 - CYD firmware:
-- From sensors, pull the stable folder and the libraries (Arduino libraries folder) folder.
+### How to download and set up the ESP32 - CYD firmware:
+- Within the extracted 'ecolobrium-2025' folder, navigate to the 'sensor' subfolder. Inside should be a folder labeled 'stable' and a CSV file labeled 'exaple_sd_data'
+- Open a new file manager tab and navigate to the 'Arduino' folder, which should have 'libraries' and 'sketches' subfolders inside of it
+- From the file manager tab that has the 'sensor' folder open, move the subfolder labeled 'stable' inside Arduino's 'sketches' folder
+- Before proceeding, read the NOTE written below to make sure you do not lose any files
 - Replace your old Arduino 'libraries' folder with the one provided @ ecolibrium2025-sensors/_sensor/libraries
 
 *NOTE*: 
@@ -79,16 +82,18 @@ By replacing your old 'libraries' folder with the provided one on Git, you would
 Changes we made to default libraries will be taken care of for you if you pull directly from our Github (changes explained in later section)
 
 ### How to upload sketch via Arduino IDE:
-- Open the 'stable.ino' file located in the sensors/stable folder with Arduino IDE.
+- Open the 'stable' folder to see a .INO file labeled 'stable' alone with other dependent files
+- Open the 'stable.ino' file with Arduino IDE.
 - Plug your CYD board into your laptop using a USB C cable.
-- In the menu at the top, select the port you are using and select your board to be the "esp32-2432s028r cyd".
+- In Arduino IDE, navigate to the 'Select Board' menu at the top, select the port you are using and select your board to be the "ESP32-2432S028R CYD" (you can type CYD into the search bar to get the board)
 - Click Tools (top menu) -> Set Partition set to 'Huge APP'.
 - Open Serial Monitor (maginifying glass icon in top right).
-- Set baud rate (right side of the Serial Monitor window) to 115200.
-- In the stable.ino file, at lines 27 and 30, set the module name and password "IndoorModuleXX" to the desired unique name.
-- if code uploads and the board has power it should run. check the serial monitor output. these outputs attempt to explain what the program is doing.
-- look at the 'Output' in Arduino IDE and record the node's MAC Address, this will be used to set up the RTC hub.
-- your sensor will not work properly until you set up the RTC 'hub'.
+- Set baud rate (a dropdown menu on the right side of the Serial Monitor window) to 115200.
+- In the stable.ino file, at lines 28 and 31, set the module name and password "IndoorModuleXX" to the desired unique name
+- Now, click the Upload button on the top left (arrow icon) to upload the file to one of your CYD's
+- If code uploads and the board has power it should run. Check the serial monitor output. These outputs attempt to explain what the program is doing.
+- After uploading the code, look at the start of the 'Output' window in Arduino IDE and record the node's MAC Address, this will be used to set up the RTC hub.
+- Your sensor will not start recirding data until you set up the RTC 'hub'.
 
 ### How to set up wifi details:
 - You will need another device capable of connecting to wifi for the following steps.
