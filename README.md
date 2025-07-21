@@ -90,7 +90,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Your sensor will not start recording data until you set up the RTC 'hub'.
 
 ### Physical Mounting and Case:
-- CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD.
+- CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD. (link needed)
 - ensure the sensor node is mounted such that water does not infiltrate.
 
 ## Real Time Clock 'Hub'
