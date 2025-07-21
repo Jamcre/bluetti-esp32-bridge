@@ -21,7 +21,7 @@ We use the system to understand the pollutant exposure over time for the interns
 Requirements:
 - The ESP32-2432S028R CYD (Mainboard) 
 - The SEN66 sensor with 6 cable JST connector (provided by SENSIRION with sensor purchase)
-- 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD)
+- 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD) (optional)
 - 4-cable JST cable connector (for CYD)
 - microSD
 - Secondary ESP32 providing the real time clock value via NTP (code in hub folder)
@@ -95,7 +95,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 
 ## Real Time Clock 'Hub'
 ### How to download and set up RTC hub firmware:
-- In the 'ecolibrium-2025' folder you extracted, mavigate to the 'hub' subfolder
+- In the 'ecolibrium-2025' folder you extracted, navigate to the 'hub' subfolder
 - Inside the 'hub' folder, open the subfolder named 'sender' where you should see a C header file labeled 'secrets_example' and a .ino file labeled 'sender'
 - Rename 'secrets_example.h' to 'secrets.h' and open it in a text editor of your choice
 - Add your wifi details to the contents of 'secrets.h' by filling in where the quotes are (do not delete the quotes).
@@ -122,12 +122,10 @@ Changes we made to default libraries will be taken care of for you if you pull d
 
 Now these devices are full fledged air quality sensors. They will save their indoor air quality measurements to their SD card. Their screen displays real-time temperature, humidity, and pollutant concentration measurements. An example file is included in the sensor folder.
 
-*NOTE*: This system was designed specifically to be run at Loisaida Lab. At Loisaida Lab, a seperate system scrapes the generated html and renders the measurements on a live dashboard.
-
 ---
 ### Disclaimers
-- This system has not been tested or designed for cyber-security.
-- This system was designed specifically to be used at Loisiada lab and to interface with a custom local data polling system.
+- This system was not tested or designed for cyber-security.
+- This system was designed specifically to be used at Loisiada lab and to interface with a custom local data polling system which scrapes the generated html and renders the measurements on a live dashboard.
 
 ---
 
