@@ -80,6 +80,8 @@ Changes we made to default libraries will be taken care of for you if you pull d
 
 ### How to upload sketch via Arduino IDE:
 - Open the 'stable.ino' file located in the sensors/stable folder with Arduino IDE.
+- Plug your CYD board into your laptop using a USB C cable.
+- In the menu at the top, select the port you are using and select your board to be the "ESP32CYD" (replace with precise name)
 - Click Tools (top menu) -> Set Partition set to 'Huge APP'.
 - Open Serial Monitor (maginifying glass icon in top right).
 - Set baud rate (right side of the Serial Monitor window) to 115200.
