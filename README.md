@@ -130,17 +130,9 @@ Now these devices are full fledged air quality sensors. They will save their ind
 - This system was designed specifically to be used at Loisiada lab and to interface with a custom local data polling system
 
 ---
-
-
-
-
-
-
-
-
-
+## End of Main README
 ---
-# ESP32-2432S028R Cheap yellow Display (CYD)
+# ESP32-2432S028R Cheap Yellow Display (CYD)
 
 ## Overview
 
@@ -215,11 +207,14 @@ This module is compatible with multiple development environments:
 - [ESP32 Cheap Yellow Display](https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display/blob/main/README.md)
 - [ESP32-WROOM-32 Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf)
 ---
+## End of CYD focused README
+---
 
-## Notes on 'libraries' folder incluiding changes we made
+## Notes on changes made in the 'libraries' folder compared to the default
 
-### LVGL Config changes we made (library is 9.1.0 but config is 9.2.0)
+### LVGL Config Changes:
 ----------
+*NOTE*: The library version is 9.1.0 but the config file is 9.2.0
 * Line 15: set 0 to 1 to enable content
 * Line 79: #define LV_DEF_REFR_PERIOD  30 (originally 33)
 * Line 217: #define LV_USE_LOG 1 (originally 0)
@@ -237,7 +232,7 @@ Memory used by FreeType to cache characters in kilobytes #define LV_FREETYPE_CAC
 - Line 911: #define LV_USE_TFT_ESPI 1 (originally 0)
 - Line 920: #define LV_USE_ILI9341 1 (originally 0)
 
-### TFT_espi User Setup
+### TFT_espi User Setup Changes
 - Line 56: commented out #define ILI9341_DRIVER (generic driver)
 - Line 57: UNcommented #define ILI9341_2_DRIVER (using this driver)
 - Line 98: UNcommented #define TFT_WIDTH  240 // ST7789 240 x 240 and 240 x 320
@@ -254,8 +249,10 @@ Memory used by FreeType to cache characters in kilobytes #define LV_FREETYPE_CAC
 - Line 370: Commented #define SPI_FREQUENCY  27000000
 - Line 372: UNcommented #define SPI_FREQUENCY  55000000
 - Line 384: UNcommented #define USE_HSPI_PORT
-
-### Ventilation Standards
+---
+## End of Library README
+---
+# Ventilation Standards
 Usually standards regulate ventilation or filtration rather than pollutant levels so thats why there isnt much available.
 
 Sources in "_docs":
