@@ -55,7 +55,8 @@ Insert the SD card into the CYD.
 Ensure the RTC is being provided via NTP (us the code in the hub folder)
 
 ## Software Setup
-How to install and set up CYD firmware:
+### Sensor Node
+How to download and set up CYD firmware:
 - Pull the CYD_firmware.ino and the libraries (Arduino libraries folder) folder from github. 
 - Replace your old Arduino 'libraries' folder with the one provided @ ecolibrium2025-sensors/_sensor/libraries
 
@@ -69,6 +70,7 @@ Upload via Arduino IDE:
 - set baud rate to 115200
   set the module name and password "IndoorModuleXX" to the desired unique name
 - if code uploads and the board has power it should run. check the serial monitor output. it should look like ...
+- look at the 'Output' in Arduino IDE and record the node's MAC Address, this will be used to set up the RTC hub
 
 How to set up wifi details:
 - connect to wifi access point 
@@ -80,7 +82,24 @@ How to set up wifi details:
 Physical Mounting and Case:
 - CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD
 
-Now these devices are full fledged air quality sensors.
+### Real Time Clock 'Hub'
+How to download and set up RTC hub firmware:
+- Pull the sender.ino folder from Github. 
+- Rename 'secrets_example.h' to 'secrets.h'
+- Add your wifi details to the contents of 'secrets.h'
+- replace the contents of "sender.ino' to include the MAC address's of your sensor nodes
+- look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remeber they are numbered 1, 2, 3, 4, ...)
+
+Upload via Arduino IDE:
+- The same Arduino libraries setup used for the sensor node will allow you to compile sender.ino
+- set baud rate to 115200
+- upload your script
+- you should see the rtc clock sending the time quite frequently
+- you will likely see zero registered clients even while your sensor nodes are working properly. this is because your nodes only briefly connect for the time then immediately disconnect
+
+Now these devices are full fledged air quality sensors. They will save their indoor air quality measurements to their SD card. An example file is included in the sensor folder.
+
+Note: At Loisaida Lab, a seperate system scrapes the generated html and renders the measurements on a live dashboard.
 
 ---
 
