@@ -105,7 +105,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 
 - Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remember they are numbered 1, 2, 3, 4, ...).
 <picture>
-  <img src="https://imgur.com/LK2398K" alt="Flowers" style="width:auto;">
+  <img src="https://imgur.com/LK2398K.jpeg" alt="Flowers" style="width:auto;">
 </picture>
 
 ### Upload via Arduino IDE:
