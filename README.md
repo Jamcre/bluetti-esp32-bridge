@@ -53,7 +53,7 @@ The JST port on the CYD with IO22 and IO27 pins is used. SDA (data) is set to pi
 
 Insert the SD card into the CYD.
 
-Ensure the RTC is being provided via NTP (us the code in the hub folder)
+Ensure the RTC is being provided via NTP (use the code in the hub folder)
 
 ## Software Setup
 ### Sensor Node
