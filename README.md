@@ -104,6 +104,9 @@ Changes we made to default libraries will be taken care of for you if you pull d
     - replace the comma seperated codes inside the {} in the lines that look like this: "uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};"
 
 - Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remember they are numbered 1, 2, 3, 4, ...).
+<picture>
+  <img src="https://imgur.com/a/xNFPyaO.jpeg" alt="Flowers" style="width:auto;">
+</picture>
 
 ### Upload via Arduino IDE:
 - The same Arduino libraries setup used for the sensor node will allow you to compile sender.ino.
