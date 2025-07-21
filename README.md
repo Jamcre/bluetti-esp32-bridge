@@ -109,10 +109,8 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Rename 'secrets_example.h' to 'secrets.h'.
 - Add your wifi details to the contents of 'secrets.h'.
 - Replace the contents of "sender.ino' to include the MAC address's of your sensor nodes at the top of the file.
-    - To find a board's MAC address, ;ook at the 'Output' in Arduino IDE after uploading a sketch to it.
+    - To find a board's MAC address, look at the 'Output' in Arduino IDE after uploading a sketch to it.
     - replace the comma seperated codes inside the {} in the lines that look like this: "uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};"
-
-
 
 - Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remeber they are numbered 1, 2, 3, 4, ...).
 
@@ -140,18 +138,6 @@ Now these devices are full fledged air quality sensors. They will save their ind
 
 
 ---
-## Other (probably to be sorted into technical docs)
-### Ventilation Standards
-Usually standards regulate ventilation or filtration rather than pollutant levels so thats why there isnt much available.
-
-Sources in "_docs":
-
-ASHRAE Standard 62.1-2013.pdf - perscribes minimum ventilation rate (cfm/person, cfm/ft^2, L/s per person, L/s per m^2)
-
-GRIHA IAQ Standard Limits and Thresholds.jpg - limits proposed by Indian research team. Does not include NOx or Pm4. Considers HCHO but not VOc's as a category. Tentative CO2 recomendation of <1000 ppm
-
-GRIHA Comparison of Regulations and Guidelines.jpg - image includes EPA, OSHA, WHO, and other recomendations.
-
 # ESP32-2432S028R Cheap yellow Display (CYD)
 
 ## Overview
@@ -228,6 +214,8 @@ This module is compatible with multiple development environments:
 - [ESP32-WROOM-32 Datasheet](https://www.espressif.com/sites/default/files/documentation/esp32-wroom-32_datasheet_en.pdf)
 ---
 
+## Notes on 'libraries' folder incluiding changes we made
+
 ### LVGL Config changes we made (library is 9.1.0 but config is 9.2.0)
 ----------
 * Line 15: set 0 to 1 to enable content
@@ -264,3 +252,14 @@ Memory used by FreeType to cache characters in kilobytes #define LV_FREETYPE_CAC
 - Line 370: Commented #define SPI_FREQUENCY  27000000
 - Line 372: UNcommented #define SPI_FREQUENCY  55000000
 - Line 384: UNcommented #define USE_HSPI_PORT
+
+### Ventilation Standards
+Usually standards regulate ventilation or filtration rather than pollutant levels so thats why there isnt much available.
+
+Sources in "_docs":
+
+ASHRAE Standard 62.1-2013.pdf - perscribes minimum ventilation rate (cfm/person, cfm/ft^2, L/s per person, L/s per m^2)
+
+GRIHA IAQ Standard Limits and Thresholds.jpg - limits proposed by Indian research team. Does not include NOx or Pm4. Considers HCHO but not VOc's as a category. Tentative CO2 recomendation of <1000 ppm
+
+GRIHA Comparison of Regulations and Guidelines.jpg - image includes EPA, OSHA, WHO, and other recomendations.
