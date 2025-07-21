@@ -47,6 +47,15 @@ Where each cable goes:
 - Black is unused 
 - Red is unused
 
+| Sensor               | CYD                                   |
+|----------------------|-----------------------------------------------|
+| White                |Red
+| Blue   |  Black                               |
+| Green            | Blue                                      |
+| Yellow              | Yellow                                         |
+| Black     | Unused                                         |
+| Red          | Unused              |
+
 Pins definitions:
 The JST port on the CYD with IO22 and IO27 pins is used. SDA (data) is set to pin 22 SCL (clock) is set to pin 27.
 
