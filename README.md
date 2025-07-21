@@ -62,7 +62,8 @@ Insert the SD card into the CYD.
 
 ### Download the latest release from Github:
 - You are currently in the the 'github repository'
-- On the right side of the page, you should see a releases section.
+- If you scroll up to the top, on the right side of the page, you should see a releases section.
+- Click "Releases".
 - Click the latest release and download the .zip folder
 - Open file explorer and right-click the folder you just downloaded. 
 - Select the option to 'Extract'.
