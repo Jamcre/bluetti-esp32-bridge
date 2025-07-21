@@ -30,12 +30,12 @@ We use the system to understand the pollutant exposure over time for the interns
 
 ## Hardware Setup
 Components:
-- The ESP CYD (Mainboard) 
+- The ESP32 CYD (Mainboard) 
 - The SEN66 sensor 
 - 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD)
 - JST cable connector
 - microSD
-- ESP32 providing the real time clock value via NTP (code in hub folder)
+- Secondary ESP32 providing the real time clock value via NTP (code in hub folder)
 
 Where each cable goes:
 
