@@ -41,14 +41,14 @@ Requirements:
 
 Where each wire goes:
 
-| Sensor               | CYD Pins                                  |
-|----------------------|-----------------------------------------------|
-| White                |3.3 V
-| Blue   |  GND                               |
-| Green            | IO22         |
-| Yellow              | IO27     |
-| Black     | Unconnected                                         |
-| Red          | Unconnected              |
+| Sensor               | CYD Pins               |
+|----------------------|------------------------|
+| White                |3.3 V                   |
+| Blue                 |  GND                   |
+| Green                | IO22                   |
+| Yellow               | IO27                   |
+| Black                | Unconnected            |
+| Red                  | Unconnected            |
 
 Pins definitions:
 The JST port on the CYD with IO22 and IO27 pins is used. SDA (data) is set to pin 22 SCL (clock) is set to pin 27.
@@ -56,43 +56,53 @@ The JST port on the CYD with IO22 and IO27 pins is used. SDA (data) is set to pi
 Insert the SD card into the CYD.
 
 ## Software Setup
-### Sensor Node
-Requirements:
+
+### Pre-requisites
 - Only software requirement beforehand is to have Arduino IDE on your device
 
-### How to download and set up CYD firmware:
-- From sensors, pull the stable folder and the libraries (Arduino libraries folder) folder from github. 
+### Download the latest release from Github:
+- You are currently in the the 'github repository'
+- On the right side of the page, you should see a releases section.
+- Click the latest release and download the .zip folder
+- Open file explorer and right-click the folder you just downloaded. 
+- Select the option to 'Extract'.
+- This will create a new folder with the same name. Inside, there is all of the code you need.
+
+### How to download and set up the esp32 - CYD firmware:
+- From sensors, pull the stable folder and the libraries (Arduino libraries folder) folder.
 - Replace your old Arduino 'libraries' folder with the one provided @ ecolibrium2025-sensors/_sensor/libraries
 - *NOTE*: By replacing your old 'libraries' folder with the provided one on Git, you would lose any libraries that are downloaded on your laptop and but not in this Git folder. We suggest that to recover those libraries, you should either   redownload them or save them elsewhere and move them back into your Arduino 'libraries' folder after downloading this one.
 
 Changes we made to default libraries will be taken care of for you if you pull directly from our Github (changes explained in depth later)
 
 ### How to upload sketch via Arduino IDE:
-- Click Tools (top menu) -> Set Partition set to 'Huge APP'
-- Open Serial Monitor (maginifying glass icon in top right)
-- Set baud rate (right side of the Serial Monitor window) to 115200
- - In the stable.ino file, at lines 27 and 30, set the module name and password "IndoorModuleXX" to the desired unique name
+- Open the 'stable.ino' file located in the sensors/stable folder with Arduino IDE.
+- Click Tools (top menu) -> Set Partition set to 'Huge APP'.
+- Open Serial Monitor (maginifying glass icon in top right).
+- Set baud rate (right side of the Serial Monitor window) to 115200.
+- In the stable.ino file, at lines 27 and 30, set the module name and password "IndoorModuleXX" to the desired unique name.
 - if code uploads and the board has power it should run. check the serial monitor output. these outputs attempt to explain what the program is doing.
-- look at the 'Output' in Arduino IDE and record the node's MAC Address, this will be used to set up the RTC hub
+- look at the 'Output' in Arduino IDE and record the node's MAC Address, this will be used to set up the RTC hub.
 
 ### How to set up wifi details:
-- You will need another device capable of connecting to wifi for the following steps
-- Connect to wifi access point 
-- Enter wifi settings username and password defined in code as "IndoorModuleXX"
-- It will create a new hotspot with its name "IndoorModuleXX"
+- You will need another device capable of connecting to wifi for the following steps.
+- Connect to wifi access point.
+- Enter wifi settings username and password defined in code as "IndoorModuleXX".
+- It will create a new hotspot with its name "IndoorModuleXX".
 - You can connect to this new wifi hotspot on your laptop and navigate to '192.168.4.1' to see the data!
-- The code also interfaces with our local data polling hub at Loisaida
+- The code also interfaces with our local data polling hub at Loisaida.
 
 ### Physical Mounting and Case:
 - CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD
 
 ## Real Time Clock 'Hub'
 ### How to download and set up RTC hub firmware:
-- Pull the sender.ino folder from Github. 
-- Rename 'secrets_example.h' to 'secrets.h'
-- Add your wifi details to the contents of 'secrets.h'
-- Replace the contents of "sender.ino' to include the MAC address's of your sensor nodes
-- Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remeber they are numbered 1, 2, 3, 4, ...)
+- Locate the 'hub' folder in your extracted files from Github.
+- Inside, open the folder named 'sender'. 
+- Rename 'secrets_example.h' to 'secrets.h'.
+- Add your wifi details to the contents of 'secrets.h'.
+- Replace the contents of "sender.ino' to include the MAC address's of your sensor nodes.
+- Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remeber they are numbered 1, 2, 3, 4, ...).
 
 ### Upload via Arduino IDE:
 - The same Arduino libraries setup used for the sensor node will allow you to compile sender.ino
