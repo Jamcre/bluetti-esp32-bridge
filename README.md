@@ -73,7 +73,7 @@ By replacing your old 'libraries' folder with the provided one on Git, you would
 Changes we made to default libraries will be taken care of for you if you pull directly from our Github (changes explained in later section)
 
 ### How to upload sketch via Arduino IDE:
-- Open the 'stable' folder to see a .INO file labeled 'stable' along with other dependent files
+- Open the 'stable' folder to see a .ino file labeled 'stable' along with other dependent files
 - Open the 'stable.ino' file with Arduino IDE.
 - Plug your CYD board into your laptop using a USB C cable.
 - In Arduino IDE, navigate to the 'Select Board' menu at the top, select the port you are using and select your board to be the "ESP32-2432S028R CYD" (you can type CYD into the search bar to get the board)
