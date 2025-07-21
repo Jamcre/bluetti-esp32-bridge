@@ -140,7 +140,7 @@ Now these devices are full fledged air quality sensors. They will save their ind
 
 
 ---
-# ESP32-2432S028R Cheap yellow Display (CYD)
+# ESP32-2432S028R Cheap Yellow Display (CYD)
 
 ## Overview
 
