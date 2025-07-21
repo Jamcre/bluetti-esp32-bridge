@@ -1,4 +1,8 @@
-#include "dataToCSV.h"
+#include "logicSD.h"
+
+//dataToCSV variables
+File myFile;
+bool first_time = 0;
 
 int findMax() {
   File root = SD.open("/");

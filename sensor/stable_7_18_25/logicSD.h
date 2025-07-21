@@ -1,7 +1,7 @@
-#ifndef DATATOCSV_H
-#define DATATOCSV_H
+#ifndef LOGICSD_H
+#define LOGICSD_H
 
-// Inclusions (can probably delete some, not sure if function uses all)
+// Libraries
 #include <Arduino.h>
 #include <FS.h>
 #include <SD.h>
@@ -10,16 +10,10 @@
 #include <esp_now.h>
 #include <WiFi.h>
 #include <time.h>
-#include <TFT_eSPI.h>
-#include <XPT2046_Touchscreen.h>
-#include <lvgl.h>
-#include "ui.h"
 #include "message_struct.h"
 
-// dataToCSV variables used
+// dataToCSV variable used
 extern bool canWriteAgain;
-extern bool first_time;
-extern File myFile;
 
 // Sensor values
 extern float massConcentrationPm1p0;
@@ -43,10 +37,6 @@ extern SensirionI2cSen66 sen66;
 void dataToCSV(int cfn_input);
 
 // Function dependencies
-//void appendFile(fs::FS &fs, const char *path, const char *message);
-//void writeFile(fs::FS &fs, const char *path, const char *message);
-//void deleteFile(fs::FS &fs, const char *path);
-// int findMin();
 void OnDataRecv(const esp_now_recv_info_t *recv_info, const uint8_t *incomingData, int len);
 
 #endif

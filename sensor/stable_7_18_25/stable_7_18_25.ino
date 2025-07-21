@@ -18,7 +18,8 @@
 #include <XPT2046_Touchscreen.h>
 #include <lvgl.h>
 #include "ui.h"
-#include "dataToCSV.h"
+
+#include "logicSD.h"
 #include "message_struct.h"
 
 // ---- Webpage Related values and HTML ------------
@@ -125,11 +126,9 @@ bool canScanAgain = true;
 #define SD_CS 5
 
 ESP32Time rtc(0);
-File myFile;
 int countfn = 0;
 bool canWriteAgain = true;
 unsigned long lastTimeWrittenToSD = 0;
-bool first_time = 0;
 // --------------------------------
 
 // ---- Time Synch related values ----
@@ -390,52 +389,52 @@ void touchscreen_read(lv_indev_t * indev, lv_indev_data_t * data) {
 
 // ---- WiFi Selection and Scanning Functions ----
 
-  void setWiFiToDropdown(lv_event_t * e) {
-    char buf[32];
-    lv_dropdown_get_selected_str(ui_WiFiSelectionScreenDropdown, buf, sizeof(buf));
+void setWiFiToDropdown(lv_event_t * e) {
+  char buf[32];
+  lv_dropdown_get_selected_str(ui_WiFiSelectionScreenDropdown, buf, sizeof(buf));
 
-    savedSSID = String(buf);
-    savedSSID.trim();
-    lv_dropdown_set_text(ui_WiFiSelectionScreenDropdown, savedSSID.c_str());
+  savedSSID = String(buf);
+  savedSSID.trim();
+  lv_dropdown_set_text(ui_WiFiSelectionScreenDropdown, savedSSID.c_str());
 
-    vTaskDelete(scanTaskHandler);
-    vTaskDelay(100);
+  vTaskDelete(scanTaskHandler);
+  vTaskDelay(100);
       
-    canScanAgain = true;
-    lastUpdate = millis();
+  canScanAgain = true;
+  lastUpdate = millis();
 
-  }
+}
 
-  void scanWiFiTask(void *pvParameters) {  
-    vTaskDelay(500); 
-    while (true) {        
-      int n = WiFi.scanNetworks();
-      if (n <= 0 && WiFi.scanComplete()) {
-        lv_dropdown_add_option(ui_WiFiSelectionScreenDropdown, "No networks found", LV_DROPDOWN_POS_LAST);     
-      } else if(WiFi.scanComplete()) {
-        lv_dropdown_clear_options(ui_WiFiSelectionScreenDropdown); 
-        vTaskDelay(5);
-        for (int i = 0; i < n; ++i) {
-          lv_dropdown_add_option(ui_WiFiSelectionScreenDropdown, WiFi.SSID(i).c_str(), LV_DROPDOWN_POS_LAST);
-          vTaskDelay(10);
-        }                  
-      }
+void scanWiFiTask(void *pvParameters) {  
+  vTaskDelay(500); 
+  while (true) {        
+    int n = WiFi.scanNetworks();
+    if (n <= 0 && WiFi.scanComplete()) {
+      lv_dropdown_add_option(ui_WiFiSelectionScreenDropdown, "No networks found", LV_DROPDOWN_POS_LAST);     
+    } else if(WiFi.scanComplete()) {
+      lv_dropdown_clear_options(ui_WiFiSelectionScreenDropdown); 
+      vTaskDelay(5);
+      for (int i = 0; i < n; ++i) {
+        lv_dropdown_add_option(ui_WiFiSelectionScreenDropdown, WiFi.SSID(i).c_str(), LV_DROPDOWN_POS_LAST);
+        vTaskDelay(10);
+      }                  
+    }
 
-      WiFi.scanDelete();
-      vTaskDelay(10000); 
-    } 
-  }
+    WiFi.scanDelete();
+    vTaskDelay(10000); 
+  } 
+}
 
-  void networkScanner(){
-    xTaskCreate(
-      connectToWiFiTask,   // WiFi Task
-      "ConnectToWiFiTask",    
-      4048,                // RAM For task (4KB)
-      NULL,                // Input parameter (SSID)
-      1,                   // Priority (1 = low)
-      &wiFiTaskHandle     
-    );
-  }
+void networkScanner(){
+  xTaskCreate(
+    connectToWiFiTask,   // WiFi Task
+    "ConnectToWiFiTask",    
+    4048,                // RAM For task (4KB)
+    NULL,                // Input parameter (SSID)
+    1,                   // Priority (1 = low)
+    &wiFiTaskHandle     
+  );
+}
 
 // -----------------------------------------------
 
@@ -546,8 +545,7 @@ void printAndBuffer(String message, bool newline=true) {
     Serial.print(message);
     serialBuffer += message;
   }
-
-while (serialBuffer.length() > 2000) {  // Adjust the size as necessary
+  while (serialBuffer.length() > 2000) {  // Adjust the size as necessary
     int nextLineBreak = serialBuffer.indexOf('\n') + 1;
     if (nextLineBreak > 0) {
       serialBuffer = serialBuffer.substring(nextLineBreak);
