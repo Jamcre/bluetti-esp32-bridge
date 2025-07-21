@@ -25,7 +25,7 @@ Requirements:
 - 4-cable JST cable connector (for CYD)
 - microSD
 - Secondary ESP32 providing the real time clock value via NTP (code in hub folder)
-- Type C to compatible laptop port cable
+- Type C to compatible laptop port cable (make sure it supports data transfers)
 - *NOTE*: The provided JST by SENISIRION has exposed wire at the ends. To connect to the 4-cable JST for the CYD, you can use male and female jumper wire connectors to connect the wires.
 
 Where each wire goes:
