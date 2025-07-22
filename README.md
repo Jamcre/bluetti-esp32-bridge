@@ -100,6 +100,12 @@ Changes we made to default libraries will be taken care of for you if you pull d
 </picture>
 
 - In the stable.ino file, at lines 28 and 31, set the module name and password "IndoorModuleXX" to the desired unique name
+<picture>
+  <div align="center">
+    <img src="https://imgur.com/qUyDH40.jpeg" style="width:auto;">
+  </div>
+</picture>
+
 - Now, click the Upload button on the top left (arrow icon) to upload the file to one of your CYD's
 - If code uploads and the board has power it should run Check the serial monitor output. These outputs attempt to explain what the program is doing
 - After uploading the code, look at the start of the 'Output' window in Arduino IDE and record the node's MAC Address, this will be used to set up the RTC hub
