@@ -95,7 +95,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Set baud rate (a dropdown menu on the right side of the Serial Monitor window) to 115200
 <picture>
   <div align="center">
-    <img src="https://imgur.com/DdT4BEW.jpeg" style="width:30%">
+    <img src="https://imgur.com/DdT4BEW.jpeg" style="width:10%">
   </div>
 </picture>
 
