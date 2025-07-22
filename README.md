@@ -114,7 +114,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 </picture>
 
 - Now, click the Upload button on the top left (arrow icon) to upload the file to one of your CYDs (this will take a few moments)
-- If code uploads and the board has power, it should compile. Check the serial monitor output. These outputs attempt to explain what the program is doing
+- <a name="test"></a> If code uploads and the board has power, it should compile. Check the serial monitor output. These outputs attempt to explain what the program is doing
 - After uploading the code, look at the start of the 'Output' window in Arduino IDE and record the node's MAC Address, this will be used to set up the RTC hub
 <picture>
   <div align="center">
