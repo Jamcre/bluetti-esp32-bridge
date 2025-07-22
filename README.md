@@ -1,4 +1,4 @@
-﻿# ecolibrium2025-sensors
+# ecolibrium2025-sensors
 
 ---
 
@@ -33,7 +33,7 @@ Requirements:
 - 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD)
 - 4-cable JST cable connector (for CYD)
 - microSD
-- Secondary ESP32 (not necessarily a CYD) providing the Real Time Clock (RTC) value via NTP (code in hub folder)
+- Secondary ESP32 (does not have to be a CYD) providing the Real Time Clock (RTC) value via NTP (code in hub folder)
 - Type C to compatible laptop port cable (must support data transfers)
 - *NOTE*: The provided JST by SENISIRION has exposed wire at the ends. To connect to the 4-cable JST for the CYD, you can use male and female jumper wire connectors to connect the wires.
 
@@ -53,29 +53,27 @@ These are what the pins on the CYD board look like up close:
   <img src="https://imgur.com/sOC1x62.jpeg" alt="Flowers" style="width:auto;">
 </picture>
 
-Pins definitions:
-The JST port on the CYD with IO22 and IO27 pins is used. SDA (data) is set to pin 22 SCL (clock) is set to pin 27.
+Pin definitions:
+The JST port on the CYD with IO22 and IO27 pins are used. SDA (data) is set to pin 22 and SCL (clock) is set to pin 27.
 
 Insert the SD card into the CYD.
 
-The primary components should look like this once connected:
+Once everything is connected and situated, the components should look like this:
 <picture>
   <img src="https://imgur.com/1J5RoLy.jpeg" alt="Flowers" style="width:auto;">
 </picture>
 
 ## Sensor Software Setup
-This setup has three main parts. First, you will setup your sensor node and get it's MAC address. Then, you will set up your RTC hub with the Mac Address you got. Finally, you will complete the wifi setup.
+This setup has three main parts. First, you will setup your sensor node and get its MAC (Media Access Control) address. Then, you will set up your RTC hub with the Mac Address you received. Finally, you will complete the wifi setup.
 
 ### Prerequisites:
 - Arduino IDE
     - You can download the latest release [here](https://www.arduino.cc/en/software/)
 
 ### Download the latest release from Github:
-- Navigate to the [releases section](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/releases)
-- Click the latest release and download the .zip folder called Source Code
-- Open file explorer and right-click the folder you just downloaded 
-- Select the option to 'Extract'
-- This will create a new folder with the same name. Inside, there is all of the code you need
+- Navigate to the [releases section](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/releases) and download "Source code" zip file from the latest release
+- Open file explorer, right-click the `.zip` you just downloaded, and extract the zip into your destination of choice 
+- This will create a new folder with the same name. You will find all the code needed to run everything inside it
 
 ### How to download and set up the ESP32 - CYD firmware:
 - Within the extracted 'ecolobrium-2025' folder, navigate to the 'sensor' subfolder. Inside should be a folder labeled 'stable' and a CSV file labeled 'exaple_sd_data'
@@ -91,8 +89,8 @@ By replacing your old 'libraries' folder with the provided one on Git, you would
 Changes we made to default libraries will be taken care of for you if you pull directly from our Github (changes explained in later section)
 
 ### How to upload sketch via Arduino IDE:
-- Open the 'stable' folder to see a .ino file labeled 'stable' along with other dependent files
-- Open the 'stable.ino' file with Arduino IDE
+- The contents of the 'stable' folder will contain the `stable.ino` file along with its dependencies
+- Open the `stable.ino` file with Arduino IDE
 - Plug your CYD board into your laptop using a USB C cable
 - In Arduino IDE, navigate to the 'Select Board' menu at the top, select the port you are using and select your board to be the "ESP32-2432S028R CYD" (you can type CYD into the search bar to get the board)
 - Click Tools (top menu) -> Set Partition Scheme to 'Huge APP'
@@ -108,16 +106,22 @@ Changes we made to default libraries will be taken care of for you if you pull d
   </div>
 </picture>
 
-- In the stable.ino file, at lines 28 and 31, set the module name and password "IndoorModuleXX" to the desired unique name
+- In the `stable.ino` file, at lines 28 and 31, set the module name and password "IndoorModuleXX" to the desired unique name
 <picture>
   <div align="center">
     <img src="https://imgur.com/qUyDH40.jpeg" style="width:auto;">
   </div>
 </picture>
 
-- Now, click the Upload button on the top left (arrow icon) to upload the file to one of your CYD's
-- If code uploads and the board has power it should run Check the serial monitor output. These outputs attempt to explain what the program is doing
+- Now, click the Upload button on the top left (arrow icon) to upload the file to one of your CYDs (this will take a few moments)
+- If code uploads and the board has power, it should compile. Check the serial monitor output. These outputs attempt to explain what the program is doing
 - After uploading the code, look at the start of the 'Output' window in Arduino IDE and record the node's MAC Address, this will be used to set up the RTC hub
+<picture>
+  <div align="center">
+    <img src="https://imgur.com/CpjTIR0.jpeg" style="width:auto;">
+  </div>
+</picture>
+
 - Your sensor will not start recording data until you set up the RTC 'hub'
 
 ### Physical Mounting and Case:
@@ -127,10 +131,10 @@ Changes we made to default libraries will be taken care of for you if you pull d
 ## Real Time Clock 'Hub'
 ### How to download and set up RTC hub firmware:
 - In the 'ecolibrium-2025' folder you extracted, mavigate to the 'hub' subfolder
-- Inside the 'hub' folder, open the subfolder named 'sender' where you should see a C header file labeled 'secrets_example' and a .ino file labeled 'sender'
-- Rename 'secrets_example.h' to 'secrets.h' and open it in a text editor of your choice
+- Inside the 'hub' folder, open the subfolder named 'sender' where you should see a header file (.h) labeled `secrets_example.h` and an ino file labeled `sender.ino`
+- Rename 'secrets_example.h' to 'secrets.h' and open it in a text editor of your choice (Notepad works fine if you do not have any other text editors)
 - Add your wifi details to the contents of 'secrets.h' by filling in where the quotes are (do not delete the quotes).
-- Using the MAC address if your CYD that you recorded before from the 'Output' menu, replace the contents of "sender.ino' to include the MAC address's of your sensor nodes at the top of the file.
+- Using the MAC address previously recorded from the 'Output' menu, replace the contents of "sender.ino' to include the MAC addresses of your sensor nodes at the top of the file.
     - To find a board's MAC address, look at the 'Output' in Arduino IDE after uploading a sketch to it.
     - Replace the comma seperated codes inside the {} in the lines that look like this: "uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};" (keep the 0x, only change the last two characters of each part of the address)
 
