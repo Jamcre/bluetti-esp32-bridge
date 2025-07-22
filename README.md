@@ -135,7 +135,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Rename `secrets_example.h` to `secrets.h` and open it in a text editor of your choice (Notepad works fine if you do not have any other text editors)
 - Add your wifi details to the contents of `secrets.h` by filling in where the quotes are (do not delete the quotes).
 - Using the MAC address previously recorded from the 'Output' menu, replace the contents of `sender.ino` to include the MAC addresses of your sensor nodes at the top of the file.
-    - To find a board's MAC address, [check here](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/blob/main/README.md?plain=1#L118)
+    - To find a board's MAC address, [check here](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/blame/main/README.md?plain=1#L118)
     - Replace the comma seperated codes inside the {} in the lines that look like this: "uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};" (keep the 0x, only change the last two characters of each part of the address)
 
 - Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remember they are numbered 1, 2, 3, 4, ...).
