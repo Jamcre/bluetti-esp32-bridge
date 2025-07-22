@@ -1,6 +1,7 @@
 # macOS system files
 .DS_Store
 ._*
+._.*
 
 # Sensitive files
 secrets.h
