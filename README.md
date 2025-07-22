@@ -62,7 +62,6 @@ This setup has three main parts. First, you will setup your sensor node and get 
     - You can download the latest release [here](https://www.arduino.cc/en/software/)
 
 ### Download the latest release from Github:
-- You are currently in the the 'github repository'
 - Navigate to the [releases section](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/releases)
 - Click the latest release and download the .zip folder called Source Code
 - Open file explorer and right-click the folder you just downloaded 
