@@ -94,9 +94,9 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Open Serial Monitor (maginifying glass icon in top right)
 - Set baud rate (a dropdown menu on the right side of the Serial Monitor window) to 115200
 <picture>
-  <center>
-  <img src="https://imgur.com/DdT4BEW.jpeg" style="width:30%">
-  </center>
+  <div align="center">
+    <img src="https://imgur.com/DdT4BEW.jpeg" style="width:30%">
+  </div>
 </picture>
 
 - In the stable.ino file, at lines 28 and 31, set the module name and password "IndoorModuleXX" to the desired unique name
