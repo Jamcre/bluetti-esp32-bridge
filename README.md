@@ -87,15 +87,19 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Plug your CYD board into your laptop using a USB C cable
 - In Arduino IDE, navigate to the 'Select Board' menu at the top, select the port you are using and select your board to be the "ESP32-2432S028R CYD" (you can type CYD into the search bar to get the board)
 - Click Tools (top menu) -> Set Partition Scheme to 'Huge APP'
-<picture>
-  <img src="https://imgur.com/XM4l5Na.jpeg" style="width:auto;">
-</picture>
+<figure>
+  <img src="https://imgur.com/XM4l5Na.jpeg" alt="image of Partition Scheme">
+  <figcaption>(Screenshot shown from MacOS)</figcaption>
+</figure>
 
 - Open Serial Monitor (maginifying glass icon in top right)
 - Set baud rate (a dropdown menu on the right side of the Serial Monitor window) to 115200
-<picture>
-  <center><img src="https://imgur.com/DdT4BEW.jpeg" style="width:40%;"></center>
-</picture>
+<figure>
+  <center>
+  <img src="https://imgur.com/DdT4BEW.jpeg" alt="Setting baud rate" style="width:35%">
+  <figcaption>(Screenshot shown from MacOS)</figcaption>
+  </center>
+</figure>
 
 - In the stable.ino file, at lines 28 and 31, set the module name and password "IndoorModuleXX" to the desired unique name
 - Now, click the Upload button on the top left (arrow icon) to upload the file to one of your CYD's
