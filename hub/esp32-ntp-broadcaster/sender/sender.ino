@@ -3,15 +3,9 @@
 #include "time.h"
 #include <esp_now.h>
 
-// To get you MAC Address you can find it in the Arduino IDE output when you Upload a script
-// Example MAC: 5c:01:3b:4f:8c:80
-
+// MAC: 5c:01:3b:4f:8c:80
 uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};
 uint8_t broadcastAddress2[] = {0x5c, 0x01, 0x3b, 0x4f, 0xbd, 0xd8};
-uint8_t broadcastAddress3[] = {0x5c, 0x01, 0x3b, 0x4f, 0x9f, 0xf0}; //nafis
-uint8_t broadcastAddress4[] = {0x5c, 0x01, 0x3b, 0x4f, 0xf1, 0x78}; //sumit
-uint8_t broadcastAddress5[] = {0x5c, 0x01, 0x3b, 0x4f, 0x19, 0x64}; //gaudi
-uint8_t broadcastAddress6[] = {0x5c, 0x01, 0x3b, 0x4f, 0x8c, 0x80}; // alvee
 
 // NTP Config
 const char* ntpServer = "pool.ntp.org";
@@ -59,7 +53,7 @@ void setup() {
 
   esp_now_register_send_cb(OnDataSent);
 
-  // Register first peer
+  // Register peer
   peerInfo.channel = 0;
   peerInfo.encrypt = false;
   memcpy(peerInfo.peer_addr, broadcastAddress1, 6);
@@ -70,34 +64,6 @@ void setup() {
 
    //register second peer  
   memcpy(peerInfo.peer_addr, broadcastAddress2, 6);
-  if (esp_now_add_peer(&peerInfo) != ESP_OK){
-    Serial.println("Failed to add peer");
-    return;
-  }
-
-  //register third peer  
-  memcpy(peerInfo.peer_addr, broadcastAddress3, 6);
-  if (esp_now_add_peer(&peerInfo) != ESP_OK){
-    Serial.println("Failed to add peer");
-    return;
-  }
-
-  //register fourth peer  
-  memcpy(peerInfo.peer_addr, broadcastAddress4, 6);
-  if (esp_now_add_peer(&peerInfo) != ESP_OK){
-    Serial.println("Failed to add peer");
-    return;
-  }
-
-  //register fifth peer  
-  memcpy(peerInfo.peer_addr, broadcastAddress5, 6);
-  if (esp_now_add_peer(&peerInfo) != ESP_OK){
-    Serial.println("Failed to add peer");
-    return;
-  }
-
-  //register sixth peer  
-  memcpy(peerInfo.peer_addr, broadcastAddress6, 6);
   if (esp_now_add_peer(&peerInfo) != ESP_OK){
     Serial.println("Failed to add peer");
     return;
@@ -134,7 +100,7 @@ void loop() {
   Serial.print("Clients connected: ");
   Serial.println(WiFi.softAPgetStationNum());
 
-  delay(500);  // send every 0.5 seconds
+  delay(2000);  // send every 2 seconds
 }
 
 // ESP-NOW send status callback
