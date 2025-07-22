@@ -132,9 +132,9 @@ Changes we made to default libraries will be taken care of for you if you pull d
 ### How to download and set up RTC hub firmware:
 - In the 'ecolibrium-2025' folder you extracted, mavigate to the 'hub' subfolder
 - Inside the 'hub' folder, open the subfolder named 'sender' where you should see a header file (.h) labeled `secrets_example.h` and an ino file labeled `sender.ino`
-- Rename 'secrets_example.h' to 'secrets.h' and open it in a text editor of your choice (Notepad works fine if you do not have any other text editors)
-- Add your wifi details to the contents of 'secrets.h' by filling in where the quotes are (do not delete the quotes).
-- Using the MAC address previously recorded from the 'Output' menu, replace the contents of "sender.ino' to include the MAC addresses of your sensor nodes at the top of the file.
+- Rename `secrets_example.h` to `secrets.h` and open it in a text editor of your choice (Notepad works fine if you do not have any other text editors)
+- Add your wifi details to the contents of `secrets.h` by filling in where the quotes are (do not delete the quotes).
+- Using the MAC address previously recorded from the 'Output' menu, replace the contents of `sender.ino` to include the MAC addresses of your sensor nodes at the top of the file.
     - To find a board's MAC address, look at the 'Output' in Arduino IDE after uploading a sketch to it.
     - Replace the comma seperated codes inside the {} in the lines that look like this: "uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};" (keep the 0x, only change the last two characters of each part of the address)
 
