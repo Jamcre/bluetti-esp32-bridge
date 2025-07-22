@@ -158,7 +158,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - *NOTE*: Only connect to the CYD with one device at a time
 - The code also interfaces with our local data polling hub at Loisaida
 
-Now these devices are full fledged air quality sensors. They will save their indoor air quality measurements to their SD card. Their screen displays real-time temperature, humidity, and pollutant concentration measurements. An example file is included in the sensor folder.
+The boards should now function as fully fledged air quality sensors. Indoor air quality measurements will be recorded and stored onto the slotted SD card, and the built-in screen will display real-time readings. An example file of what the recorded data looks like is included in the sensor folder named `example_sd_data.csv`
 
 *NOTE*: This system was designed specifically to be run at Loisaida Lab. At Loisaida Lab, a seperate system scrapes the generated html and renders the measurements on a live dashboard.
 
