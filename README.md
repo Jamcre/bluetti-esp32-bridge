@@ -141,7 +141,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Connect to your board's wifi access point
 - Enter wifi settings username and password defined in code as "IndoorModuleXX"
 - It will create a new hotspot with its name "IndoorModuleXX"
-- You can connect to this new wifi hotspot on your laptop and navigate to [192.168.4.1](192.168.4.1) to see the data!
+- You can connect to this new wifi hotspot on your laptop and navigate to [192.168.4.1](https://192.168.4.1) to see the data!
 - Only connect to the CYD with one device at a time
 - The code also interfaces with our local data polling hub at Loisaida
 
