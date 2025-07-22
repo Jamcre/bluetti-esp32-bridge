@@ -136,8 +136,8 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Add your wifi details to the contents of `secrets.h` by filling in where the quotes are (do not delete the quotes).
 - Using the MAC address previously recorded from the 'Output' menu, replace the contents of `sender.ino` to include the MAC addresses of your sensor nodes at the top of the file.
     - To find a board's MAC address, refer to [this section](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/tree/main?tab=readme-ov-file#uploading-sketch--finding-mac-address-via-arduino-ide)
-    - Replace the comma seperated codes inside the {} in the lines that look like this: "uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};" (keep the 0x, only change the last two characters of each part of the address)
-
+    - Replace the comma seperated codes inside the {} in the lines that look like this: 
+    ```uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};``` (keep the `0x`, only change the last two characters of each part of the address)
 - Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remember they are numbered 1, 2, 3, 4, ...).
 <picture>
   <img src="https://imgur.com/LK2398K.jpeg" style="width:auto;">
@@ -154,8 +154,8 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Connect to your board's wifi access point
 - Enter wifi settings username and password defined in code as "IndoorModuleXX"
 - It will create a new hotspot with its name "IndoorModuleXX"
-- You can connect to this new wifi hotspot on your laptop and navigate to [192.168.4.1](https://192.168.4.1) to see the data!
-- Only connect to the CYD with one device at a time
+- You can connect to this new wifi hotspot on your device and navigate to [192.168.4.1](https://192.168.4.1) to monitor the data in real time!
+- *NOTE*: Only connect to the CYD with one device at a time
 - The code also interfaces with our local data polling hub at Loisaida
 
 Now these devices are full fledged air quality sensors. They will save their indoor air quality measurements to their SD card. Their screen displays real-time temperature, humidity, and pollutant concentration measurements. An example file is included in the sensor folder.
