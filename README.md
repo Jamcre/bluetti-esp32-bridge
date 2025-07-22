@@ -3,14 +3,23 @@
 ---
 
 ## Project Goals
-To develop a system for continous monitoring of indoor + outdoor air conditions and quality. We hope to use the gathered data to inform building retrofits to reduce carbon emmisions, harm done to people's health, and energy bills.
+Our goal is to develop a system for continuous monitoring of indoor & outdoor air conditions and quality. We hope to use the data gathered to inform building retrofits aimed at reducing carbon emmissions, improving public health, and reducing energy spending.
 
-### What we measure
-We measure temperature, humidity, carbon dioxide, volitaile organics index, nitric oxide gasses index, and particulate matter. Four categories of particulate matter are measured: PM 1, PM2.5, PM4, and PM10.
+### What We Measure
+- Temperature (in Fahrenheit)
+- Humidity
+- CO<sub>2</sub> (carbon dioxide) levels
+- VOX (volitaile organics index)
+- NOx (nitric oxide gasses index)
+- Particulate Matter
+  - PM 1
+  - PM2.5
+  - PM4
+  - PM10
 
 Sensirion Gas Index: https://github.com/Sensirion/gas-index-algorithm
 
-### How this can inform building retrofits
+### How This Can Inform Building Retrofits
 A "tight" building envelope (minimizing natural infiltration) often reduces the amount of active heating and cooling needed. However, this also leads to worse air quality since less outdoor air enters to replace pollutatns generated indoors by occupants and other sources explain. Our system can show these phenomena in real time and help diagnose the needs of a room.
 
 We use the system to understand the pollutant exposure over time for the interns working at Loisaida. When the indoor air quality is too low, we can open a door and use a fan to circulate fresh air into the room. This quantifies and mitigates pollutant exposure.
@@ -25,7 +34,7 @@ Requirements:
 - 4-cable JST cable connector (for CYD)
 - microSD
 - Secondary ESP32 (not necessarily a CYD) providing the Real Time Clock (RTC) value via NTP (code in hub folder)
-- Type C to compatible laptop port cable
+- Type C to compatible laptop port cable (must support data transfers)
 - *NOTE*: The provided JST by SENISIRION has exposed wire at the ends. To connect to the 4-cable JST for the CYD, you can use male and female jumper wire connectors to connect the wires.
 
 Where each wire goes:
