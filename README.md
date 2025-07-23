@@ -49,8 +49,9 @@ Where each wire goes:
 | Red                  | Unconnected            |
 
 These are what the pins on the CYD board look like up close:
+
 <picture>
-  <img src="https://imgur.com/sOC1x62.jpeg" alt="Flowers" style="width:auto;">
+  <img src="https://imgur.com/sOC1x62.jpeg" style="width:auto;">
 </picture>
 
 Pin definitions:
@@ -59,8 +60,9 @@ The JST port on the CYD with IO22 and IO27 pins are used. SDA (data) is set to p
 Insert the SD card into the CYD.
 
 Once everything is connected and situated, the components should look like this:
+
 <picture>
-  <img src="https://imgur.com/1J5RoLy.jpeg" alt="Flowers" style="width:auto;">
+  <img src="https://imgur.com/1J5RoLy.jpeg" style="width:auto;">
 </picture>
 
 ## Sensor Software Setup
@@ -72,7 +74,15 @@ This setup has three main parts. First, you will setup your sensor node and get 
 
 ### Download the latest release from Github:
 - Navigate to the [releases section](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/releases) and download the "Source code" zip file from the latest release
-- Open file explorer, right-click the `.zip` you just downloaded, and extract the zip into your destination of choice 
+- Open file explorer, right-click the `.zip` you just downloaded, and extract the zip into your destination of choice
+
+<picture>
+  <div align="center">
+  <img src="https://imgur.com/lcfGY0Q.jpeg" style="width:auto;">
+  <img src="https://imgur.com/rlCR3fE.jpeg" style="width:auto;">
+  </div>
+</picture>
+
 - This will create a new folder with the same name. You will find all the code needed to run everything inside it
 
 ### How to download and set up the ESP32 - CYD firmware:
@@ -94,12 +104,14 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Plug your CYD board into your laptop using a USB C cable
 - In Arduino IDE, navigate to the 'Select Board' menu at the top, select the port you are using and select your board to be the "ESP32-2432S028R CYD" (you can type CYD into the search bar to get the board)
 - Click Tools (top menu) -> Set Partition Scheme to 'Huge APP'
+
 <picture>
   <img src="https://imgur.com/XM4l5Na.jpeg" style="width:auto;">
 </picture>
 
 - Open Serial Monitor (maginifying glass icon in top right)
 - Set baud rate (a dropdown menu on the right side of the Serial Monitor window) to 115200
+
 <picture>
   <div align="center">
     <img src="https://imgur.com/DdT4BEW.jpeg" style="width:25%">
@@ -107,6 +119,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 </picture>
 
 - In the `stable.ino` file, at lines 28 and 31, set the module name and password "IndoorModuleXX" to the desired unique name
+
 <picture>
   <div align="center">
     <img src="https://imgur.com/qUyDH40.jpeg" style="width:auto;">
@@ -116,6 +129,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Now, click the Upload button on the top left (arrow icon) to upload the file to one of your CYDs (this will take a few moments)
 - If code uploads and the board has power, it should compile. Check the serial monitor output. These outputs attempt to explain what the program is doing
 - After uploading the code, look at the start of the 'Output' window in Arduino IDE and record the node's MAC Address, this will be used to set up the RTC hub
+
 <picture>
   <div align="center">
     <img src="https://imgur.com/CpjTIR0.jpeg" style="width:auto;">
@@ -145,8 +159,11 @@ Changes we made to default libraries will be taken care of for you if you pull d
     (keep the `0x`, only change the last two characters of each part of the address)
 
 - Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remember they are numbered 1, 2, 3, 4, ...).
+
 <picture>
-  <img src="https://imgur.com/LK2398K.jpeg" style="width:auto;">
+  <div align="center">
+    <img src="https://imgur.com/LK2398K.jpeg" style="width:auto;">
+  </div>
 </picture>
 
 ### Upload via Arduino IDE:
