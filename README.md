@@ -90,7 +90,7 @@ This setup has three main parts. First, you will setup your sensor node and get 
 - This will create a new folder with the same name. You will find all the code needed to run everything inside it
 
 ### How to download and set up the ESP32 - CYD firmware:
-- Within the extracted 'ecolobrium-2025' folder, navigate to the 'sensor' subfolder. Inside should be a folder labeled 'stable' and a CSV file labeled 'exaple_sd_data'
+- Within the extracted 'ecolobrium-2025' folder, navigate to the 'sensor' subfolder. Inside should be a folder labeled 'stable' and a CSV file labeled 'example_sd_data'
 - Open a new file manager tab and navigate to the 'Arduino' folder, which should have 'libraries' and 'sketches' subfolders inside of it
 - From the file manager tab that has the 'sensor' folder open, move the subfolder labeled 'stable' inside Arduino's 'sketches' folder
 - Before proceeding, read the NOTE written below to make sure you do not lose any files
