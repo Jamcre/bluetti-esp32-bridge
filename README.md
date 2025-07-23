@@ -35,7 +35,7 @@ Requirements:
 - microSD
 - Secondary ESP32 (does not have to be a CYD) providing the Real Time Clock (RTC) value via NTP (code in hub folder)
 - Type C to compatible laptop port cable (must support data transfers)
-- *NOTE*: The provided JST by SENISIRION has exposed wire at the ends. To connect to the 4-cable JST for the CYD, you can use male and female jumper wire connectors to connect the wires.
+- ***NOTE***: The provided JST by SENISIRION has exposed wire at the ends. To connect to the 4-cable JST for the CYD, you can use male and female jumper wire connectors to connect the wires.
 
 Where each wire goes:
 
@@ -92,11 +92,20 @@ This setup has three main parts. First, you will setup your sensor node and get 
 ### How to download and set up the ESP32 - CYD firmware:
 - Within the extracted 'ecolobrium-2025' folder, navigate to the 'sensor' subfolder. Inside should be a folder labeled 'stable' and a CSV file labeled 'example_sd_data'
 - Open a new file manager tab and navigate to the 'Arduino' folder, which should have 'libraries' and 'sketches' subfolders inside of it
+  - If you are unsure how to find it, navigate to Preferences (<kbd>Ctrl</kbd> + <kbd>,</kbd> / <kbd>&#8984; Cmd</kbd> + <kbd>,</kbd>)
+  - This will open the preferences setting and show your sketchbook location. Clicking 'browse' will reveal it in your file explorer
+
+  <picture>
+  <div align="center">
+    <img src="https://imgur.com/aOKDMxw.jpeg" style="width:auto;">
+  </div>
+</picture>
+
 - From the file manager tab that has the 'sensor' folder open, move the subfolder labeled 'stable' inside Arduino's 'sketches' folder
 - Before proceeding, read the NOTE written below to make sure you do not lose any files
 - Replace your old Arduino 'libraries' folder with the one provided @ ecolibrium2025-sensors/_sensor/libraries
 
-*NOTE*: 
+***NOTE***: 
 
 By replacing your old 'libraries' folder with the provided one on Git, you would lose any libraries that are downloaded on your laptop and but not in this Git folder. We suggest that to recover those libraries, you should either   redownload them or save them elsewhere and move them back into your Arduino 'libraries' folder after downloading this one.
 
@@ -182,12 +191,12 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Enter wifi settings username and password defined in code as "IndoorModuleXX"
 - It will create a new hotspot with its name "IndoorModuleXX"
 - You can connect to this new wifi hotspot on your device and navigate to [192.168.4.1](https://192.168.4.1) to monitor the data in real time!
-- *NOTE*: Only connect to the CYD with one device at a time
+- ***NOTE***: Only connect to the CYD with one device at a time
 - The code also interfaces with our local data polling hub at Loisaida
 
 The boards should now function as fully fledged air quality sensors. Indoor air quality measurements will be recorded and stored onto the slotted SD card, and the built-in screen will display real-time readings. An example file of what the recorded data looks like is included in the sensor folder named `example_sd_data.csv`
 
-*NOTE*: This system was designed specifically to be run at Loisaida Lab. At Loisaida Lab, a seperate system scrapes the generated html and renders the measurements on a live dashboard.
+***NOTE***: This system was designed specifically to be run at Loisaida Lab. At Loisaida Lab, a seperate system scrapes the generated html and renders the measurements on a live dashboard.
 
 ---
 ### Disclaimers
@@ -279,7 +288,7 @@ This module is compatible with multiple development environments:
 
 ### LVGL Config Changes:
 ----------
-*NOTE*: The library version is 9.1.0 but the config file is 9.2.0
+***NOTE***: The library version is 9.1.0 but the config file is 9.2.0
 * Line 15: set 0 to 1 to enable content
 * Line 79: #define LV_DEF_REFR_PERIOD  30 (originally 33)
 * Line 217: #define LV_USE_LOG 1 (originally 0)
