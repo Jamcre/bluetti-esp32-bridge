@@ -79,6 +79,7 @@ This setup has three main parts. First, you will setup your sensor node and get 
 <picture>
   <div align="center">
   <img src="https://imgur.com/lcfGY0Q.jpeg" style="width:auto;">
+    
   <img src="https://imgur.com/rlCR3fE.jpeg" style="width:auto;">
   </div>
 </picture>
