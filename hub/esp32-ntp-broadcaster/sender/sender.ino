@@ -3,19 +3,29 @@
 #include "time.h"
 #include <esp_now.h>
 
+// Peer MAC Addresses
 uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};
 uint8_t broadcastAddress2[] = {0x5c, 0x01, 0x3b, 0x4f, 0xbd, 0xd8};
-uint8_t broadcastAddress3[] = {0x5c, 0x01, 0x3b, 0x4f, 0x9f, 0xf0}; //nafis
-uint8_t broadcastAddress4[] = {0x5c, 0x01, 0x3b, 0x4f, 0xf1, 0x78}; //sumit
-uint8_t broadcastAddress5[] = {0x5c, 0x01, 0x3b, 0x4f, 0x19, 0x64}; //gaudi
+uint8_t broadcastAddress3[] = {0x5c, 0x01, 0x3b, 0x4f, 0x9f, 0xf0}; // nafis
+uint8_t broadcastAddress4[] = {0x5c, 0x01, 0x3b, 0x4f, 0xf1, 0x78}; // sumit
+uint8_t broadcastAddress5[] = {0x5c, 0x01, 0x3b, 0x4f, 0x19, 0x64}; // gaudi
 uint8_t broadcastAddress6[] = {0x5c, 0x01, 0x3b, 0x4f, 0x8c, 0x80}; // alviee
+
+uint8_t* peerAddresses[] = {
+  broadcastAddress1,
+  broadcastAddress2,
+  broadcastAddress3,
+  broadcastAddress4,
+  broadcastAddress5,
+  broadcastAddress6
+};
 
 // NTP Config
 const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = -18000;      // EST
 const int   daylightOffset_sec = 3600;   // DST
 
-// Structured message format
+// Time Struct
 typedef struct message_struct {
   int year;
   int month;
@@ -26,17 +36,33 @@ typedef struct message_struct {
 } message_struct;
 
 message_struct msg;
-esp_now_peer_info_t peerInfo;
+
+// Register all peers
+void addPeer(uint8_t *address) {
+  esp_now_peer_info_t pInfo = {};
+  memcpy(pInfo.peer_addr, address, 6);
+  pInfo.channel = 0;
+  pInfo.encrypt = false;
+
+  if (esp_now_add_peer(&pInfo) != ESP_OK) {
+    Serial.print("Failed to add peer: ");
+    for (int i = 0; i < 6; i++) {
+      Serial.printf("%02x", address[i]);
+      if (i < 5) Serial.print(":");
+    }
+    Serial.println();
+  }
+}
 
 void setup() {
   Serial.begin(115200);
 
-  // Dual Mode Setup
+  // Dual Mode: AP + Station
   WiFi.mode(WIFI_AP_STA);
-  WiFi.softAP(ap_ssid, ap_password);      // Start AP
-  WiFi.begin(sta_ssid, sta_password);     // Connect to external WiFi
+  WiFi.softAP(ap_ssid, ap_password);       // Start AP
+  WiFi.begin(sta_ssid, sta_password);      // Connect to WiFi
 
-  // Wait for connection
+  // Wait for WiFi connection
   Serial.print("Connecting to ");
   Serial.println(sta_ssid);
   while (WiFi.status() != WL_CONNECTED) {
@@ -54,67 +80,46 @@ void setup() {
     return;
   }
 
-  esp_now_register_send_cb(OnDataSent);
+  // Optional: Register callback if you want async logging
+  // esp_now_register_send_cb(OnDataSent);
 
-  // Register peer
-  peerInfo.channel = 0;
-  peerInfo.encrypt = false;
-  memcpy(peerInfo.peer_addr, broadcastAddress1, 6);
-  if (esp_now_add_peer(&peerInfo) != ESP_OK) {
-    Serial.println("Failed to add peer");
-    return;
+  // Add all peers
+  for (auto address : peerAddresses) {
+    addPeer(address);
   }
-
-   //register second peer  
-  memcpy(peerInfo.peer_addr, broadcastAddress2, 6);
-  if (esp_now_add_peer(&peerInfo) != ESP_OK){
-    Serial.println("Failed to add peer");
-    return;
-  }
-
 }
 
 void loop() {
   struct tm timeinfo;
-  if (getLocalTime(&timeinfo)) {
-    msg.year   = timeinfo.tm_year + 1900;
-    msg.month  = timeinfo.tm_mon + 1;
-    msg.day    = timeinfo.tm_mday;
-    msg.hour   = timeinfo.tm_hour;
-    msg.minute = timeinfo.tm_min;
-    msg.second = timeinfo.tm_sec;
-  } else {
+  if (!getLocalTime(&timeinfo)) {
     Serial.println("Failed to get local time");
     return;
   }
 
-  // Send the message
-  esp_err_t result = esp_now_send(0, (uint8_t*)&msg, sizeof(msg));
+  // Fill message struct
+  msg.year   = timeinfo.tm_year + 1900;
+  msg.month  = timeinfo.tm_mon + 1;
+  msg.day    = timeinfo.tm_mday;
+  msg.hour   = timeinfo.tm_hour;
+  msg.minute = timeinfo.tm_min;
+  msg.second = timeinfo.tm_sec;
 
-  if (result == ESP_OK) {
-    Serial.printf("Sent time: %04d-%02d-%02d %02d:%02d:%02d\n",
-                  msg.year, msg.month, msg.day,
-                  msg.hour, msg.minute, msg.second);
-  } else {
-    Serial.println("Error sending the data");
+  // Send to each peer
+  for (auto address : peerAddresses) {
+    esp_err_t result = esp_now_send(address, (uint8_t*)&msg, sizeof(msg));
+    char macStr[18];
+    snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
+             address[0], address[1], address[2], address[3], address[4], address[5]);
+
+    if (result == ESP_OK) {
+      Serial.printf("Sent to %s: %04d-%02d-%02d %02d:%02d:%02d\n",
+                    macStr, msg.year, msg.month, msg.day,
+                    msg.hour, msg.minute, msg.second);
+    } else {
+      Serial.printf("Failed to send to %s\n", macStr);
+    }
   }
 
-  // Print number of Soft AP clients
-  Serial.print("Clients connected: ");
-  Serial.println(WiFi.softAPgetStationNum());
-
-  delay(2000);  // send every 2 seconds
+  Serial.println("|-------------------------------------------------|");
+  delay(1500); // Send every 1.5 seconds
 }
-
-// ESP-NOW send status callback
-void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
-  char macStr[18];
-  snprintf(macStr, sizeof(macStr), "%02x:%02x:%02x:%02x:%02x:%02x",
-           mac_addr[0], mac_addr[1], mac_addr[2],
-           mac_addr[3], mac_addr[4], mac_addr[5]);
-  Serial.print("Packet to: ");
-  Serial.print(macStr);
-  Serial.print(" \t");
-  
-}
-
