@@ -94,7 +94,6 @@ This setup has three main parts. First, you will setup your sensor node and get 
 - Open a new file manager tab and navigate to the 'Arduino' folder, which should have 'libraries' and 'sketches' subfolders inside of it
   - If you are unsure how to find it, navigate to Preferences (<kbd>Ctrl</kbd> + <kbd>,</kbd> / <kbd>&#8984; Cmd</kbd> + <kbd>,</kbd>)
   - This will open the preferences setting and show your sketchbook location. Clicking 'browse' will reveal it in your file explorer
-  
   <picture>
     <div align="center">
       <img src="https://imgur.com/aOKDMxw.jpeg"   style="width:auto;">
