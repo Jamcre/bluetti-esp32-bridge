@@ -24,11 +24,13 @@
 
 // ---- Webpage Related values and HTML ------------
 
+const char* SENSOR_HOST_NAME = "IAQv2_11";
+
 //const char *soft_ap_ssid = "IndoorModuleLab12"; //change according to each module'sIndoorModuleLabXX
-const char *soft_ap_ssid = "IndoorModuleLab14"; //change according to each module'sIndoorModuleLabXX
+const char *soft_ap_ssid = "IAQv2_11"; //change according to each module'sIndoorModuleLabXX
 
 //essentially the ESP 32 creates it's own Wifi, this is what shows up as the "hotspot id" 
-const char *soft_ap_password = "IndoorModuleLab14";  //and this is the password
+const char *soft_ap_password = "IAQv2_11";  //and this is the password
 
 AsyncWebServer server(80);
 String serialBuffer = "";
@@ -864,7 +866,12 @@ void setup() {
 // ----- Sensor Setup -----
   Wire.begin(SDA_PIN, SCL_PIN);
   sen66.begin(Wire, SEN66_I2C_ADDR_6B);
+
+  //try set host name
+  WiFi.setHostname(SENSOR_HOST_NAME);
+
   WiFi.mode(WIFI_STA);  // Set device as Wi-Fi Station
+
   error = sen66.deviceReset();
   if (error != NO_ERROR) {
     Serial.print("Error trying to execute deviceReset(): ");
