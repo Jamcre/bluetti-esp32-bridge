@@ -102,7 +102,7 @@ This setup has three main parts. First, you will setup your sensor node and get 
 
 - From the file manager tab that has the 'sensor' folder open, move the subfolder labeled 'stable' inside Arduino's 'sketches' folder
 - Before proceeding, read the NOTE written below to make sure you do not lose any files
-- Replace your old Arduino 'libraries' folder with the one provided @ ecolibrium2025-sensors/_sensor/libraries
+- Replace your old Arduino 'libraries' folder with the one provided @ [ecolibrium2025-sensors/sensor/libraries](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/tree/main/sensor/libraries)
 
 ***NOTE***: 
 
