@@ -30,7 +30,7 @@ We use the system to understand the pollutant exposure over time for the interns
 Requirements:
 - ESP32-2432S028R CYD (Mainboard) 
 - SEN66 sensor with 6 cable JST connector (provided by SENSIRION with sensor purchase)
-- 3D printed case (CAD file available in Github @ ecolibrium2025-sensors/_hardware/_CAD)
+- 3D printed case (CAD file available in Github @ [ecolibrium2025-sensors/_hardware/_CAD](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/tree/main/_hardware/_CAD))
 - 4-cable JST cable connector (for CYD)
 - microSD
 - Secondary ESP32 (does not have to be a CYD) providing the Real Time Clock (RTC) value via NTP (code in hub folder)
@@ -151,7 +151,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Your sensor will not start recording data until you set up the RTC 'hub'
 
 ### Physical Mounting and Case:
-- CAD files located in repo @ ecolibrium2025-sensors/_hardware/CAD.
+- CAD files located in repo @ [ecolibrium2025-sensors/_hardware/_CAD](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/tree/main/_hardware/_CAD))
 - Ensure the sensor node is mounted such that water does not infiltrate.
 
 ## Real Time Clock 'Hub'
