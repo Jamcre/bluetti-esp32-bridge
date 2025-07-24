@@ -22,7 +22,7 @@
 #include "logicSD.h"
 #include "message_struct.h"
 
-// ---- Webpage Related values and HTML ------------
+// ---- Webpage Related Values and HTML ------------
 
 const char* SENSOR_HOST_NAME = "IAQv2_11";
 

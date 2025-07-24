@@ -130,11 +130,11 @@ Changes we made to default libraries will be taken care of for you if you pull d
   </div>
 </picture>
 
-- In the `stable.ino` file, at lines 28 and 31, set the module name and password "IndoorModuleXX" to the desired unique name
+- In the `stable.ino` file, under the "Webpage Related Values and HTML" section, change the `SENSOR_HOST_NAME`, `soft_ap_ssid`, and `soft_ap_password`, to your desired host name, ssid, and password
 
 <picture>
   <div align="center">
-    <img src="https://imgur.com/qUyDH40.jpeg" style="width:auto;">
+    <img src="https://imgur.com/MO7gQz2.jpeg" style="width:auto;">
   </div>
 </picture>
 
