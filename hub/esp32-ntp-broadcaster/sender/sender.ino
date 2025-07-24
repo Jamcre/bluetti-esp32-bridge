@@ -10,6 +10,9 @@ uint8_t broadcastAddress3[] = {0x5c, 0x01, 0x3b, 0x4f, 0x9f, 0xf0}; // nafis
 uint8_t broadcastAddress4[] = {0x5c, 0x01, 0x3b, 0x4f, 0xf1, 0x78}; // sumit
 uint8_t broadcastAddress5[] = {0x5c, 0x01, 0x3b, 0x4f, 0x19, 0x64}; // gaudi
 uint8_t broadcastAddress6[] = {0x5c, 0x01, 0x3b, 0x4f, 0x8c, 0x80}; // alviee
+uint8_t broadcastAddress7[] = {0x5c, 0x01, 0x3b, 0x50, 0x09, 0x34}; // IAQv2_01
+uint8_t broadcastAddress8[] = {0x5c, 0x01, 0x3b, 0x50, 0xeb, 0x40}; // IAQv2_02
+uint8_t broadcastAddress9[] = {0x5c, 0x01, 0x3b, 0x4f, 0x7e, 0xc8}; // IAQv2_03
 
 uint8_t* peerAddresses[] = {
   broadcastAddress1,
@@ -17,7 +20,10 @@ uint8_t* peerAddresses[] = {
   broadcastAddress3,
   broadcastAddress4,
   broadcastAddress5,
-  broadcastAddress6
+  broadcastAddress6,
+  broadcastAddress7,
+  broadcastAddress8,
+  broadcastAddress9
 };
 
 // NTP Config
