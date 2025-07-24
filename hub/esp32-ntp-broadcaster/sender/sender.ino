@@ -13,6 +13,8 @@ uint8_t broadcastAddress6[] = {0x5c, 0x01, 0x3b, 0x4f, 0x8c, 0x80}; // alviee
 uint8_t broadcastAddress7[] = {0x5c, 0x01, 0x3b, 0x50, 0x09, 0x34}; // IAQv2_01
 uint8_t broadcastAddress8[] = {0x5c, 0x01, 0x3b, 0x50, 0xeb, 0x40}; // IAQv2_02
 uint8_t broadcastAddress9[] = {0x5c, 0x01, 0x3b, 0x4f, 0x7e, 0xc8}; // IAQv2_03
+uint8_t broadcastAddress10[] = {0x5c, 0x01, 0x3b, 0x50, 0xe6, 0x98}; // Permanent Time Board
+
 
 uint8_t* peerAddresses[] = {
   broadcastAddress1,
@@ -23,7 +25,8 @@ uint8_t* peerAddresses[] = {
   broadcastAddress6,
   broadcastAddress7,
   broadcastAddress8,
-  broadcastAddress9
+  broadcastAddress9,
+  broadcastAddress10
 };
 
 // NTP Config
