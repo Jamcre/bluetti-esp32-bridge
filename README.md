@@ -102,7 +102,7 @@ This setup has three main parts. First, you will setup your sensor node and get 
 
 - From the file manager tab that has the 'sensor' folder open, move the subfolder labeled 'stable' inside Arduino's 'sketches' folder
 - Before proceeding, read the NOTE written below to make sure you do not lose any files
-- Replace your old Arduino 'libraries' folder with the one provided @ ecolibrium2025-sensors/_sensor/libraries
+- Replace your old Arduino 'libraries' folder with the one provided @ [ecolibrium2025-sensors/sensor/libraries](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/tree/main/sensor/libraries)
 
 ***NOTE***: 
 
@@ -130,11 +130,11 @@ Changes we made to default libraries will be taken care of for you if you pull d
   </div>
 </picture>
 
-- In the `stable.ino` file, at lines 28 and 31, set the module name and password "IndoorModuleXX" to the desired unique name
+- In the `stable.ino` file, under the "Webpage Related Values and HTML" section, change the `SENSOR_HOST_NAME`, `soft_ap_ssid`, and `soft_ap_password`, to your desired host name, ssid, and password
 
 <picture>
   <div align="center">
-    <img src="https://imgur.com/qUyDH40.jpeg" style="width:auto;">
+    <img src="https://imgur.com/MO7gQz2.jpeg" style="width:auto;">
   </div>
 </picture>
 
@@ -165,9 +165,7 @@ Changes we made to default libraries will be taken care of for you if you pull d
 - Using the MAC address previously recorded from the 'Output' menu, replace the contents of `sender.ino` to include the MAC addresses of your sensor nodes at the top of the file.
     - To find a board's MAC address, refer to [this section](https://github.com/ecolibrium-nyc/ecolibrium2025-sensors/tree/main?tab=readme-ov-file#uploading-sketch--finding-mac-address-via-arduino-ide)
     - Replace the comma seperated codes inside the {} in the lines that look like this:
-    `
-    uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};
-    `
+    `uint8_t broadcastAddress1[] = {0x5c, 0x01, 0x3b, 0x51, 0x2e, 0x64};`
     (keep the `0x`, only change the last two characters of each part of the address)
 
 - Look for the repeated logic to register peers in void setup. ensure all of your nodes are registered by copying this logic including your broadcastAddress' (remember they are numbered 1, 2, 3, 4, ...).
