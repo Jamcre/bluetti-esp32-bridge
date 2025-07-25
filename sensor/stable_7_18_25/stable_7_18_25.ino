@@ -24,13 +24,15 @@
 
 // ---- Webpage Related values and HTML ------------
 
-const char* SENSOR_HOST_NAME = "IAQv2_11";
+const char* SENSOR_HOST_NAME = "IAQv2_01";
 
-//const char *soft_ap_ssid = "IndoorModuleLab12"; //change according to each module'sIndoorModuleLabXX
-const char *soft_ap_ssid = "IAQv2_11"; //change according to each module'sIndoorModuleLabXX
+//const char *soft_ap_ssid = "IndoorModuleLab12"; //change according to each module's IndoorModuleLabXX (naming convention REQUIRED to work @Loisiada Lab)
+const char *soft_ap_ssid = "IndoorModuleLab20"; //change according to each module's IndoorModuleLabXX
 
 //essentially the ESP 32 creates it's own Wifi, this is what shows up as the "hotspot id" 
-const char *soft_ap_password = "IAQv2_11";  //and this is the password
+const char *soft_ap_password = "IndoorModuleLab20";  //and this is the password
+
+// Remember to change in the HTML too "Ecolibrium IAQ XX"
 
 AsyncWebServer server(80);
 String serialBuffer = "";
@@ -675,7 +677,7 @@ const char index_html[] PROGMEM = R"rawliteral(
   </style>
 </head>
 <body>
-  <h2>Ecolibrium IAQ 14</h2>
+  <h2>Ecolibrium IAQ 20</h2>
   <p>
     <i class="fas fa-smog" style="color:#000000;"></i> 
     <span class="dht-labels">PM 1.0</span>
@@ -862,6 +864,7 @@ void setup() {
     delay(100);
   }
 // ----------------------
+Serial.print("Begin setup");
 
 // ----- Sensor Setup -----
   Wire.begin(SDA_PIN, SCL_PIN);
@@ -931,14 +934,12 @@ void setup() {
 
   if (!SD.begin()) {
     Serial.println("Card Mount Failed");
-    return;
   }
 
   uint8_t cardType = SD.cardType();
 
   if (cardType == CARD_NONE) {
     Serial.println("No SD card attached");
-    return;
   }
 
   Serial.print("SD Card Type: ");
