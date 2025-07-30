@@ -8,3 +8,7 @@ secrets.h
 # Local hardware and libraries folders
 hardware/
 libraries/
+
+# PlatformIO and VSCode
+.pio/
+.vscode/
