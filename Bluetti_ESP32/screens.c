@@ -110,7 +110,7 @@ void create_screen_main() {
             lv_obj_set_style_flex_cross_place(obj, LV_FLEX_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_obj_set_style_flex_track_place(obj, LV_FLEX_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-            lv_label_set_text(obj, "92"); //to be changed to variable
+            lv_label_set_text(obj, "67"); //to be changed to variable
         }
         {
             lv_obj_t *obj = lv_label_create(parent_obj);
