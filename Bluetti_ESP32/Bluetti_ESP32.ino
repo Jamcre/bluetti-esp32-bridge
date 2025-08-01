@@ -3,6 +3,7 @@
 #include "MQTT.h"
 #include "config.h"
 #include "display.h"
+#include "james.h"
 
 // #include <Arduino.h>
 // #include <stdio.h>
@@ -343,10 +344,20 @@ static void arc_dimmer_event_handler(lv_event_t *e) {
 
 //Requires LVGL 9.0+
 void loop() {
-  const char* batPercent = lv_label_get_text(objects.obj2);
-  int8_t batPercentNum = atoi(batPercent);
+  const char *jameson = getJames();
+  Serial.printf("this is the battery percent: %s\n", jameson);
+  delay(3000);
+  if (getJames() != NULL){
+    lv_label_set_text(objects.obj2, jameson);
+  }
+  const char *batPercent = lv_label_get_text(objects.obj2);
+  Serial.printf("if this says 'N/A' this is a default: %s\n", batPercent);
+  delay(3000);
 
-  updateArc(batPercentNum);
+  if (batPercent != "N/A"){
+    int8_t batPercentNum = atoi(batPercent);
+    updateArc(batPercentNum);
+  }
 
   lv_tick_inc(millis() - lastTick);  //Update the tick timer. Tick is new for LVGL 9
   lastTick = millis();

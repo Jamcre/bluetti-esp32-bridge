@@ -16,6 +16,11 @@ unsigned long lastMQTTMessage = 0;
 unsigned long previousDeviceStatePublish = 0;
 unsigned long previousDeviceStateStatusPublish = 0;
 unsigned long previousMqttReconnect = 0;
+String james;
+
+extern "C" const char* getJames() {
+  return james.c_str();
+}
 
 String map_field_name(enum field_names f_name){
    switch(f_name) {
@@ -363,6 +368,11 @@ void publishTopic(enum field_names field_name, String value){
   Serial.print(friendlyName);
   Serial.print(": ");
   Serial.println(value);
+
+  if (field_name == TOTAL_BATTERY_PERCENT) {
+    james = value;
+    Serial.printf("we got the percentage: %s\n" ,james);
+  }
 
   // Optional UI or message view logging
   AddtoMsgView(String(millis()) + ": " + friendlyName + " -> " + value);
