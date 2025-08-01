@@ -5,7 +5,6 @@
 #include "utils.h"
 #include "display.h"
 #include "config.h"
-#include "shared_vars.h"
 
 #include <WiFi.h>
 #include <PubSubClient.h>
@@ -364,12 +363,6 @@ void publishTopic(enum field_names field_name, String value){
   Serial.print(friendlyName);
   Serial.print(": ");
   Serial.println(value);
-
-  if (field_name == TOTAL_BATTERY_PERCENT) {
-    strncpy(exported_value, value.c_str(), sizeof(exported_value) - 1);
-    exported_value[sizeof(exported_value) - 1] = '\0';
-  }
-
 
   // Optional UI or message view logging
   AddtoMsgView(String(millis()) + ": " + friendlyName + " -> " + value);
