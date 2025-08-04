@@ -5,162 +5,6 @@
 #include "display.h"
 #include "james.h"
 
-// #include <Arduino.h>
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <TFT_eSPI.h>
-// #include <XPT2046_Touchscreen.h>
-// #include <lvgl.h>
-
-// #include "ui.h"
-// #include "screens.h"
-
-// void updateArc(uint8_t batteryLevel) {
-//   if (batteryLevel > 100) {
-//     batteryLevel = 100;
-//   }
-//   lv_arc_set_value(objects.obj0, batteryLevel);
-// }
-
-// #define XPT2046_IRQ 36
-// #define XPT2046_MOSI 32
-// #define XPT2046_MISO 39
-// #define XPT2046_CLK 25
-// #define XPT2046_CS 33
-// SPIClass touchscreenSpi = SPIClass(VSPI);
-// XPT2046_Touchscreen touchscreen(XPT2046_CS, XPT2046_IRQ);
-// uint16_t touchScreenMinimumX = 200, touchScreenMaximumX = 3700, touchScreenMinimumY = 240, touchScreenMaximumY = 3800;
-
-// #define TFT_HOR_RES 320
-// #define TFT_VER_RES 240
-
-// #define DRAW_BUF_SIZE (TFT_HOR_RES * TFT_VER_RES / 10 * (LV_COLOR_DEPTH / 8))
-
-// #if LV_USE_LOG != 0
-// void my_print(lv_log_level_t level, const char *buf) {
-//   LV_UNUSED(level);
-//   Serial.println(buf);
-//   Serial.flush();
-// }
-// #endif
-
-// /* LVGL calls it when a rendered image needs to copied to the display*/
-// void my_disp_flush(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map) {
-//   /*Call it to tell LVGL you are ready*/
-//   lv_disp_flush_ready(disp);
-// }
-
-// /*Read the touchpad*/
-// void my_touchpad_read(lv_indev_t *indev, lv_indev_data_t *data) {
-//   if (touchscreen.touched()) {
-//     TS_Point p = touchscreen.getPoint();
-//     //Some very basic auto calibration so it doesn't go out of range
-//     if (p.x < touchScreenMinimumX) touchScreenMinimumX = p.x;
-//     if (p.x > touchScreenMaximumX) touchScreenMaximumX = p.x;
-//     if (p.y < touchScreenMinimumY) touchScreenMinimumY = p.y;
-//     if (p.y > touchScreenMaximumY) touchScreenMaximumY = p.y;
-//     //Map this to the pixel position
-//     data->point.x = map(p.x, touchScreenMinimumX, touchScreenMaximumX, 1, TFT_HOR_RES); /* Touchscreen X calibration */
-//     data->point.y = map(p.y, touchScreenMinimumY, touchScreenMaximumY, 1, TFT_VER_RES); /* Touchscreen Y calibration */
-//     data->state = LV_INDEV_STATE_PRESSED;
-//     /*
-//     Serial.print("Touch x ");
-//     Serial.print(data->point.x);
-//     Serial.print(" y ");
-//     Serial.println(data->point.y);
-//     */
-//   } else {
-//     data->state = LV_INDEV_STATE_RELEASED;
-//   }
-// }
-
-// lv_indev_t *indev;      //Touchscreen input device
-// uint8_t *draw_buf;      //draw_buf is allocated on heap otherwise the static area is too big on ESP32 at compile
-// uint32_t lastTick = 0;  //Used to track the tick timer
-
-// const int ledPin22 = 22;
-
-unsigned long lastTime1 = 0;
-unsigned long timerDelay1 = 3000;
-
-// void setup() {
-//   Serial.begin(115200);
-
-//   #ifdef RELAISMODE
-//     pinMode(RELAIS_PIN, OUTPUT);
-//     #ifdef DEBUG
-//       Serial.println(F("deactivate relais contact"));
-//     #endif
-//     digitalWrite(RELAIS_PIN, RELAIS_LOW);
-//   #endif
-//   #ifdef SLEEP_TIME_ON_BT_NOT_AVAIL
-//     esp_sleep_enable_timer_wakeup(SLEEP_TIME_ON_BT_NOT_AVAIL * 60 * 1000000ULL);
-//   #endif
-//   #ifdef DISPLAYSSD1306
-//     initDisplay();
-//   #endif
-//   initBWifi(false);
-//   initBluetooth();
-//   // initMQTT();
-//   #ifdef DISPLAYSSD1306
-//     wrDisp_Status("Running!");
-//   #endif
-
-//   touchscreenSpi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
-//   touchscreen.begin(touchscreenSpi); /* Touchscreen init */
-//   touchscreen.setRotation(3);
-
-//   lv_init();
-
-//   // draw_buf = new uint8_t[DRAW_BUF_SIZE];
-//   uint8_t *draw_buf = (uint8_t *)heap_caps_malloc(DRAW_BUF_SIZE, MALLOC_CAP_SPIRAM | MALLOC_CAP_DMA);
-//   lv_display_t *disp;
-//   disp = lv_tft_espi_create(TFT_HOR_RES, TFT_VER_RES, draw_buf, DRAW_BUF_SIZE);
-
-//   // Initialize the XPT2046 input device driver
-//   indev = lv_indev_create();
-//   lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
-//   lv_indev_set_read_cb(indev, my_touchpad_read);
-
-//   ui_init();
-
-//   pinMode(ledPin22, OUTPUT);
-// }
-
-// static void arc_dimmer_event_handler(lv_event_t *e) {
-//   lv_event_code_t code = lv_event_get_code(e);              //Get the event code
-//   lv_obj_t *arc = (lv_obj_t *)lv_event_get_target(e);       //Switch that generated the event
-//   lv_obj_t *label = (lv_obj_t *)lv_event_get_user_data(e);  //Label or other UI elements we want to update (Optional)
-
-//   if (code == LV_EVENT_VALUE_CHANGED) {
-//     int brightness = lv_arc_get_value(arc);  // 0 to 100 so we need to map it 0 to 255
-//     brightness = map(brightness, 0, 100, 0, 255);
-//     analogWrite(ledPin22, brightness);
-//     lv_label_set_text_fmt(label, "%d", brightness);
-//     //Set the LED UI element to be more visible
-//     lv_obj_set_style_bg_opa(objects.led1, brightness, LV_PART_MAIN | LV_STATE_DEFAULT);
-//   }
-// }
-
-// void loop() {
-//   #ifdef DISPLAYSSD1306
-//     handleDisplay();
-//   #endif
-//   handleBluetooth();
-//   // handleMQTT(); 
-//   handleWebserver();
-
-//   const char *batPercent = lv_label_get_text(objects.obj2);
-//   int8_t batpercentNum = atoi(batPercent);
-
-//   updateArc(batpercentNum);
-
-//   lv_tick_inc(millis() - lastTick);  //Update the tick timer. Tick is new for LVGL 9
-//   lastTick = millis();
-//   lv_timer_handler();  //Update the UI
-//   delay(5);
-// }
-
 #include <Arduino.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -170,6 +14,9 @@ unsigned long timerDelay1 = 3000;
 
 #include "ui.h"
 #include "screens.h"
+
+unsigned long lastTime1 = 0;
+unsigned long timerDelay1 = 3000;
 
 void updateArc(uint8_t battery_level) {
     if (battery_level > 100) battery_level = 100;
@@ -230,12 +77,6 @@ void my_touchpad_read(lv_indev_t *indev, lv_indev_data_t *data) {
     data->point.x = map(p.x, touchScreenMinimumX, touchScreenMaximumX, 1, TFT_HOR_RES); /* Touchscreen X calibration */
     data->point.y = map(p.y, touchScreenMinimumY, touchScreenMaximumY, 1, TFT_VER_RES); /* Touchscreen Y calibration */
     data->state = LV_INDEV_STATE_PRESSED;
-    /*
-    Serial.print("Touch x ");
-    Serial.print(data->point.x);
-    Serial.print(" y ");
-    Serial.println(data->point.y);
-    */
   } else {
     data->state = LV_INDEV_STATE_RELEASED;
   }
@@ -328,19 +169,6 @@ static void arc_dimmer_event_handler(lv_event_t *e) {
     lv_obj_set_style_bg_opa(objects.led1, brightness, LV_PART_MAIN | LV_STATE_DEFAULT);
   }
 }
-
-// static void arc_rgb_event_handler(lv_event_t *e) {
-//   lv_event_code_t code = lv_event_get_code(e);              //Get the event code
-//   lv_obj_t *arc = (lv_obj_t *)lv_event_get_target(e);       //Switch that generated the event
-//   lv_obj_t *label = (lv_obj_t *)lv_event_get_user_data(e);  //Label or other UI elements we want to update (Optional)
-
-//   if (code == LV_EVENT_VALUE_CHANGED) {
-//     int brightness = lv_arc_get_value(arc);
-//     analogWrite(ledPin22, brightness);
-//     analogWrite(ledPin27, brightness);
-//   }
-// }
-
 
 //Requires LVGL 9.0+
 void loop() {
