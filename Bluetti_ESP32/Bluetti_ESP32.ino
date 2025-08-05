@@ -3,7 +3,7 @@
 #include "MQTT.h"
 #include "config.h"
 #include "display.h"
-#include "james.h"
+#include "batteryConversion.h"
 
 #include <Arduino.h>
 #include <stdio.h>
@@ -20,7 +20,7 @@ unsigned long timerDelay1 = 3000;
 
 void updateArc(uint8_t battery_level) {
     if (battery_level > 100) battery_level = 100;
-    lv_arc_set_value(objects.obj0, battery_level);
+    lv_arc_set_value(objects.battery_arc, battery_level);
 }
 
 // A library for interfacing with the touch screen
@@ -172,15 +172,22 @@ static void arc_dimmer_event_handler(lv_event_t *e) {
 
 //Requires LVGL 9.0+
 void loop() {
-  const char *jameson = getJames();
-  if (getJames() != NULL){
-    lv_label_set_text(objects.obj2, jameson);
-  }
-  const char *batPercent = lv_label_get_text(objects.obj2);;
+  const char *batPercentage = getBatteryPercent();
+  const char *AC_InputPower = getAC_Input();
+  const char *AC_OutputPower = getAC_Output();
 
-  if (batPercent != "N/A"){
-    int8_t batPercentNum = atoi(batPercent);
+  if (batPercentage != NULL && isdigit(*batPercentage)) {
+    lv_label_set_text(objects.percentage, batPercentage);
+    int8_t batPercentNum = atoi(batPercentage);
     updateArc(batPercentNum);
+  }
+
+  if (AC_InputPower != NULL && isdigit(*AC_InputPower)) {
+    lv_label_set_text(objects.ac_input_num, AC_InputPower);
+  }
+
+  if (AC_OutputPower != NULL && isdigit(*AC_OutputPower)) {
+    lv_label_set_text(objects.ac_output_num, AC_OutputPower);
   }
 
   lv_tick_inc(millis() - lastTick);  //Update the tick timer. Tick is new for LVGL 9
@@ -194,5 +201,4 @@ void loop() {
   handleBluetooth();
   //handleMQTT(); 
   handleWebserver();
-
 }

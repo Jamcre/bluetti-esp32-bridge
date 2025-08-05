@@ -9,37 +9,33 @@ extern "C" {
 
 typedef struct _objects_t {
     lv_obj_t *main;
-    lv_obj_t *screen2;
-    lv_obj_t *obj0;
-    lv_obj_t *obj1;
+    lv_obj_t *battery_arc;
+    lv_obj_t *battery_scale;
     lv_obj_t *led1;
-    lv_obj_t *obj2;
-    lv_obj_t *screen_two;
-    lv_obj_t *obj3;
-    lv_obj_t *main_screen;
-    lv_obj_t *table_data;
+    lv_obj_t *percentage;
+    lv_obj_t *ac_input_num;
+    lv_obj_t *dc_input_num;
+    lv_obj_t *ac_output_text;
+    lv_obj_t *dc_output_num;
+    lv_obj_t *ac_output_num;
+    lv_obj_t *ac_status;
+    lv_obj_t *dc_status;
+    lv_obj_t *dc_output_text;
 } objects_t;
 
 extern objects_t objects;
 
 enum ScreensEnum {
     SCREEN_ID_MAIN = 1,
-    SCREEN_ID_SCREEN2 = 2,
 };
 
 void create_screen_main();
 void tick_screen_main();
 
-void create_screen_screen2();
-void tick_screen_screen2();
-
 void tick_screen_by_id(enum ScreensEnum screenId);
 void tick_screen(int screen_index);
 
 void create_screens();
-
-void goToScreenTwo(lv_event_t *e);
-void goToMainMenu(lv_event_t *e);
 
 
 #ifdef __cplusplus

@@ -15,13 +15,11 @@ extern "C" {
 // Flow global variables
 
 enum FlowGlobalVariables {
-    FLOW_GLOBAL_VARIABLE_TIME_LEFT = 0
+    FLOW_GLOBAL_VARIABLE_NONE
 };
 
 // Native global variables
 
-extern int32_t get_var_time_left();
-extern void set_var_time_left(int32_t value);
 
 
 #ifdef __cplusplus

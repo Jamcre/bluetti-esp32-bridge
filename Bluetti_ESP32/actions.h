@@ -7,8 +7,6 @@
 extern "C" {
 #endif
 
-extern void action_go_to_screen_two(lv_event_t * e);
-extern void action_go_to_main_menu(lv_event_t * e);
 
 
 #ifdef __cplusplus

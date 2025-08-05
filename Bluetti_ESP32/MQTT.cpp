@@ -16,11 +16,42 @@ unsigned long lastMQTTMessage = 0;
 unsigned long previousDeviceStatePublish = 0;
 unsigned long previousDeviceStateStatusPublish = 0;
 unsigned long previousMqttReconnect = 0;
-String james;
+String batteryPercent;
+String AC_Input;
+String AC_Output;
+String DC_Input;
+String DC_Output;
+String AC_Status;
+String DC_Status;
 
-extern "C" const char* getJames() {
-  return james.c_str();
+extern "C" const char* getBatteryPercent() {
+  return batteryPercent.c_str();
 }
+
+extern "C" const char* getAC_Input() {
+  return AC_Input.c_str();
+}
+
+extern "C" const char* getAC_Output() {
+  return AC_Output.c_str();
+}
+
+extern "C" const char* getDC_Input() {
+  return DC_Input.c_str();
+}
+
+extern "C" const char* getDC_Output() {
+  return DC_Output.c_str();
+}
+
+extern "C" const char* getAC_Status() {
+  return AC_Status.c_str();
+}
+
+extern "C" const char* getDC_Status() {
+  return DC_Status.c_str();
+}
+
 
 String map_field_name(enum field_names f_name){
    switch(f_name) {
@@ -370,8 +401,38 @@ void publishTopic(enum field_names field_name, String value){
   Serial.println(value);
 
   if (field_name == TOTAL_BATTERY_PERCENT) {
-    james = value;
-    Serial.printf("we got the percentage: %s\n" ,james);
+    batteryPercent = value;
+    Serial.printf("we got the percentage: %s\n" ,batteryPercent);
+  }
+
+  if (field_name == AC_INPUT_POWER) {
+    AC_Input = value;
+    Serial.printf("we got the AC Input: %s\n" ,AC_Input);
+  }
+
+  if (field_name == DC_INPUT_POWER) {
+    DC_Input = value;
+    Serial.printf("we got DC Input: %s\n" ,DC_Input);
+  }
+
+  if (field_name == AC_OUTPUT_POWER) {
+    AC_Output = value;
+    Serial.printf("we got the AC Output: %s\n" ,AC_Output);
+  }
+
+  if (field_name == DC_OUTPUT_POWER) {
+    DC_Output = value;
+    Serial.printf("we got the DC Output: %s\n" ,DC_Output);
+  }
+
+  if (field_name == AC_OUTPUT_ON) {
+    AC_Status = value;
+    Serial.printf("AC Output (1 on, 0 off): %s\n" ,AC_Status);
+  }
+
+  if (field_name == DC_OUTPUT_ON) {
+    DC_Status = value;
+    Serial.printf("DC Output (1 on, 0 off): %s\n" ,DC_Status);
   }
 
   // Optional UI or message view logging
