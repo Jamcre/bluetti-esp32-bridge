@@ -175,6 +175,10 @@ void loop() {
   const char *batPercentage = getBatteryPercent();
   const char *AC_InputPower = getAC_Input();
   const char *AC_OutputPower = getAC_Output();
+  const char *DC_InputPower = getDC_Input();
+  const char *DC_OutputPower = getDC_Output();
+  const char *AC_Status = getAC_Status();
+  const char *DC_Status = getDC_Status();
 
   if (batPercentage != NULL && isdigit(*batPercentage)) {
     lv_label_set_text(objects.percentage, batPercentage);
@@ -188,6 +192,22 @@ void loop() {
 
   if (AC_OutputPower != NULL && isdigit(*AC_OutputPower)) {
     lv_label_set_text(objects.ac_output_num, AC_OutputPower);
+  }
+
+  if (DC_InputPower != NULL && isdigit(*DC_InputPower)) {
+  lv_label_set_text(objects.ac_output_num, DC_InputPower);
+  }
+
+  if (DC_OutputPower != NULL && isdigit(*DC_OutputPower)) {
+  lv_label_set_text(objects.ac_output_num, DC_OutputPower);
+  }
+
+  if (AC_Status != NULL && isdigit(*AC_Status)) {
+  lv_label_set_text(objects.ac_output_num, AC_Status);
+  }
+
+  if (DC_Status != NULL && isdigit(*DC_Status)) {
+  lv_label_set_text(objects.ac_output_num, DC_Status);
   }
 
   lv_tick_inc(millis() - lastTick);  //Update the tick timer. Tick is new for LVGL 9
