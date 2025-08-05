@@ -188,19 +188,36 @@ void loop() {
   }
 
   if (AC_InputPower != NULL && isdigit(*AC_InputPower)) {
-    lv_label_set_text(objects.ac_input_num, AC_InputPower);
+    char result[100];   // array to hold the result.
+    strcpy(result,AC_InputPower); // copy string one into the result.
+    strcat(result," Watts"); // append string two to the result.
+
+    lv_label_set_text(objects.ac_input_num, result);
   }
 
   if (AC_OutputPower != NULL && isdigit(*AC_OutputPower)) {
-    lv_label_set_text(objects.ac_output_num, AC_OutputPower);
+    char result[100];   // array to hold the result.
+    strcpy(result,AC_OutputPower); // copy string one into the result.
+    strcat(result," Watts"); // append string two to the result.
+    
+    lv_label_set_text(objects.ac_output_num, result);
   }
 
   if (DC_InputPower != NULL && isdigit(*DC_InputPower)) {
-  lv_label_set_text(objects.dc_input_num, DC_InputPower);
+    char result[100];   // array to hold the result.
+    strcpy(result,DC_InputPower); // copy string one into the result.
+    strcat(result," Watts"); // append string two to the result.
+
+    lv_label_set_text(objects.dc_input_num, result);
   }
 
   if (DC_OutputPower != NULL && isdigit(*DC_OutputPower)) {
-  lv_label_set_text(objects.dc_output_num, DC_OutputPower);
+    char result[100];   // array to hold the result.
+    strcpy(result,DC_OutputPower); // copy string one into the result.
+    strcat(result," Watts"); // append string two to the result.
+
+    // lv_label_set_text(objects.dc_output_num, DC_OutputPower);
+    lv_label_set_text(objects.dc_output_num, result);
   }
 
   if (AC_Stats != NULL && isdigit(*AC_Stats)) {
