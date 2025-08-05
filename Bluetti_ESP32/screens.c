@@ -130,6 +130,7 @@ void create_screen_main() {
             objects.ac_status = obj;
             lv_obj_set_pos(obj, 43, 159);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(0xffc00000), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(obj, "AC");
         }
         {
@@ -138,6 +139,7 @@ void create_screen_main() {
             objects.dc_status = obj;
             lv_obj_set_pos(obj, 257, 159);
             lv_obj_set_size(obj, LV_SIZE_CONTENT, LV_SIZE_CONTENT);
+            lv_obj_set_style_text_color(obj, lv_color_hex(0xffc00000), LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(obj, "DC");
         }
         {

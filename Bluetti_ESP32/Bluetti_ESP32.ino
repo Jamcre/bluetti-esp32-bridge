@@ -4,6 +4,7 @@
 #include "config.h"
 #include "display.h"
 #include "batteryConversion.h"
+#include <string.h>
 
 #include <Arduino.h>
 #include <stdio.h>
@@ -177,8 +178,8 @@ void loop() {
   const char *AC_OutputPower = getAC_Output();
   const char *DC_InputPower = getDC_Input();
   const char *DC_OutputPower = getDC_Output();
-  const char *AC_Status = getAC_Status();
-  const char *DC_Status = getDC_Status();
+  const char *AC_Stats = getAC_Status();
+  const char *DC_Stats = getDC_Status();
 
   if (batPercentage != NULL && isdigit(*batPercentage)) {
     lv_label_set_text(objects.percentage, batPercentage);
@@ -195,25 +196,39 @@ void loop() {
   }
 
   if (DC_InputPower != NULL && isdigit(*DC_InputPower)) {
-  lv_label_set_text(objects.ac_output_num, DC_InputPower);
+  lv_label_set_text(objects.dc_input_num, DC_InputPower);
   }
 
   if (DC_OutputPower != NULL && isdigit(*DC_OutputPower)) {
-  lv_label_set_text(objects.ac_output_num, DC_OutputPower);
+  lv_label_set_text(objects.dc_output_num, DC_OutputPower);
   }
 
-  if (AC_Status != NULL && isdigit(*AC_Status)) {
-  lv_label_set_text(objects.ac_output_num, AC_Status);
+  if (AC_Stats != NULL && isdigit(*AC_Stats)) {
+    int offChecker = strchr(AC_Stats, '0') != NULL;
+    if (offChecker == 0) {
+      lv_obj_set_style_text_color(objects.ac_status, lv_color_hex(0xff00ff26), LV_PART_MAIN | LV_STATE_DEFAULT);
+    }
+    else {
+      lv_obj_set_style_text_color(objects.ac_status, lv_color_hex(0xffc00000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    }
   }
 
-  if (DC_Status != NULL && isdigit(*DC_Status)) {
-  lv_label_set_text(objects.ac_output_num, DC_Status);
+  if (DC_Stats != NULL && isdigit(*DC_Stats)) {
+    int offChecker = strchr(DC_Stats, '0') != NULL;
+    if (offChecker == 0) {
+      lv_obj_set_style_text_color(objects.dc_status, lv_color_hex(0xff00ff26), LV_PART_MAIN | LV_STATE_DEFAULT);
+    }
+    else {
+      lv_obj_set_style_text_color(objects.dc_status, lv_color_hex(0xffc00000), LV_PART_MAIN | LV_STATE_DEFAULT);
+    }
   }
+
+  //0xff00ff26 green
+  //0xffc00000 red
 
   lv_tick_inc(millis() - lastTick);  //Update the tick timer. Tick is new for LVGL 9
   lastTick = millis();
   lv_timer_handler();  //Update the UI
-  delay(5);
 
   #ifdef DISPLAYSSD1306
     //handleDisplay();
@@ -221,4 +236,5 @@ void loop() {
   handleBluetooth();
   //handleMQTT(); 
   handleWebserver();
+  delay(5);
 }
