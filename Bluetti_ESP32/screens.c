@@ -7,6 +7,7 @@
 #include "vars.h"
 #include "styles.h"
 #include "ui.h"
+#include "ecolibrium_logo.h"
 
 objects_t objects;
 lv_obj_t *tick_value_change_obj;
@@ -151,6 +152,16 @@ void create_screen_main() {
             lv_obj_set_style_align(obj, LV_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
             lv_label_set_text(obj, "DC Output:");
         }
+        {
+            // image
+
+            lv_obj_t *img = lv_image_create(parent_obj);
+            lv_obj_set_pos(img, 210, 5);
+            lv_image_set_src(img, &ecolibrium_logo_ARGB8888);
+            lv_obj_set_size(img, 110, 30);
+            lv_image_set_scale(img, 80);
+            lv_obj_clear_flag(img, LV_OBJ_FLAG_CLICKABLE);
+        }
     }
     
     tick_screen_main();
@@ -158,7 +169,6 @@ void create_screen_main() {
 
 void tick_screen_main() {
 }
-
 
 
 typedef void (*tick_screen_func_t)();

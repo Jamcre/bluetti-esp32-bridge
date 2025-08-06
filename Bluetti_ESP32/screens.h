@@ -21,6 +21,7 @@ typedef struct _objects_t {
     lv_obj_t *ac_status;
     lv_obj_t *dc_status;
     lv_obj_t *dc_output_text;
+    lv_obj_t *logo;
 } objects_t;
 
 extern objects_t objects;
