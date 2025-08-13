@@ -10,5 +10,4 @@ hardware/
 libraries/
 
 # PlatformIO and VSCode
-.pio/
 .vscode/
