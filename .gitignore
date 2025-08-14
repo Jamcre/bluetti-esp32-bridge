@@ -12,3 +12,10 @@ libraries/
 # PlatformIO and VSCode
 .vscode/
 .pio
+
+# Build output files
+build/Bluetti_ESP32_Bridge.factory.bin
+build/Bluetti_ESP32_Bridge.ota.bin
+
+# Generated source file
+Bluetti_ESP32/Bluetti_ESP32.ino.cpp
