@@ -1,0 +1,20 @@
+{
+  "devices": [
+    {
+      "name": "EB3A2329002381237",
+      "address": "d3:6d:50:3f:c1:f5",
+      "manufacturer_data": "424c424c5545545449",
+      "serviceUUID": "0000ff00-0000-1000-8000-00805f9b34fb",
+      "rssi": -37,
+      "model": "EB3A"
+    },
+    {
+      "name": "...",
+      "address": "...",
+      "manufacturer_data": "...",
+      "serviceUUID": "...",
+      "rssi": 67,
+      "model": "..."
+    }
+  ]
+}
