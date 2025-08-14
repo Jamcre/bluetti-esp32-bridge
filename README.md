@@ -43,6 +43,8 @@ Change at least the device type to fit your Bluetti device.
 
 ### Compiling and Flashing to ESP32
 
+Be sure to follow the `README` in the `changed configs` folder before compiling.
+
 #### Arduino IDE
 
 You will need to install a board support package for your ESP32. Additionally the following libraries are needed: 
@@ -89,6 +91,15 @@ $ esptool.py write_flash 0x1F0000 build/Bluetti_ESP32_Bridge.ota.bin
 ```
 
 The configuration interface also offers OTA updates. You can flash also `build/Bluetti_ESP32_Bridge.ota.bin` there. If you already configured your device you can use `http://<ip_address/update` to update your firmware (no-reconfiguration needed)
+
+#### IntelHex Error
+
+If you receive an IntelHex error while compiling, uninstall any and every version of Python on your system, and install the latest version. Then open a **PlatformIO terminal** and run `pip install intelhex`. This should resolve any problems with the Python IntelHex error that you may receive.
+<picture>
+  <div align="center">
+    <img src="https://imgur.com/uGPdSZ7.jpeg" style="width:auto;">
+  </div>
+</picture>
 
 ### Usage
 
