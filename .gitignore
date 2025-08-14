@@ -11,3 +11,4 @@ libraries/
 
 # PlatformIO and VSCode
 .vscode/
+.pio
