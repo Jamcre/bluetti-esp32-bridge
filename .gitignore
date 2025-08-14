@@ -10,5 +10,9 @@ hardware/
 libraries/
 
 # PlatformIO and VSCode
-.pio/
 .vscode/
+.pio
+build/
+
+# Generated source file
+Bluetti_ESP32/Bluetti_ESP32.ino.cpp
