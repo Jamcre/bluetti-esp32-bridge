@@ -1,94 +1,46 @@
 ## About
-This is an ESP32 based Bluetooth to MQTT Bride for BLUETTI power stations. The project is based on https://github.com/warhammerkid/bluetti_mqtt
-The code is tested on a AC300. Other Powerstations should also work but are untested yet. The discussion on https://diysolarforum.com/threads/monitoring-bluetti-systems.37870/ was a great help for understanding the protocol. 
 
-## Community
-Join the Discord Server https://discord.gg/fWDSBTCVmB
+This is an ESP32 based Bluetooth to MQTT Bride for BLUETTI power stations. The project is based on https://github.com/warhammerkid/bluetti_mqtt
+The code is tested on an EB3A. Other Powerstations should also work but are untested yet. The discussion on https://diysolarforum.com/threads/monitoring-bluetti-systems.37870/ was a great help for understanding the protocol.
 
 ## Features
 
-* easy configuration with WiFi manager
-* display support OLED 128x64 
-  * tested ESP32 WROOM with display: https://github.com/LilyGO/TTGO-T2-ESP32
-* mqtt support
-* support for BLUETTI power stations
-  * AC300 (tested)
-  * AC200 (tested)
-  * EB3A (tested)
-  * EP500 (untested)
-  * EP500P (tested)
-  * EP600 (some values still missing)
-* supported BLUETTI functions
-  * commands
-    * ac output on/off
-    * dc output on/off
-  * states
-    * ac input power
-    * dc input power
-    * ac output power
-    * dc output power
-    * dsp firmware version
-    * arm firmware version
-    * serial number
-    * device type
-    * power generation
-    * total battery percent
+- easy configuration with WiFi manager
+- display support 320x240
+  - tested ESP32-CYD with display: https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display
+- mqtt support
+- support for BLUETTI power stations
+  - AC300 (tested)
+  - AC200 (tested)
+  - EB3A (tested)
+  - EP500 (untested)
+  - EP500P (tested)
+  - EP600 (some values still missing)
+- supported BLUETTI functions
+  - commands
+    - ac output on/off
+    - dc output on/off
+  - states
+    - ac input power
+    - dc input power
+    - ac output power
+    - dc output power
+    - dsp firmware version
+    - arm firmware version
+    - serial number
+    - device type
+    - power generation
+    - total battery percent
 
-## Getting Started
+### Getting Started
 
-### Configuration
+1. Install [VSCode](https://code.visualstudio.com/download) and once finished, get the [PlatformIO](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) extension
+2. Follow the instructions in [dependencies/README.md](dependencies/README.md) and update the required libraries
+3. Once libraries are updated, use the PlatformIO build buttom to confirm the project compiles
+4. Connect an [ESP32-CYD](https://github.com/witnessmenow/ESP32-Cheap-Yellow-Display), and upload the project onto the board. NOTE: the file being uploaded is [Bluetti_ESP32/Bluetti_ESP32.ino](Bluetti_ESP32/Bluetti_ESP32.ino)
+5. After this step, continue with the instructions detailed in the Configuration portion of this README.md
 
-Create a copy of config.sample.h and name it config.h
-Change at least the device type to fit your Bluetti device.
-
-### Compiling and Flashing to ESP32
-
-#### Arduino IDE
-
-You will need to install a board support package for your ESP32. Additionally the following libraries are needed: 
-
-* https://github.com/tzapu/WiFiManager
-* https://github.com/knolleary/pubsubclient
-* https://github.com/ayushsharma82/ElegantOTA
-* https://github.com/me-no-dev/ESPAsyncWebServer
-* https://github.com/me-no-dev/AsyncTCP/archive
-
-Change the partition scheme with Tools -> Partition Scheme to
-
-* Minimal SPIFFS (1.9 MB App with OTA/ 190KB SPIFFS)
-
-![Wifi Manager start menu](doc/images/partition.png)
-
-This setting is required because the Bluetooth stack already uses a lot of the ESP32 memory.
-
-Optional: Do changes in config.h file. The device can be set by changing 'BLUETTI_TYPE'.
-
-Finally upload the Sketch to your ESP32.
-
-*INFO*: Until now only BLUETTI_AC300, BLUETTI_EP500P was tested. If you own one of the supported devices please let me know if it works.
-
-#### PlatformIO
-
-Compiling
-```
-$ pio run
-```
-
-Flashing Factory Image
-```
-$ esptool.py write_flash 0x0 build/Bluetti_ESP32_Bridge.factory.bin
-```
-
-Updating only App (don't delete settings)
-```
-# Write Partition A
-$ esptool.py write_flash 0x10000 build/Bluetti_ESP32_Bridge.ota.bin
-...
-# Write Partition B
-$ esptool.py write_flash 0x1F0000 build/Bluetti_ESP32_Bridge.ota.bin
-```
-
-The configuration interface also offers OTA updates. You can flash also `build/Bluetti_ESP32_Bridge.ota.bin` there. If you already configured your device you can use `http://<ip_address/update` to update your firmware (no-reconfiguration needed)
+## Configuration
 
 ### Usage
 
@@ -116,54 +68,59 @@ Example ( ioBroker ):
 ### MQTT Topics
 
 #### Commands
+
 Commands are subscribed from
 
-* /bluetti/<your_device_id>/command
-  * ac_output_on
-  * dc_output_on
+- /bluetti/<your_device_id>/command
+  - ac_output_on
+  - dc_output_on
 
 #### State
+
 States are published to
-* /bluetti/<your_device_id>/state
-  * ac_output_on
-  * dc_output_on
-  * dc_input_power
-  * ac_input_power
-  * ac_output_power
-  * dc_output_power
-  * serial
-  * dsp_version
-  * arm_version
-  * power_generation
-  * total_battery_percent
+
+- /bluetti/<your_device_id>/state
+  - ac_output_on
+  - dc_output_on
+  - dc_input_power
+  - ac_input_power
+  - ac_output_power
+  - dc_output_power
+  - serial
+  - dsp_version
+  - arm_version
+  - power_generation
+  - total_battery_percent
 
 ## Display
+
 Config Display:
-* By default, display is disabled. 
-* Configurations (customize of file Bluetti_ESP32/config.h): 
-  * Enable display: uncomment #define DISPLAYSSD1306 1
-  * Enable reset of display on init: uncomment DISPLAY_RST_PORT
-    * Known needed for LoRa TTGO v1.0
-  * set SCL & SDA ports: default ports are set to SCL=4 & SDA5, to change update DISPLAY_SCL_PORT and DISPLAY_SDA_PORT 
+
+- By default, display is disabled.
+- Configurations (customize of file Bluetti_ESP32/config.h):
+  - Enable display: uncomment #define DISPLAYSSD1306 1
+  - Enable reset of display on init: uncomment DISPLAY_RST_PORT
+    - Known needed for LoRa TTGO v1.0
+  - set SCL & SDA ports: default ports are set to SCL=4 & SDA5, to change update DISPLAY_SCL_PORT and DISPLAY_SDA_PORT
 
 Display functionality:
-* Show current assiged IP address (AP mode or normal)
-* Show different wifi connection logo, depending on the mode its in and wifi Strength in normal mode (4 bars)
-* Show the running time of the device in the format "11d12h15m" Currently max until 49 days as this is the time millis() is reset. 
-* Show status message, currently shows the init and running status, also BLEscan when scanning 
-* a progressbar is available but currently not used anywhere. (to see where it can be used)
-* Show bluetooth icon status. Connected is static, blinking is trying to connect, together with message in case of scanning.
-* Show MQTT icon status. Connected is static, blinking is trying to connect.
+
+- Show current assiged IP address (AP mode or normal)
+- Show different wifi connection logo, depending on the mode its in and wifi Strength in normal mode (4 bars)
+- Show the running time of the device in the format "11d12h15m" Currently max until 49 days as this is the time millis() is reset.
+- Show status message, currently shows the init and running status, also BLEscan when scanning
+- a progressbar is available but currently not used anywhere. (to see where it can be used)
+- Show bluetooth icon status. Connected is static, blinking is trying to connect, together with message in case of scanning.
+- Show MQTT icon status. Connected is static, blinking is trying to connect.
 
 Example display screen:
 ![DisplayImage](doc/images/display.jpg)
 
-
 ## TODO
 
-* add full feature set to device files
-* adding support for SD-Card reader, for writing csv data to an sd-card
-* adding logging poll commands
+- add full feature set to device files
+- adding support for SD-Card reader, for writing csv data to an sd-card
+- adding logging poll commands
 
 ## Disclaimer
 
