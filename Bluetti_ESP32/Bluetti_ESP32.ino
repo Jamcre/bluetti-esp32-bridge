@@ -65,6 +65,11 @@ void my_touchpad_read(lv_indev_t *indev, lv_indev_data_t *data) {
     data->state = LV_INDEV_STATE_RELEASED;
   }
 }
+//Relay Logic 
+void setupRelay() {
+    pinMode(RELAY_PIN, OUTPUT);
+    digitalWrite(RELAY_PIN, LOW); // LOW = charging station by default
+}
 
 lv_indev_t *indev;
 uint8_t *draw_buf;
@@ -110,7 +115,7 @@ void setup() {
 
   // --- MINIMAL CHANGE SECTION ---
   // The order of these next three calls is CRITICAL for TLS to work.
-
+  setupRelay();
   // 1. Connect to WiFi first.
   initBWifi(false);
 
